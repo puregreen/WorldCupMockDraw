@@ -197,6 +197,11 @@
 
     async function startDraw() {
       const btn = document.getElementById("startBtn");
+      // スムーズなアニメーションでスクロールする場合
+      btn.scrollIntoView({
+        behavior: 'smooth', // スムーズスクロール
+        block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
+      });
       btn.disabled = true; btn.textContent = "抽選中…";
       showLoading(false);
       // showTitle(false);

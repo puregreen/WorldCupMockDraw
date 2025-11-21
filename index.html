@@ -261,6 +261,13 @@ await new Promise(r => setTimeout(r, 1000));
         `<div style="font-size:4.5rem;color:#ffcb05;text-shadow:0 0 50px gold;">抽選終了！</div>`;
       btn.textContent = "もう一度抽選";
       btn.disabled = false;
+      
+      const res = document.getElementById("result");
+      // スムーズなアニメーションでスクロールする場合
+      res.scrollIntoView({
+        behavior: 'smooth', // スムーズスクロール
+        block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
+      });
     }
 
     document.getElementById("startBtn").onclick = startDraw;

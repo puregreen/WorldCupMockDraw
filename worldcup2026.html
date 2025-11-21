@@ -3,41 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2026 FIFAワールドカップ 本戦抽選会（模擬）</title>
+  <title>2026 FIFAワールドカップ 模擬抽選会</title>
   <style>
-    body {font-family: "Helvetica Neue", Arial, sans-serif;background: linear-gradient(135deg, #0f2b5e, #1a4d8c);color: white;text-align: center;padding: 20px;min-height: 100vh;margin: 0;}
-    h1 {font-size: 3.2rem;margin: 20px 0;text-shadow: 0 0 20px #ffcb05;}
-    button {background: #ffcb05;color: #0f2b5e;font-size: 1.7rem;font-weight: bold;padding: 20px 60px;border: none;border-radius: 50px;cursor: pointer;box-shadow: 0 10px 30px rgba(0,0,0,0.6);transition: all 0.3s;}
-    button:hover:not(:disabled) {transform: translateY(-6px);}
+    body {font-family: "Helvetica Neue", Arial, sans-serif;background: linearogradient(135deg, #0f2b5e, #1a4d8c);color: white;text-align: center;padding: 20px;min-height: 100vh;margin: 0;}
+    h1 {font-size: 3.5rem;margin: 20px 0;text-shadow: 0 0 30px #ffcb05;}
+    button {background: #ffcb05;color: #0f2b5e;font-size: 1.8rem;font-weight: bold;padding: 22px 70px;border: none;border-radius: 60px;cursor: pointer;box-shadow: 0 12px 40px rgba(0,0,0,0.7);transition: all 0.3s;}
+    button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
     button:disabled {background: #555;opacity: 0.7;}
 
-    #status {margin: 50px auto;min-height: 180px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 25px;}
+    #status {margin: 50px auto;min-height: 180px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 30px;}
     #loadingContainer {opacity: 0;transition: opacity 0.7s;}
     #loadingContainer.show {opacity: 1;}
-    #loadingImg {width: 110px;height: 110px;filter: drop-shadow(0 0 20px #ffcb05);}
-    .loading-text {font-size: 2.6rem;font-weight: bold;color: #ffcb05;text-shadow: 0 0 20px rgba(255,203,5,0.9);letter-spacing: 4px;}
+    #loadingImg {width: 120px;height: 120px;filter: drop-shadow(0 0 25px #ffcb05);}
+
+    .loading-text {font-size: 2.8rem;font-weight: bold;color: #ffcb05;text-shadow: 0 0 25px rgba(255,203,5,1);letter-spacing: 5px;}
     .loading-dots span {opacity: 0;animation: dotPulse 1.8s infinite;}
     .loading-dots span:nth-child(1) {animation-delay: 0s;}
-    .loading-dots span:nth-child(2) {animation-delay: 0.4s;}
-    .loading-dots span:nth-child(3) {animation-delay: 0.8s;}
+    .loading-dots span:nth-child(2) {animation-delay: 0.5s;}
+    .loading-dots span:nth-child(3) {animation-delay: 1s;}
     @keyframes dotPulse {0%,100%{opacity:0} 50%{opacity:1}}
 
-    #result {max-width: 1500px;margin: 40px auto;display: grid;grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));gap: 28px;}
-    .group {background: rgba(255,255,255,0.14);border-radius: 22px;padding: 28px;backdrop-filter: blur(14px);border: 1px solid rgba(255,255,255,0.25);}
-    .group h2 {margin: 0 0 25px;font-size: 2.8rem;color: #ffcb05;}
-    .team {background: rgba(255,255,255,0.28);margin: 14px 0;padding: 16px;border-radius: 14px;font-size: 0.95rem;opacity: 0;transform: translateY(40px);transition: all 0.8s ease-out;}
+    /* ここから新演出！決まったチームをドーンと表示 */
+    #latestDraw {
+      margin: 40px auto;
+      padding: 20px;
+      min-height: 120px;
+      perspective: 1000px;
+    }
+    .draw-item {
+      background: linear-gradient(135deg, rgba(255,203,5,0.3), rgba(255,203,5,0.1));
+      border: 2px solid #ffcb05;
+      border-radius: 20px;
+      padding: 18px 40px;
+      margin: 15px auto;
+      max-width: 600px;
+      font-size: 2.4rem;
+      font-weight: bold;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      opacity: 0;
+      transform: translateY(50px) rotateX(-30deg);
+      transition: all 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      backdrop-filter: blur(10px);
+    }
+    .draw-item.show {
+      opacity: 1;
+      transform: translateY(0) rotateX(0);
+    }
+    .draw-item img {
+      width: 60px;
+      height: 40px;
+      margin-right: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      vertical-align: middle;
+    }
+    .draw-item .group-letter {
+      color: #ffcb05;
+      font-size: 3rem;
+      text-shadow: 0 0 20px gold;
+      margin: 0 15px;
+    }
+
+    #result {max-width: 1600px;margin: 50px auto;display: grid;grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));gap: 30px;}
+    .group {background: rgba(255,255,255,0.15);border-radius: 25px;padding: 30px;backdrop-filter: blur(15px);border: 1px solid rgba(255,255,255,0.3);}
+    .group h2 {margin: 0 0 25px;font-size: 3rem;color: #ffcb05;}
+    .team {background: rgba(255,255,255,0.3);margin: 15px 0;padding: 18px;border-radius: 15px;font-size: 1.4rem;opacity: 0;transform: translateY(40px);transition: all 0.8s;}
     .team.show {opacity: 1;transform: translateY(0);}
-    .team.host {background: rgba(255,203,5,0.6);font-weight: bold;color: #fff;}
-    .pot-label {padding: 7px 16px;border-radius: 25px;background: #ffcb05;color: #0f2b5e;font-weight: bold;font-size: 0.65rem;margin-left: 12px;}
+    .team.host {background: rgba(255,203,5,0.7);font-weight: bold;color: #fff;}
+    .pot-label {padding: 8px 18px;border-radius: 30px;background: #ffcb05;color: #0f2b5e;font-weight: bold;margin-left: 15px;}
   </style>
 </head>
 <body>
   <h1>2026 FIFA ワールドカップ</h1>
-  <p style="font-size:1.8rem;">本戦グループステージ抽選会（模擬）</p>
+  <p style="font-size:1.9rem;">本戦グループステージ抽選会（模擬）</p>
   <button id="startBtn">抽選開始</button>
 
   <div id="status">
-    <div id="statusText">ボタンを押して抽選を開始</div>
+    <div id="statusText">ボタンを押して抽選開始</div>
     <div id="loadingContainer">
       <img id="loadingImg" src="./IMG_0261.gif" alt="抽選中">
       <div class="loading-text">
@@ -49,70 +91,91 @@
     </div>
   </div>
 
+  <!-- ここに決まったチームがドーンと表示される！ -->
+  <div id="latestDraw"></div>
+
   <div id="result"></div>
 
   <script>
-
-    // 48チーム（2026年大会想定・最新ランキング準拠）
+     // 48チーム（2026年大会想定・最新ランキング準拠）
     const teams = [
-      // ポット1（開催国＋上位）
-      { name: "メキシコ", conf: "CONCACAF", pot: 1, fixed: "A" },
-      { name: "カナダ", conf: "CONCACAF", pot: 1, fixed: "B" },
-      { name: "アメリカ", conf: "CONCACAF", pot: 1, fixed: "D" },
-      { name: "スペイン", conf: "UEFA", pot: 1 },
+      // ポット1（開催国 + FIFAランキング上位9チーム）
+      { name: "アメリカ", conf: "CONCACAF", pot: 1, fixed: "A" },
+      { name: "メキシコ", conf: "CONCACAF", pot: 1, fixed: "B" },
+      { name: "カナダ", conf: "CONCACAF", pot: 1, fixed: "C" },
+      { name: "ブラジル", conf: "CONMEBOL", pot: 1 },
       { name: "アルゼンチン", conf: "CONMEBOL", pot: 1 },
       { name: "フランス", conf: "UEFA", pot: 1 },
       { name: "イングランド", conf: "UEFA", pot: 1 },
-      { name: "ブラジル", conf: "CONMEBOL", pot: 1 },
+      { name: "スペイン", conf: "UEFA", pot: 1 },
+      { name: "ドイツ", conf: "UEFA", pot: 1 },
+      { name: "ベルギー", conf: "UEFA", pot: 1 },
       { name: "ポルトガル", conf: "UEFA", pot: 1 },
       { name: "オランダ", conf: "UEFA", pot: 1 },
-      { name: "ベルギー", conf: "UEFA", pot: 1 },
-      { name: "ドイツ", conf: "UEFA", pot: 1 },
 
       // ポット2
-      { name: "日本", conf: "AFC", pot: 2 },
-      { name: "韓国", conf: "AFC", pot: 2 },
-      { name: "オーストラリア", conf: "AFC", pot: 2 },
-      { name: "イラン", conf: "AFC", pot: 2 },
-      { name: "ウルグアイ", conf: "CONMEBOL", pot: 2 },
-      { name: "コロンビア", conf: "CONMEBOL", pot: 2 },
-      { name: "クロアチア", conf: "UEFA", pot: 2 },
-      { name: "オーストリア", conf: "UEFA", pot: 2 },
-      { name: "スイス", conf: "UEFA", pot: 2 },
-      { name: "モロッコ", conf: "CAF", pot: 2 },
-      { name: "セネガル", conf: "CAF", pot: 2 },
-      { name: "エクアドル", conf: "CONMEBOL", pot: 2 }, // 例：コスタリカなど
+      { name: "日本", conf: "AFC", pot: 2 }, { name: "韓国", conf: "AFC", pot: 2 },
+      { name: "イラン", conf: "AFC", pot: 2 }, { name: "オーストラリア", conf: "AFC", pot: 2 },
+      { name: "ウルグアイ", conf: "CONMEBOL", pot: 2 }, { name: "コロンビア", conf: "CONMEBOL", pot: 2 },
+      { name: "クロアチア", conf: "UEFA", pot: 2 }, { name: "デンマーク", conf: "UEFA", pot: 2 },
+      { name: "スイス", conf: "UEFA", pot: 2 }, { name: "モロッコ", conf: "CAF", pot: 2 },
+      { name: "セネガル", conf: "CAF", pot: 2 }, { name: "コスタリカ", conf: "CONCACAF", pot: 2 },
 
       // ポット3
-      { name: "ノルウェー", conf: "UEFA", pot: 3 },
-      { name: "パナマ", conf: "CONCACAF", pot: 3 },
-      { name: "エジプト", conf: "CAF", pot: 3 },
-      { name: "アルジェリア", conf: "CAF", pot: 3 },
-      { name: "スコットランド", conf: "UEFA", pot: 3 },
-      { name: "パラグアイ", conf: "CONMEBOL", pot: 3 },
-      { name: "チュニジア", conf: "CAF", pot: 3 },
-      { name: "コートジボワール", conf: "CAF", pot: 3 },
-      { name: "ウズベキスタン", conf: "AFC", pot: 3 },
-      { name: "カタール", conf: "AFC", pot: 3 },
-      { name: "サウジアラビア", conf: "AFC", pot: 3 },
-      { name: "南アフリカ", conf: "CAF", pot: 3 },
+      { name: "サウジアラビア", conf: "AFC", pot: 3 }, { name: "エジプト", conf: "CAF", pot: 3 },
+      { name: "ナイジェリア", conf: "CAF", pot: 3 }, { name: "チュニジア", conf: "CAF", pot: 3 },
+      { name: "セルビア", conf: "UEFA", pot: 3 }, { name: "ポーランド", conf: "UEFA", pot: 3 },
+      { name: "スウェーデン", conf: "UEFA", pot: 3 }, { name: "エクアドル", conf: "CONMEBOL", pot: 3 },
+      { name: "ペルー", conf: "CONMEBOL", pot: 3 }, { name: "ジャマイカ", conf: "CONCACAF", pot: 3 },
+      { name: "アルジェリア", conf: "CAF", pot: 3 }, { name: "ウクライナ", conf: "UEFA", pot: 3 },
 
-      // ポット4（残り）
-      { name: "ヨルダン", conf: "AFC", pot: 4 },
-      { name: "カボベルデ", conf: "CAF", pot: 4 },
-      { name: "ガーナ", conf: "CAF", pot: 4 },
-      { name: "キュラソー", conf: "CONCACAF", pot: 4 },
-      { name: "ニュージーランド", conf: "OFC", pot: 4 },
-      { name: "ハイチ", conf: "CONCACAF", pot: 4 },
-      { name: "欧州PO1", conf: "UEFA", pot: 4 },
-      { name: "欧州PO2", conf: "UEFA", pot: 4 },
-      { name: "欧州PO3", conf: "UEFA", pot: 4 },
-      { name: "欧州PO4", conf: "UEFA", pot: 4 },
-      { name: "大陸間PO1", conf: "PO", pot: 4 },
-      { name: "大陸間PO2", conf: "PO", pot: 4 },
+      // ポット4
+      { name: "カメルーン", conf: "CAF", pot: 4 }, { name: "ガーナ", conf: "CAF", pot: 4 },
+      { name: "コートジボワール", conf: "CAF", pot: 4 }, { name: "ノルウェー", conf: "UEFA", pot: 4 },
+      { name: "トルコ", conf: "UEFA", pot: 4 }, { name: "スコットランド", conf: "UEFA", pot: 4 },
+      { name: "ハンガリー", conf: "UEFA", pot: 4 }, { name: "パラグアイ", conf: "CONMEBOL", pot: 4 },
+      { name: "ベネズエラ", conf: "CONMEBOL", pot: 4 }, { name: "パナマ", conf: "CONCACAF", pot: 4 },
+      { name: "ホンジュラス", conf: "CONCACAF", pot: 4 }, { name: "ニュージーランド", conf: "OFC", pot: 4 }
     ];
+    const GROUPS = "ABCDEFGHJKLM".split("");
+    let groups = {}, pots = {};
 
-    const GROUPS = "ABCDEFGHIJKL".split("");
+    // 国旗URL生成（https://flagcdn.comを使用）
+    function getFlagUrl(countryName) {
+      const map = {
+        "アメリカ": "us", "メキシコ": "mx", "カナダ": "ca", "ブラジル": "br", "アルゼンチン": "ar",
+        "フランス": "fr", "イングランド": "gb-eng", "スペイン": "es", "ドイツ": "de", "ベルギー": "be",
+        "ポルトガル": "pt", "オランダ": "nl", "日本": "jp", "韓国": "kr", "イラン": "ir", "オーストラリア": "au",
+        "ウルグアイ": "uy", "コロンビア": "co", "クロアチア": "hr", "デンマーク": "dk", "スイス": "ch",
+        "モロッコ": "ma", "セネガル": "sn", "コスタリカ": "cr", "サウジアラビア": "sa", "エジプト": "eg",
+        "ナイジェリア": "ng", "チュニジア": "tn", "セルビア": "rs", "ポーランド": "pl", "スウェーデン": "se",
+        "エクアドル": "ec", "ペルー": "pe", "ジャマイカ": "jm", "アルジェリア": "dz", "ウクライナ": "ua",
+        "カメルーン": "cm", "ガーナ": "gh", "コートジボワール": "ci", "ノルウェー": "no", "トルコ": "tr",
+        "スコットランド": "gb-sct", "ハンガリー": "hu", "パラグアイ": "py", "ベネズエラ": "ve",
+        "パナマ": "pa", "ホンジュラス": "hn", "ニュージーランド": "nz"
+      };
+      const code = map[countryName] || "xx";
+      return `https://flagcdn.com/84x63/${code}.png`;
+    }
+
+    // 決まったチームを派手に表示！
+    function announceDraw(team, groupLetter) {
+      const container = document.getElementById("latestDraw");
+      const item = document.createElement("div");
+      item.className = "draw-item";
+      item.innerHTML = `
+        <img src="${getFlagUrl(team.name)}" alt="${team.name}">
+        <span>${team.name}</span>
+        <span class="group-letter">→ グループ ${groupLetter}</span>
+      `;
+      container.appendChild(item);
+      setTimeout(() => item.classList.add("show"), 100);
+
+      // 古いものは消す（最新3件まで表示）
+      if (container.children.length > 3) {
+        container.removeChild(container.children[0]);
+      }
+    }
 
     function showLoading(show = true) {
       document.getElementById("loadingContainer").classList.toggle("show", show);
@@ -121,15 +184,9 @@
     function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
     function canPlaceInGroup(team, groupTeams) {
-      // 同じポットのチームが既にいるか？
       if (groupTeams.some(t => t.pot === team.pot)) return false;
-      // 大陸制約
       const confCount = groupTeams.reduce((c, t) => (c[t.conf] = (c[t.conf] || 0) + 1, c), {});
-      if (team.conf === "UEFA") {
-        return (confCount.UEFA || 0) < 2;
-      } else {
-        return (confCount[team.conf] || 0) === 0;
-      }
+      return team.conf === "UEFA" ? (confCount.UEFA || 0) < 2 : (confCount[team.conf] || 0) === 0;
     }
 
     function addTeam(letter, team) {
@@ -142,13 +199,13 @@
     }
 
     function initGroups() {
-      const result = document.getElementById("result");
-      result.innerHTML = "";
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("latestDraw").innerHTML = "";
       GROUPS.forEach(g => {
         const div = document.createElement("div");
         div.className = "group"; div.id = `group-${g}`;
         div.innerHTML = `<h2>グループ ${g}</h2>`;
-        result.appendChild(div);
+        document.getElementById("result").appendChild(div);
       });
     }
 
@@ -159,56 +216,48 @@
       document.getElementById("statusText").textContent = "開催国を配置中…";
       initGroups();
 
-      const groups = Object.fromEntries(GROUPS.map(g => [g, []]));
-      const pots = {1: [], 2: [], 3: [], 4: []};
+      groups = Object.fromEntries(GROUPS.map(g => [g, []]));
+      pots = {1: [], 2: [], 3: [], 4: []};
       teams.forEach(t => pots[t.pot].push({...t}));
 
-      // 1. 開催国固定配置
-      teams.filter(t => t.fixed).forEach(host => {
-        host.pos = 1;
-        groups[host.fixed] = [host];
-        addTeam(host.fixed, host);
-      });
-      await new Promise(r => setTimeout(r, 2000));
-
-      // 2. 残りのポット1（空いているグループにランダム配置）
-      const pot1Rest = shuffle(pots[1].filter(t => !t.fixed));
-      let emptyGroups = GROUPS.filter(g => groups[g].length === 0);
-      pot1Rest.forEach((team, i) => {
-        const g = emptyGroups[i];
-        team.pos = 1;
-        groups[g].push(team);
-        addTeam(g, team);
+      // 開催国
+      teams.filter(t => t.fixed).forEach(h => {
+        h.pos = 1; groups[h.fixed] = [h]; addTeam(h.fixed, h);
+        announceDraw(h, h.fixed);
       });
       await new Promise(r => setTimeout(r, 2500));
 
-      // 3. ポット2 → ポット3 → ポット4 を順に配置
-      for (let potNum = 2; potNum <= 4; potNum++) {
-        showLoading(true);
-        document.getElementById("statusText").textContent = "";
-        await new Promise(r => setTimeout(r, 1000));
+      // ポット1残り
+      const pot1rest = shuffle(pots[1].filter(t => !t.fixed));
+      let empty = GROUPS.filter(g => groups[g].length === 0);
+      pot1rest.forEach((t, i) => {
+        const g = empty[i];
+        t.pos = 1; groups[g].push(t); addTeam(g, t);
+        announceDraw(t, g);
+      });
+      await new Promise(r => setTimeout(r, 3000));
 
-        const potTeams = shuffle(pots[potNum]);
+      // ポット2〜4
+      for (let p = 2; p <= 4; p++) {
+        showLoading(true);
+        await new Promise(r => setTimeout(r, 1000));
+        const potTeams = shuffle(pots[p]);
         for (const team of potTeams) {
-          const availableGroups = GROUPS.filter(g =>
-            groups[g].length < 4 &&
-            !groups[g].some(t => t.pot === potNum) &&  // 同じポットなし
-            canPlaceInGroup(team, groups[g])
-          );
-          const chosen = availableGroups[Math.floor(Math.random() * availableGroups.length)];
+          const avail = GROUPS.filter(g => groups[g].length < 4 && canPlaceInGroup(team, groups[g]));
+          const chosen = avail[Math.floor(Math.random() * avail.length)];
           team.pos = groups[chosen].length + 1;
           groups[chosen].push(team);
           addTeam(chosen, team);
-          await new Promise(r => setTimeout(r, 800));
+          announceDraw(team, chosen);  // ← ここで派手演出！
+          await new Promise(r => setTimeout(r, 900));
         }
         showLoading(false);
-        document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:3rem;">ポット${potNum} 完了！</span>`;
-        await new Promise(r => setTimeout(r, 2200));
+        document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:3.2rem;">ポット${p} 完了！</span>`;
+        await new Promise(r => setTimeout(r, 2500));
       }
 
       document.getElementById("statusText").innerHTML = 
-        `<div style="font-size:3.5rem;color:#ffcb05;text-shadow:0 0 30px gold;">抽選終了！</div>
-         <div style="font-size:2rem;margin-top:20px;">48チームの運命が決まりました！</div>`;
+        `<div style="font-size:4rem;color:#ffcb05;text-shadow:0 0 40px gold;">抽選終了！</div>`;
       btn.textContent = "もう一度抽選";
       btn.disabled = false;
     }

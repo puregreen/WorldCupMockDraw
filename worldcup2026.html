@@ -306,7 +306,7 @@
     function addTeam(letter, team) {
       const div = document.createElement("div");
       div.className = "team";
-      div.innerHTML = `<img src="https://flagcdn.com/16x12/${team.isocd}.png" style="width:16px;height:12px;">${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
+      div.innerHTML = `${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
       if (team.fixed) div.classList.add("host");
       document.querySelector(`#group-${letter}`).appendChild(div);
       setTimeout(() => div.classList.add("show"), 100);

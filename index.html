@@ -184,7 +184,7 @@
       if (team.name === "日本") {
         document.body.classList.add("japan-mode");
         document.getElementById("japanSpecial").style.display = "block";
-        document.getElementById("japanLog").textContent = `<a href="#group-${groupLetter}">日本→ グループ ${groupLetter}</a>`;
+        document.getElementById("japanLog").innerHTML = `<a href="#group-${groupLetter}">日本→ グループ ${groupLetter}</a>`;
 
         el.innerHTML = `
           <img src="https://flagcdn.com/256x192/jp.png" style="width:180px;height:120px;"><br>

@@ -189,60 +189,60 @@
     // 48チーム（2026年大会想定・最新ランキング準拠）
     const teams = [
       // ポット1（開催国＋上位）
-      { name: "メキシコ", conf: "CONCACAF", pot: 1, isocd: "mx", fixed: "A" },
-      { name: "カナダ", conf: "CONCACAF", pot: 1, isocd: "ca", fixed: "B" },
-      { name: "アメリカ", conf: "CONCACAF", pot: 1, isocd: "us", fixed: "D" },
-      { name: "スペイン", conf: "UEFA", pot: 1, isocd: "es" },
-      { name: "アルゼンチン", conf: "CONMEBOL", pot: 1, isocd: "ar" },
-      { name: "フランス", conf: "UEFA", pot: 1, isocd: "fr" },
-      { name: "イングランド", conf: "UEFA", pot: 1, isocd: "gb-eng" },
-      { name: "ブラジル", conf: "CONMEBOL", pot: 1, isocd: "br" },
-      { name: "ポルトガル", conf: "UEFA", pot: 1, isocd: "pt" },
-      { name: "オランダ", conf: "UEFA", pot: 1, isocd: "nl" },
-      { name: "ベルギー", conf: "UEFA", pot: 1, isocd: "be" },
-      { name: "ドイツ", conf: "UEFA", pot: 1, isocd: "de" },
+      { name: "メキシコ", conf: "CONCACAF", pot: 1, fixed: "A" },
+      { name: "カナダ", conf: "CONCACAF", pot: 1, fixed: "B" },
+      { name: "アメリカ", conf: "CONCACAF", pot: 1, fixed: "D" },
+      { name: "スペイン", conf: "UEFA", pot: 1 },
+      { name: "アルゼンチン", conf: "CONMEBOL", pot: 1 },
+      { name: "フランス", conf: "UEFA", pot: 1 },
+      { name: "イングランド", conf: "UEFA", pot: 1 },
+      { name: "ブラジル", conf: "CONMEBOL", pot: 1 },
+      { name: "ポルトガル", conf: "UEFA", pot: 1 },
+      { name: "オランダ", conf: "UEFA", pot: 1 },
+      { name: "ベルギー", conf: "UEFA", pot: 1 },
+      { name: "ドイツ", conf: "UEFA", pot: 1 },
 
       // ポット2
-      { name: "日本", conf: "AFC", pot: 2, isocd: "jp" },
-      { name: "韓国", conf: "AFC", pot: 2, isocd: "kr" },
-      { name: "オーストラリア", conf: "AFC", pot: 2, isocd: "au" },
-      { name: "イラン", conf: "AFC", pot: 2, isocd: "ir" },
-      { name: "ウルグアイ", conf: "CONMEBOL", pot: 2, isocd: "uy" },
-      { name: "コロンビア", conf: "CONMEBOL", pot: 2, isocd: "co" },
-      { name: "クロアチア", conf: "UEFA", pot: 2, isocd: "hr" },
-      { name: "オーストリア", conf: "UEFA", pot: 2, isocd: "at" },
-      { name: "スイス", conf: "UEFA", pot: 2, isocd: "ch" },
-      { name: "モロッコ", conf: "CAF", pot: 2, isocd: "ma" },
-      { name: "セネガル", conf: "CAF", pot: 2, isocd: "sn" },
-      { name: "エクアドル", conf: "CONMEBOL", pot: 2, isocd: "ec" }, // 例：コスタリカなど
+      { name: "日本", conf: "AFC", pot: 2 },
+      { name: "韓国", conf: "AFC", pot: 2 },
+      { name: "オーストラリア", conf: "AFC", pot: 2 },
+      { name: "イラン", conf: "AFC", pot: 2 },
+      { name: "ウルグアイ", conf: "CONMEBOL", pot: 2 },
+      { name: "コロンビア", conf: "CONMEBOL", pot: 2 },
+      { name: "クロアチア", conf: "UEFA", pot: 2 },
+      { name: "オーストリア", conf: "UEFA", pot: 2 },
+      { name: "スイス", conf: "UEFA", pot: 2 },
+      { name: "モロッコ", conf: "CAF", pot: 2 },
+      { name: "セネガル", conf: "CAF", pot: 2 },
+      { name: "エクアドル", conf: "CONMEBOL", pot: 2 }, // 例：コスタリカなど
 
       // ポット3
-      { name: "ノルウェー", conf: "UEFA", pot: 3, isocd: "no" },
-      { name: "パナマ", conf: "CONCACAF", pot: 3, isocd: "pa" },
-      { name: "エジプト", conf: "CAF", pot: 3, isocd: "eg" },
-      { name: "アルジェリア", conf: "CAF", pot: 3, isocd: "dz" },
-      { name: "スコットランド", conf: "UEFA", pot: 3, isocd: "gb-sct" },
-      { name: "パラグアイ", conf: "CONMEBOL", pot: 3, isocd: "py" },
-      { name: "チュニジア", conf: "CAF", pot: 3, isocd: "tn" },
-      { name: "コートジボワール", conf: "CAF", pot: 3, isocd: "ci" },
-      { name: "ウズベキスタン", conf: "AFC", pot: 3, isocd: "uz" },
-      { name: "カタール", conf: "AFC", pot: 3, isocd: "qa" },
-      { name: "サウジアラビア", conf: "AFC", pot: 3, isocd: "sa" },
-      { name: "南アフリカ", conf: "CAF", pot: 3,, isocd: "za" },
+      { name: "ノルウェー", conf: "UEFA", pot: 3 },
+      { name: "パナマ", conf: "CONCACAF", pot: 3 },
+      { name: "エジプト", conf: "CAF", pot: 3 },
+      { name: "アルジェリア", conf: "CAF", pot: 3 },
+      { name: "スコットランド", conf: "UEFA", pot: 3 },
+      { name: "パラグアイ", conf: "CONMEBOL", pot: 3 },
+      { name: "チュニジア", conf: "CAF", pot: 3 },
+      { name: "コートジボワール", conf: "CAF", pot: 3 },
+      { name: "ウズベキスタン", conf: "AFC", pot: 3 },
+      { name: "カタール", conf: "AFC", pot: 3 },
+      { name: "サウジアラビア", conf: "AFC", pot: 3 },
+      { name: "南アフリカ", conf: "CAF", pot: 3 },
 
       // ポット4（残り）
-      { name: "ヨルダン", conf: "AFC", pot: 4, isocd: "jo" },
-      { name: "カボベルデ", conf: "CAF", pot: 4, isocd: "cv" },
-      { name: "ガーナ", conf: "CAF", pot: 4, isocd: "gh" },
-      { name: "キュラソー", conf: "CONCACAF", pot: 4, isocd: "cw" },
-      { name: "ニュージーランド", conf: "OFC", pot: 4, isocd: "nz" },
-      { name: "ハイチ", conf: "CONCACAF", pot: 4, isocd: "ht" },
-      { name: "欧州PO1", conf: "UEFA", pot: 4, isocd: "eu" },
-      { name: "欧州PO2", conf: "UEFA", pot: 4, isocd: "eu" },
-      { name: "欧州PO3", conf: "UEFA", pot: 4, isocd: "eu" },
-      { name: "欧州PO4", conf: "UEFA", pot: 4, isocd: "eu" },
-      { name: "大陸間PO1", conf: "PO", pot: 4, isocd: "un" },
-      { name: "大陸間PO2", conf: "PO", pot: 4, isocd: "un" },
+      { name: "ヨルダン", conf: "AFC", pot: 4 },
+      { name: "カボベルデ", conf: "CAF", pot: 4 },
+      { name: "ガーナ", conf: "CAF", pot: 4 },
+      { name: "キュラソー", conf: "CONCACAF", pot: 4 },
+      { name: "ニュージーランド", conf: "OFC", pot: 4 },
+      { name: "ハイチ", conf: "CONCACAF", pot: 4 },
+      { name: "欧州PO1", conf: "UEFA", pot: 4 },
+      { name: "欧州PO2", conf: "UEFA", pot: 4 },
+      { name: "欧州PO3", conf: "UEFA", pot: 4 },
+      { name: "欧州PO4", conf: "UEFA", pot: 4 },
+      { name: "大陸間PO1", conf: "PO", pot: 4 },
+      { name: "大陸間PO2", conf: "PO", pot: 4 },
     ];
 
     const GROUPS = "ABCDEFGHIJKL".split("");
@@ -306,7 +306,7 @@
     function addTeam(letter, team) {
       const div = document.createElement("div");
       div.className = "team";
-      div.innerHTML = `<img src="https://flagcdn.com/16x12/${team.isocd}.png" style="width:16px;height:12px;">${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
+      div.innerHTML = `${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
       if (team.fixed) div.classList.add("host");
       document.querySelector(`#group-${letter}`).appendChild(div);
       setTimeout(() => div.classList.add("show"), 100);

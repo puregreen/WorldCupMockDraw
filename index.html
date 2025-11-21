@@ -80,45 +80,63 @@
   <div id="result"></div>
 
   <script>
-     // 48チーム（2026年大会想定・最新ランキング準拠）
+    // 48チーム（2026年大会想定・最新ランキング準拠）
     const teams = [
-      // ポット1（開催国 + FIFAランキング上位9チーム）
-      { name: "アメリカ", conf: "CONCACAF", pot: 1, fixed: "A" },
-      { name: "メキシコ", conf: "CONCACAF", pot: 1, fixed: "B" },
-      { name: "カナダ", conf: "CONCACAF", pot: 1, fixed: "C" },
-      { name: "ブラジル", conf: "CONMEBOL", pot: 1 },
+      // ポット1（開催国＋上位）
+      { name: "メキシコ", conf: "CONCACAF", pot: 1, fixed: "A" },
+      { name: "カナダ", conf: "CONCACAF", pot: 1, fixed: "B" },
+      { name: "アメリカ", conf: "CONCACAF", pot: 1, fixed: "D" },
+      { name: "スペイン", conf: "UEFA", pot: 1 },
       { name: "アルゼンチン", conf: "CONMEBOL", pot: 1 },
       { name: "フランス", conf: "UEFA", pot: 1 },
       { name: "イングランド", conf: "UEFA", pot: 1 },
-      { name: "スペイン", conf: "UEFA", pot: 1 },
-      { name: "ドイツ", conf: "UEFA", pot: 1 },
-      { name: "ベルギー", conf: "UEFA", pot: 1 },
+      { name: "ブラジル", conf: "CONMEBOL", pot: 1 },
       { name: "ポルトガル", conf: "UEFA", pot: 1 },
       { name: "オランダ", conf: "UEFA", pot: 1 },
+      { name: "ベルギー", conf: "UEFA", pot: 1 },
+      { name: "ドイツ", conf: "UEFA", pot: 1 },
 
       // ポット2
-      { name: "日本", conf: "AFC", pot: 2 }, { name: "韓国", conf: "AFC", pot: 2 },
-      { name: "イラン", conf: "AFC", pot: 2 }, { name: "オーストラリア", conf: "AFC", pot: 2 },
-      { name: "ウルグアイ", conf: "CONMEBOL", pot: 2 }, { name: "コロンビア", conf: "CONMEBOL", pot: 2 },
-      { name: "クロアチア", conf: "UEFA", pot: 2 }, { name: "デンマーク", conf: "UEFA", pot: 2 },
-      { name: "スイス", conf: "UEFA", pot: 2 }, { name: "モロッコ", conf: "CAF", pot: 2 },
-      { name: "セネガル", conf: "CAF", pot: 2 }, { name: "コスタリカ", conf: "CONCACAF", pot: 2 },
+      { name: "日本", conf: "AFC", pot: 2 },
+      { name: "韓国", conf: "AFC", pot: 2 },
+      { name: "オーストラリア", conf: "AFC", pot: 2 },
+      { name: "イラン", conf: "AFC", pot: 2 },
+      { name: "ウルグアイ", conf: "CONMEBOL", pot: 2 },
+      { name: "コロンビア", conf: "CONMEBOL", pot: 2 },
+      { name: "クロアチア", conf: "UEFA", pot: 2 },
+      { name: "オーストリア", conf: "UEFA", pot: 2 },
+      { name: "スイス", conf: "UEFA", pot: 2 },
+      { name: "モロッコ", conf: "CAF", pot: 2 },
+      { name: "セネガル", conf: "CAF", pot: 2 },
+      { name: "エクアドル", conf: "CONMEBOL", pot: 2 }, // 例：コスタリカなど
 
       // ポット3
-      { name: "サウジアラビア", conf: "AFC", pot: 3 }, { name: "エジプト", conf: "CAF", pot: 3 },
-      { name: "ナイジェリア", conf: "CAF", pot: 3 }, { name: "チュニジア", conf: "CAF", pot: 3 },
-      { name: "セルビア", conf: "UEFA", pot: 3 }, { name: "ポーランド", conf: "UEFA", pot: 3 },
-      { name: "スウェーデン", conf: "UEFA", pot: 3 }, { name: "エクアドル", conf: "CONMEBOL", pot: 3 },
-      { name: "ペルー", conf: "CONMEBOL", pot: 3 }, { name: "ジャマイカ", conf: "CONCACAF", pot: 3 },
-      { name: "アルジェリア", conf: "CAF", pot: 3 }, { name: "ウクライナ", conf: "UEFA", pot: 3 },
+      { name: "ノルウェー", conf: "UEFA", pot: 3 },
+      { name: "パナマ", conf: "CONCACAF", pot: 3 },
+      { name: "エジプト", conf: "CAF", pot: 3 },
+      { name: "アルジェリア", conf: "CAF", pot: 3 },
+      { name: "スコットランド", conf: "UEFA", pot: 3 },
+      { name: "パラグアイ", conf: "CONMEBOL", pot: 3 },
+      { name: "チュニジア", conf: "CAF", pot: 3 },
+      { name: "コートジボワール", conf: "CAF", pot: 3 },
+      { name: "ウズベキスタン", conf: "AFC", pot: 3 },
+      { name: "カタール", conf: "AFC", pot: 3 },
+      { name: "サウジアラビア", conf: "AFC", pot: 3 },
+      { name: "南アフリカ", conf: "CAF", pot: 3 },
 
-      // ポット4
-      { name: "カメルーン", conf: "CAF", pot: 4 }, { name: "ガーナ", conf: "CAF", pot: 4 },
-      { name: "コートジボワール", conf: "CAF", pot: 4 }, { name: "ノルウェー", conf: "UEFA", pot: 4 },
-      { name: "トルコ", conf: "UEFA", pot: 4 }, { name: "スコットランド", conf: "UEFA", pot: 4 },
-      { name: "ハンガリー", conf: "UEFA", pot: 4 }, { name: "パラグアイ", conf: "CONMEBOL", pot: 4 },
-      { name: "ベネズエラ", conf: "CONMEBOL", pot: 4 }, { name: "パナマ", conf: "CONCACAF", pot: 4 },
-      { name: "ホンジュラス", conf: "CONCACAF", pot: 4 }, { name: "ニュージーランド", conf: "OFC", pot: 4 }
+      // ポット4（残り）
+      { name: "ヨルダン", conf: "AFC", pot: 4 },
+      { name: "カボベルデ", conf: "CAF", pot: 4 },
+      { name: "ガーナ", conf: "CAF", pot: 4 },
+      { name: "キュラソー", conf: "CONCACAF", pot: 4 },
+      { name: "ニュージーランド", conf: "OFC", pot: 4 },
+      { name: "ハイチ", conf: "CONCACAF", pot: 4 },
+      { name: "欧州PO1", conf: "UEFA", pot: 4 },
+      { name: "欧州PO2", conf: "UEFA", pot: 4 },
+      { name: "欧州PO3", conf: "UEFA", pot: 4 },
+      { name: "欧州PO4", conf: "UEFA", pot: 4 },
+      { name: "大陸間PO1", conf: "PO", pot: 4 },
+      { name: "大陸間PO2", conf: "PO", pot: 4 },
     ];
 
     const GROUPS = "ABCDEFGHIJKL".split("");

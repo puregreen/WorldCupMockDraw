@@ -271,7 +271,12 @@ await new Promise(r => setTimeout(r, 1000));
     }
 
     async function topScroll() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const pt = document.getElementById("pTitle");
+      // スムーズなアニメーションでスクロールする場合
+      pt.scrollIntoView({
+        behavior: 'smooth', // スムーズスクロール
+        block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
+      });
     }
     
     document.getElementById("startBtn").onclick = startDraw;

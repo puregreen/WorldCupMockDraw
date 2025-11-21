@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2026 FIFAワールドカップ 模擬抽選会</title>
+  <title>2026 FIFAワールドカップ 本戦抽選会（テレビ中継完全再現・最新1件表示）</title>
   <style>
-    body {font-family: "Helvetica Neue", Arial, sans-serif;background: linearogradient(135deg, #0f2b5e, #1a4d8c);color: white;text-align: center;padding: 20px;min-height: 100vh;margin: 0;}
+    body {font-family: "Helvetica Neue", Arial, sans-serif;background: linear-gradient(135deg, #0f2b5e, #1a4d8c);color: white;text-align: center;padding: 20px;min-height: 100vh;margin: 0;}
     h1 {font-size: 3.5rem;margin: 20px 0;text-shadow: 0 0 30px #ffcb05;}
     button {background: #ffcb05;color: #0f2b5e;font-size: 1.8rem;font-weight: bold;padding: 22px 70px;border: none;border-radius: 60px;cursor: pointer;box-shadow: 0 12px 40px rgba(0,0,0,0.7);transition: all 0.3s;}
     button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
@@ -23,54 +23,35 @@
     .loading-dots span:nth-child(3) {animation-delay: 1s;}
     @keyframes dotPulse {0%,100%{opacity:0} 50%{opacity:1}}
 
-    /* ここから新演出！決まったチームをドーンと表示 */
-    #latestDraw {
-      margin: 40px auto;
-      padding: 20px;
-      min-height: 120px;
-      perspective: 1000px;
-    }
-    .draw-item {
-      background: linear-gradient(135deg, rgba(255,203,5,0.3), rgba(255,203,5,0.1));
-      border: 2px solid #ffcb05;
-      border-radius: 20px;
-      padding: 18px 40px;
-      margin: 15px auto;
-      max-width: 600px;
-      font-size: 2.4rem;
+    /* 最新1件をド派手に表示 */
+    #latestDraw {margin: 60px auto;padding: 30px;min-height: 200px;perspective: 1500px;}
+    #currentDraw {
+      background: linear-gradient(135deg, rgba(255,203,5,0.4), rgba(255,203,5,0.15));
+      border: 4px solid #ffcb05;
+      border-radius: 30px;
+      padding: 35px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 4rem;
       font-weight: bold;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
       opacity: 0;
-      transform: translateY(50px) rotateX(-30deg);
-      transition: all 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-      backdrop-filter: blur(10px);
+      transform: scale(0.8) translateY(100px) rotateX(-45deg);
+      transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+      backdrop-filter: blur(15px);
+      text-shadow: 0 0 30px gold;
     }
-    .draw-item.show {
-      opacity: 1;
-      transform: translateY(0) rotateX(0);
-    }
-    .draw-item img {
-      width: 60px;
-      height: 40px;
-      margin-right: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      vertical-align: middle;
-    }
-    .draw-item .group-letter {
-      color: #ffcb05;
-      font-size: 3rem;
-      text-shadow: 0 0 20px gold;
-      margin: 0 15px;
-    }
+    #currentDraw.show {opacity: 1;transform: scale(1) translateY(0) rotateX(0);}
+    #currentDraw img {width: 100px;height: 66px;margin-right: 35px;border-radius: 14px;box-shadow: 0 8px 30px rgba(0,0,0,0.6);vertical-align: middle;}
+    #currentDraw .group-letter {color: #ffff00;font-size: 5.5rem;text-shadow: 0 0 50px gold;margin: 0 30px;font-weight: 900;}
 
-    #result {max-width: 1600px;margin: 50px auto;display: grid;grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));gap: 30px;}
-    .group {background: rgba(255,255,255,0.15);border-radius: 25px;padding: 30px;backdrop-filter: blur(15px);border: 1px solid rgba(255,255,255,0.3);}
-    .group h2 {margin: 0 0 25px;font-size: 3rem;color: #ffcb05;}
-    .team {background: rgba(255,255,255,0.3);margin: 15px 0;padding: 18px;border-radius: 15px;font-size: 1.4rem;opacity: 0;transform: translateY(40px);transition: all 0.8s;}
+    #result {max-width: 1600px;margin: 60px auto;display: grid;grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));gap: 35px;}
+    .group {background: rgba(255,255,255,0.15);border-radius: 28px;padding: 35px;backdrop-filter: blur(15px);border: 1px solid rgba(255,255,255,0.3);}
+    .group h2 {margin: 0 0 30px;font-size: 3.2rem;color: #ffcb05;}
+    .team {background: rgba(255,255,255,0.3);margin: 16px 0;padding: 20px;border-radius: 16px;font-size: 1.45rem;opacity: 0;transform: translateY(40px);transition: all 0.8s;}
     .team.show {opacity: 1;transform: translateY(0);}
     .team.host {background: rgba(255,203,5,0.7);font-weight: bold;color: #fff;}
-    .pot-label {padding: 8px 18px;border-radius: 30px;background: #ffcb05;color: #0f2b5e;font-weight: bold;margin-left: 15px;}
+    .pot-label {padding: 10px 20px;border-radius: 35px;background: #ffcb05;color: #0f2b5e;font-weight: bold;margin-left: 15px;}
   </style>
 </head>
 <body>
@@ -91,8 +72,10 @@
     </div>
   </div>
 
-  <!-- ここに決まったチームがドーンと表示される！ -->
-  <div id="latestDraw"></div>
+  <!-- 最新1件だけド派手に表示 -->
+  <div id="latestDraw">
+    <div id="currentDraw"></div>
+  </div>
 
   <div id="result"></div>
 
@@ -137,44 +120,25 @@
       { name: "ベネズエラ", conf: "CONMEBOL", pot: 4 }, { name: "パナマ", conf: "CONCACAF", pot: 4 },
       { name: "ホンジュラス", conf: "CONCACAF", pot: 4 }, { name: "ニュージーランド", conf: "OFC", pot: 4 }
     ];
-    const GROUPS = "ABCDEFGHJKLM".split("");
-    let groups = {}, pots = {};
 
-    // 国旗URL生成（https://flagcdn.comを使用）
-    function getFlagUrl(countryName) {
-      const map = {
-        "アメリカ": "us", "メキシコ": "mx", "カナダ": "ca", "ブラジル": "br", "アルゼンチン": "ar",
-        "フランス": "fr", "イングランド": "gb-eng", "スペイン": "es", "ドイツ": "de", "ベルギー": "be",
-        "ポルトガル": "pt", "オランダ": "nl", "日本": "jp", "韓国": "kr", "イラン": "ir", "オーストラリア": "au",
-        "ウルグアイ": "uy", "コロンビア": "co", "クロアチア": "hr", "デンマーク": "dk", "スイス": "ch",
-        "モロッコ": "ma", "セネガル": "sn", "コスタリカ": "cr", "サウジアラビア": "sa", "エジプト": "eg",
-        "ナイジェリア": "ng", "チュニジア": "tn", "セルビア": "rs", "ポーランド": "pl", "スウェーデン": "se",
-        "エクアドル": "ec", "ペルー": "pe", "ジャマイカ": "jm", "アルジェリア": "dz", "ウクライナ": "ua",
-        "カメルーン": "cm", "ガーナ": "gh", "コートジボワール": "ci", "ノルウェー": "no", "トルコ": "tr",
-        "スコットランド": "gb-sct", "ハンガリー": "hu", "パラグアイ": "py", "ベネズエラ": "ve",
-        "パナマ": "pa", "ホンジュラス": "hn", "ニュージーランド": "nz"
-      };
-      const code = map[countryName] || "xx";
-      return `https://flagcdn.com/84x63/${code}.png`;
+    const GROUPS = "ABCDEFGHIJKL".split("");
+
+    // 国旗URL生成
+    function getFlagUrl(name) {
+      const map = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz"};
+      return `https://flagcdn.com/120x90/${map[name] || "xx"}.png`;
     }
 
-    // 決まったチームを派手に表示！
+    // 最新1件をド派手に表示（上書き）
     function announceDraw(team, groupLetter) {
-      const container = document.getElementById("latestDraw");
-      const item = document.createElement("div");
-      item.className = "draw-item";
-      item.innerHTML = `
+      const el = document.getElementById("currentDraw");
+      el.innerHTML = `
         <img src="${getFlagUrl(team.name)}" alt="${team.name}">
         <span>${team.name}</span>
         <span class="group-letter">→ グループ ${groupLetter}</span>
       `;
-      container.appendChild(item);
-      setTimeout(() => item.classList.add("show"), 100);
-
-      // 古いものは消す（最新3件まで表示）
-      if (container.children.length > 3) {
-        container.removeChild(container.children[0]);
-      }
+      el.classList.remove("show");
+      setTimeout(() => el.classList.add("show"), 50);
     }
 
     function showLoading(show = true) {
@@ -200,7 +164,7 @@
 
     function initGroups() {
       document.getElementById("result").innerHTML = "";
-      document.getElementById("latestDraw").innerHTML = "";
+      document.getElementById("currentDraw").innerHTML = "";
       GROUPS.forEach(g => {
         const div = document.createElement("div");
         div.className = "group"; div.id = `group-${g}`;
@@ -216,14 +180,13 @@
       document.getElementById("statusText").textContent = "開催国を配置中…";
       initGroups();
 
-      groups = Object.fromEntries(GROUPS.map(g => [g, []]));
-      pots = {1: [], 2: [], 3: [], 4: []};
+      const groups = Object.fromEntries(GROUPS.map(g => [g, []]));
+      const pots = {1: [], 2: [], 3: [], 4: []};
       teams.forEach(t => pots[t.pot].push({...t}));
 
       // 開催国
       teams.filter(t => t.fixed).forEach(h => {
-        h.pos = 1; groups[h.fixed] = [h]; addTeam(h.fixed, h);
-        announceDraw(h, h.fixed);
+        h.pos = 1; groups[h.fixed] = [h]; addTeam(h.fixed, h); announceDraw(h, h.fixed);
       });
       await new Promise(r => setTimeout(r, 2500));
 
@@ -232,32 +195,34 @@
       let empty = GROUPS.filter(g => groups[g].length === 0);
       pot1rest.forEach((t, i) => {
         const g = empty[i];
-        t.pos = 1; groups[g].push(t); addTeam(g, t);
-        announceDraw(t, g);
+        t.pos = 1; groups[g].push(t); addTeam(g, t); announceDraw(t, g);
       });
       await new Promise(r => setTimeout(r, 3000));
 
       // ポット2〜4
       for (let p = 2; p <= 4; p++) {
         showLoading(true);
+        document.getElementById("statusText").textContent = "";
         await new Promise(r => setTimeout(r, 1000));
+
         const potTeams = shuffle(pots[p]);
         for (const team of potTeams) {
-          const avail = GROUPS.filter(g => groups[g].length < 4 && canPlaceInGroup(team, groups[g]));
+          let avail = GROUPS.filter(g => groups[g].length < 4 && canPlaceInGroup(team, groups[g]));
+          if (avail.length === 0) avail = GROUPS.filter(g => groups[g].length < 4); // 最終手段
           const chosen = avail[Math.floor(Math.random() * avail.length)];
           team.pos = groups[chosen].length + 1;
           groups[chosen].push(team);
           addTeam(chosen, team);
-          announceDraw(team, chosen);  // ← ここで派手演出！
+          announceDraw(team, chosen);
           await new Promise(r => setTimeout(r, 900));
         }
         showLoading(false);
-        document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:3.2rem;">ポット${p} 完了！</span>`;
+        document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:3.5rem;">ポット${p} 完了！</span>`;
         await new Promise(r => setTimeout(r, 2500));
       }
 
       document.getElementById("statusText").innerHTML = 
-        `<div style="font-size:4rem;color:#ffcb05;text-shadow:0 0 40px gold;">抽選終了！</div>`;
+        `<div style="font-size:4.5rem;color:#ffcb05;text-shadow:0 0 50px gold;">抽選終了！</div>`;
       btn.textContent = "もう一度抽選";
       btn.disabled = false;
     }

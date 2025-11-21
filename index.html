@@ -225,7 +225,7 @@
         document.getElementById("statusText").textContent = "";
         await new Promise(r => setTimeout(r, 1000));
 
-        document.getElementById("statusText").textContent = `${p}を抽選中…`;
+        document.getElementById("statusText").textContent = `ポット${p}を抽選中…`;
         
         const potTeams = shuffle(pots[p]);
         for (const team of potTeams) {

@@ -55,8 +55,10 @@
   </style>
 </head>
 <body>
-  <h1 id="h1Title">2026 FIFA ワールドカップ</h1>
-  <p id="pTitle" style="font-size:1.9rem;">本戦グループステージ抽選会（模擬）</p>
+  <div id="pTitle">
+   <h1>2026 FIFA ワールドカップ</h1>
+   <p style="font-size:1.9rem;">本戦グループステージ抽選会（模擬）</p>
+  </div>
   <button id="startBtn">抽選開始</button>
   <!-- 最新1件だけド派手に表示 -->
   <div id="latestDraw">
@@ -162,7 +164,6 @@
     }
 
     function showTitle(show = true) {
-      document.getElementById("h1Title").classList.toggle("show", show);
       document.getElementById("pTitle").classList.toggle("show", show);
     }
 

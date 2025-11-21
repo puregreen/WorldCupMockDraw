@@ -133,8 +133,8 @@
     function announceDraw(team, groupLetter) {
       const el = document.getElementById("currentDraw");
       el.innerHTML = `
-        <img src="${getFlagUrl(team.name)}" alt="${team.name}">
-        <span>${team.name}</span>
+        <img src="${getFlagUrl(team.name)}" alt="${team.name}"><br>
+        <span>${team.name}</span><br>
         <span class="group-letter">→ グループ ${groupLetter}</span>
       `;
       el.classList.remove("show");

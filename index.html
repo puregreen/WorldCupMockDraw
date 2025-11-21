@@ -91,6 +91,7 @@
     <div id="currentDraw"></div>
   </div>
   <!-- 日本専用演出用（最初は非表示） -->
+  <div id="japanLog"></div>
   <div id="japanSpecial">ニッポン！！！</div>
   <div id="status">
     <div id="statusText">抽選開始ボタンを押してスタート</div>
@@ -183,6 +184,7 @@
       if (team.name === "日本") {
         document.body.classList.add("japan-mode");
         document.getElementById("japanSpecial").style.display = "block";
+        document.getElementById("japanLog").textContent = `日本→ グループ ${groupLetter}`;
 
         el.innerHTML = `
           <img src="https://flagcdn.com/256x192/jp.png" style="width:180px;height:120px;"><br>

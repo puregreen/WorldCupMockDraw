@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 FIFAワールドカップ 本戦抽選会（模擬）</title>
   <style>
+    a {color: #fff;}
+    /* 日本決まった瞬間用フラッシュ */
+    body.japan-mode {
+      background: radial-gradient(circle, #fff 10%, #bc002d 40%, #fff 70%);
+      animation: japanFlash 2s ease-out;
+    }
+    @keyframes japanFlash {
+      0% {background: radial-gradient(circle, #fff 0%, #bc002d 0%, #fff 0%);}
+      50% {background: radial-gradient(circle, #fff 60%, #bc002d 90%);}
+      100% {background: linear-gradient(135deg, #0f2b5e, #1a4d8c);}
+    }
     body {font-family: "Helvetica Neue", Arial, sans-serif;background: linear-gradient(135deg, #0f2b5e, #1a4d8c);color: white;text-align: center;padding: 20px;min-height: 100vh;margin: 0;}
     h1 {font-size: 3.5rem;margin: 20px 0;text-shadow: 0 0 30px #ffcb05;}
     button {background: #ffcb05;color: #0f2b5e;font-size: 1.8rem;font-weight: bold;padding: 22px 70px;border: none;border-radius: 60px;cursor: pointer;box-shadow: 0 12px 40px rgba(0,0,0,0.7);transition: all 0.3s;}
@@ -23,6 +34,39 @@
     .loading-dots span:nth-child(3) {animation-delay: 1s;}
     @keyframes dotPulse {0%,100%{opacity:0} 50%{opacity:1}}
 
+    #bTitle {
+      font-size: 0.65rem;
+      color: white;
+      text-align: center;
+    }
+    /* 日本専用・超ド派手演出 */
+    #japanLog {
+      width: 100vw;
+      background: linear-gradient(135deg, #0f2b5e, #1a4d8c);
+      font-size: 0.65rem;
+      color: white;
+      text-align: center;
+      position: fixed; 
+      top: 0px;
+      right: 0px;
+      left: 0px;
+      margin: 0;
+      z-index: 9999;
+    }
+    #japanSpecial {
+      position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%) scale(0);
+      font-size: 2rem;font-weight: 900;color: #bc002d;text-shadow: 0 0 80px #fff, 0 0 120px #bc002d;
+      z-index: 9999;pointer-events: none;opacity: 0;
+      animation: japanBoom 3s ease-out forwards;
+      letter-spacing: 10px;
+    }
+    @keyframes japanBoom {
+      0%   {transform: translate(-50%, -50%) scale(0); opacity: 0;}
+      40%  {transform: translate(-50%, -50%) scale(1.3); opacity: 1;}
+      70%  {transform: translate(-50%, -50%) scale(1); opacity: 1;}
+      100% {transform: translate(-50%, -50%) scale(0.9); opacity: 0;}
+    }
+    
     /* 最新1件をド派手に表示 */
     #latestDraw {margin: 60px auto;padding: 30px;min-height: 200px;perspective: 1500px;}
     #currentDraw {
@@ -48,19 +92,85 @@
     #result {max-width: 1600px;margin: 60px auto;display: grid;grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));gap: 35px;}
     .group {background: rgba(255,255,255,0.15);border-radius: 28px;padding: 35px;backdrop-filter: blur(15px);border: 1px solid rgba(255,255,255,0.3);}
     .group h2 {margin: 0 0 30px;font-size: 3.2rem;color: #ffcb05;}
-    .team {background: rgba(255,255,255,0.3);margin: 16px 0;padding: 20px;border-radius: 16px;font-size: 0.95rem;opacity: 0;transform: translateY(40px);transition: all 0.8s;}
+    .team {background: rgba(255,255,255,0.3);margin: 16px 0;padding: 20px;border-radius: 16px;font-size: 0.65rem;opacity: 0;transform: translateY(40px);transition: all 0.8s;}
     .team.show {opacity: 1;transform: translateY(0);}
     .team.host {background: rgba(255,203,5,0.7);font-weight: bold;color: #fff;}
     .pot-label {padding: 10px 20px;border-radius: 35px;background: #ffcb05;color: #0f2b5e;font-weight: bold;margin-left: 15px;font-size: 0.45rem;}
+
+    @keyframes fireworks-animation {
+	  0% {
+		  transform: translate(-50%, 90vh);
+		  width: 4px;
+		  opacity: 1;
+   	}
+	  50% {
+	  	width: 4px;
+		  opacity: 1;
+	  }
+	  100% {
+		width: 400px;
+		opacity: 0;
+  	}
+  }
+
+  .c-firework,
+  .c-firework::before,
+  .c-firework::after {
+  	content: "";
+	  position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	aspect-ratio: 1;
+  	background: radial-gradient(circle, #ff0 10px, #000 0) 50% 00%,
+		radial-gradient(circle, #ff0 10px, #000 0) 00% 50%,
+		radial-gradient(circle, #ff0 10px, #000 0) 50% 99%,
+		radial-gradient(circle, #ff0 10px, #000 0) 99% 50%,
+		radial-gradient(circle, #ff0 10px, #000 0) 80% 90%,
+		radial-gradient(circle, #ff0 10px, #000 0) 95% 90%,
+		radial-gradient(circle, #ff0 10px, #000 0) 10% 60%,
+		radial-gradient(circle, #ff0 10px, #000 0) 31% 80%,
+		radial-gradient(circle, #ff0 10px, #000 0) 80% 10%,
+		radial-gradient(circle, #ff0 10px, #000 0) 90% 23%,
+		radial-gradient(circle, #ff0 10px, #000 0) 45% 20%,
+		radial-gradient(circle, #ff0 10px, #000 0) 13% 24%;
+  	background-size: 4px 4px;
+	  background-repeat: no-repeat;
+  	transform: translate(-50%, -50%);
+  	animation: fireworks-animation 4s infinite;
+  }
+  .c-firework::before {
+  	transform: translate(-50%, -50%) rotate(25deg) !important;
+  }
+  .c-firework::after {
+  	transform: translate(-50%, -50%) rotate(-37deg) !important;
+  }
   </style>
 </head>
 <body>
-  <h1>2026 FIFA ワールドカップ</h1>
-  <p style="font-size:1.9rem;">本戦グループステージ抽選会（模擬）</p>
+  <div id="pTitle">
+   <h1>2026 FIFA ワールドカップ</h1>
+   <p style="font-size:1.9rem;">本戦グループステージ抽選会（模擬）</p>
+  </div>
   <button id="startBtn">抽選開始</button>
-
+  <!-- 最新1件だけド派手に表示 -->
+  <div id="latestDraw">
+    <div id="currentDraw"></div>
+  </div>
+  <!-- 日本専用演出用（最初は非表示） -->
+  <div id="japanLog"></div>
+  <div id="japanSpecial">
+    ニッポン！
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+  </div>
   <div id="status">
-    <div id="statusText">ボタンを押して抽選開始</div>
+    <div id="statusText">抽選開始ボタンを押してスタート</div>
     <div id="loadingContainer">
       <img id="loadingImg" src="./IMG_0261.gif" alt="抽選中">
       <div class="loading-text">
@@ -72,77 +182,117 @@
     </div>
   </div>
 
-  <!-- 最新1件だけド派手に表示 -->
-  <div id="latestDraw">
-    <div id="currentDraw"></div>
-  </div>
-
   <div id="result"></div>
 
   <script>
-     // 48チーム（2026年大会想定・最新ランキング準拠）
+    document.getElementById("japanSpecial").style.display = "none";
+    // 48チーム（2026年大会想定・最新ランキング準拠）
     const teams = [
-      // ポット1（開催国 + FIFAランキング上位9チーム）
-      { name: "アメリカ", conf: "CONCACAF", pot: 1, fixed: "A" },
-      { name: "メキシコ", conf: "CONCACAF", pot: 1, fixed: "B" },
-      { name: "カナダ", conf: "CONCACAF", pot: 1, fixed: "C" },
-      { name: "ブラジル", conf: "CONMEBOL", pot: 1 },
-      { name: "アルゼンチン", conf: "CONMEBOL", pot: 1 },
-      { name: "フランス", conf: "UEFA", pot: 1 },
-      { name: "イングランド", conf: "UEFA", pot: 1 },
-      { name: "スペイン", conf: "UEFA", pot: 1 },
-      { name: "ドイツ", conf: "UEFA", pot: 1 },
-      { name: "ベルギー", conf: "UEFA", pot: 1 },
-      { name: "ポルトガル", conf: "UEFA", pot: 1 },
-      { name: "オランダ", conf: "UEFA", pot: 1 },
+      // ポット1（開催国＋上位）
+      { name: "メキシコ", conf: "CONCACAF", pot: 1, isocd: "mx", fixed: "A" },
+      { name: "カナダ", conf: "CONCACAF", pot: 1, isocd: "ca", fixed: "B" },
+      { name: "アメリカ", conf: "CONCACAF", pot: 1, isocd: "us", fixed: "D" },
+      { name: "スペイン", conf: "UEFA", pot: 1, isocd: "es" },
+      { name: "アルゼンチン", conf: "CONMEBOL", pot: 1, isocd: "ar" },
+      { name: "フランス", conf: "UEFA", pot: 1, isocd: "fr" },
+      { name: "イングランド", conf: "UEFA", pot: 1, isocd: "gb-eng" },
+      { name: "ブラジル", conf: "CONMEBOL", pot: 1, isocd: "br" },
+      { name: "ポルトガル", conf: "UEFA", pot: 1, isocd: "pt" },
+      { name: "オランダ", conf: "UEFA", pot: 1, isocd: "nl" },
+      { name: "ベルギー", conf: "UEFA", pot: 1, isocd: "be" },
+      { name: "ドイツ", conf: "UEFA", pot: 1, isocd: "de" },
 
       // ポット2
-      { name: "日本", conf: "AFC", pot: 2 }, { name: "韓国", conf: "AFC", pot: 2 },
-      { name: "イラン", conf: "AFC", pot: 2 }, { name: "オーストラリア", conf: "AFC", pot: 2 },
-      { name: "ウルグアイ", conf: "CONMEBOL", pot: 2 }, { name: "コロンビア", conf: "CONMEBOL", pot: 2 },
-      { name: "クロアチア", conf: "UEFA", pot: 2 }, { name: "デンマーク", conf: "UEFA", pot: 2 },
-      { name: "スイス", conf: "UEFA", pot: 2 }, { name: "モロッコ", conf: "CAF", pot: 2 },
-      { name: "セネガル", conf: "CAF", pot: 2 }, { name: "コスタリカ", conf: "CONCACAF", pot: 2 },
+      { name: "日本", conf: "AFC", pot: 2, isocd: "jp" },
+      { name: "韓国", conf: "AFC", pot: 2, isocd: "kr" },
+      { name: "オーストラリア", conf: "AFC", pot: 2, isocd: "au" },
+      { name: "イラン", conf: "AFC", pot: 2, isocd: "ir" },
+      { name: "ウルグアイ", conf: "CONMEBOL", pot: 2, isocd: "uy" },
+      { name: "コロンビア", conf: "CONMEBOL", pot: 2, isocd: "co" },
+      { name: "クロアチア", conf: "UEFA", pot: 2, isocd: "hr" },
+      { name: "オーストリア", conf: "UEFA", pot: 2, isocd: "at" },
+      { name: "スイス", conf: "UEFA", pot: 2, isocd: "ch" },
+      { name: "モロッコ", conf: "CAF", pot: 2, isocd: "ma" },
+      { name: "セネガル", conf: "CAF", pot: 2, isocd: "sn" },
+      { name: "エクアドル", conf: "CONMEBOL", pot: 2, isocd: "ec" }, // 例：コスタリカなど
 
       // ポット3
-      { name: "サウジアラビア", conf: "AFC", pot: 3 }, { name: "エジプト", conf: "CAF", pot: 3 },
-      { name: "ナイジェリア", conf: "CAF", pot: 3 }, { name: "チュニジア", conf: "CAF", pot: 3 },
-      { name: "セルビア", conf: "UEFA", pot: 3 }, { name: "ポーランド", conf: "UEFA", pot: 3 },
-      { name: "スウェーデン", conf: "UEFA", pot: 3 }, { name: "エクアドル", conf: "CONMEBOL", pot: 3 },
-      { name: "ペルー", conf: "CONMEBOL", pot: 3 }, { name: "ジャマイカ", conf: "CONCACAF", pot: 3 },
-      { name: "アルジェリア", conf: "CAF", pot: 3 }, { name: "ウクライナ", conf: "UEFA", pot: 3 },
+      { name: "ノルウェー", conf: "UEFA", pot: 3, isocd: "no" },
+      { name: "パナマ", conf: "CONCACAF", pot: 3, isocd: "pa" },
+      { name: "エジプト", conf: "CAF", pot: 3, isocd: "eg" },
+      { name: "アルジェリア", conf: "CAF", pot: 3, isocd: "dz" },
+      { name: "スコットランド", conf: "UEFA", pot: 3, isocd: "gb-sct" },
+      { name: "パラグアイ", conf: "CONMEBOL", pot: 3, isocd: "py" },
+      { name: "チュニジア", conf: "CAF", pot: 3, isocd: "tn" },
+      { name: "コートジボワール", conf: "CAF", pot: 3, isocd: "ci" },
+      { name: "ウズベキスタン", conf: "AFC", pot: 3, isocd: "uz" },
+      { name: "カタール", conf: "AFC", pot: 3, isocd: "qa" },
+      { name: "サウジアラビア", conf: "AFC", pot: 3, isocd: "sa" },
+      { name: "南アフリカ", conf: "CAF", pot: 3,, isocd: "za" },
 
-      // ポット4
-      { name: "カメルーン", conf: "CAF", pot: 4 }, { name: "ガーナ", conf: "CAF", pot: 4 },
-      { name: "コートジボワール", conf: "CAF", pot: 4 }, { name: "ノルウェー", conf: "UEFA", pot: 4 },
-      { name: "トルコ", conf: "UEFA", pot: 4 }, { name: "スコットランド", conf: "UEFA", pot: 4 },
-      { name: "ハンガリー", conf: "UEFA", pot: 4 }, { name: "パラグアイ", conf: "CONMEBOL", pot: 4 },
-      { name: "ベネズエラ", conf: "CONMEBOL", pot: 4 }, { name: "パナマ", conf: "CONCACAF", pot: 4 },
-      { name: "ホンジュラス", conf: "CONCACAF", pot: 4 }, { name: "ニュージーランド", conf: "OFC", pot: 4 }
+      // ポット4（残り）
+      { name: "ヨルダン", conf: "AFC", pot: 4, isocd: "jo" },
+      { name: "カボベルデ", conf: "CAF", pot: 4, isocd: "cv" },
+      { name: "ガーナ", conf: "CAF", pot: 4, isocd: "gh" },
+      { name: "キュラソー", conf: "CONCACAF", pot: 4, isocd: "cw" },
+      { name: "ニュージーランド", conf: "OFC", pot: 4, isocd: "nz" },
+      { name: "ハイチ", conf: "CONCACAF", pot: 4, isocd: "ht" },
+      { name: "欧州PO1", conf: "UEFA", pot: 4, isocd: "eu" },
+      { name: "欧州PO2", conf: "UEFA", pot: 4, isocd: "eu" },
+      { name: "欧州PO3", conf: "UEFA", pot: 4, isocd: "eu" },
+      { name: "欧州PO4", conf: "UEFA", pot: 4, isocd: "eu" },
+      { name: "大陸間PO1", conf: "PO", pot: 4, isocd: "un" },
+      { name: "大陸間PO2", conf: "PO", pot: 4, isocd: "un" },
     ];
 
     const GROUPS = "ABCDEFGHIJKL".split("");
 
     // 国旗URL生成
     function getFlagUrl(name) {
-      const map = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz"};
-      return `https://flagcdn.com/120x90/${map[name] || "xx"}.png`;
+      const map = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
+      return `https://flagcdn.com/120x90/${map[name] || "un"}.png`;
     }
 
     // 最新1件をド派手に表示（上書き）
     function announceDraw(team, groupLetter) {
       const el = document.getElementById("currentDraw");
-      el.innerHTML = `
+      // 日本が決まった瞬間！
+      if (team.name === "日本") {
+        document.body.classList.add("japan-mode");
+        document.getElementById("japanSpecial").style.display = "block";
+        document.getElementById("japanLog").innerHTML = `
+		 <img src="https://flagcdn.com/16x12/jp.png" style="width:16px;height:12px;">
+		 <a href="#group-${groupLetter}">日本→ グループ ${groupLetter}</a>
+		`;
+
+        el.innerHTML = `
+          <img src="https://flagcdn.com/256x192/jp.png" style="width:180px;height:120px;"><br>
+          <span style="font-size:1rem;color:#bc002d;text-shadow:0 0 60px #fff;">日本</span><br>
+          <span class="group-letter" style="font-size:1rem;color:#fff;">→ グループ ${groupLetter}</span>
+        `;
+
+        setTimeout(() => {
+          document.body.classList.remove("japan-mode");
+          document.getElementById("japanSpecial").style.display = "none";
+        }, 3000);
+
+      } else {
+       el.innerHTML = `
         <img src="${getFlagUrl(team.name)}" alt="${team.name}"><br>
         <span>${team.name}</span><br>
         <span class="group-letter">→ グループ ${groupLetter}</span>
       `;
+      }
       el.classList.remove("show");
       setTimeout(() => el.classList.add("show"), 50);
     }
 
     function showLoading(show = true) {
       document.getElementById("loadingContainer").classList.toggle("show", show);
+    }
+
+    function showTitle(show = true) {
+      document.getElementById("pTitle").classList.toggle("show", show);
     }
 
     function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
@@ -156,7 +306,7 @@
     function addTeam(letter, team) {
       const div = document.createElement("div");
       div.className = "team";
-      div.innerHTML = `${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
+      div.innerHTML = `<img src="https://flagcdn.com/16x12/${team.isocd}.png" style="width:16px;height:12px;">${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
       if (team.fixed) div.classList.add("host");
       document.querySelector(`#group-${letter}`).appendChild(div);
       setTimeout(() => div.classList.add("show"), 100);
@@ -175,8 +325,15 @@
 
     async function startDraw() {
       const btn = document.getElementById("startBtn");
+      document.getElementById("japanLog").textContent = "";
+      // スムーズなアニメーションでスクロールする場合
+      btn.scrollIntoView({
+        behavior: 'smooth', // スムーズスクロール
+        block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
+      });
       btn.disabled = true; btn.textContent = "抽選中…";
       showLoading(false);
+      // showTitle(false);
       document.getElementById("statusText").textContent = "開催国を配置中…";
       initGroups();
 
@@ -190,6 +347,9 @@
       });
       await new Promise(r => setTimeout(r, 2500));
 
+      document.getElementById("statusText").textContent = "ポット1を配置中…";
+showLoading(true);
+      
       // ポット1残り
       const pot1rest = shuffle(pots[1].filter(t => !t.fixed));
       let empty = GROUPS.filter(g => groups[g].length === 0);
@@ -199,12 +359,17 @@
       });
       await new Promise(r => setTimeout(r, 3000));
 
+showLoading(false);  document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:3.5rem;">ポット1 完了！</span>`;
+await new Promise(r => setTimeout(r, 1000));
+      
       // ポット2〜4
       for (let p = 2; p <= 4; p++) {
         showLoading(true);
         document.getElementById("statusText").textContent = "";
         await new Promise(r => setTimeout(r, 1000));
 
+        document.getElementById("statusText").textContent = `ポット${p}を抽選中…`;
+        
         const potTeams = shuffle(pots[p]);
         for (const team of potTeams) {
           let avail = GROUPS.filter(g => groups[g].length < 4 && canPlaceInGroup(team, groups[g]));
@@ -225,10 +390,34 @@
         `<div style="font-size:4.5rem;color:#ffcb05;text-shadow:0 0 50px gold;">抽選終了！</div>`;
       btn.textContent = "もう一度抽選";
       btn.disabled = false;
+      
+      const res = document.getElementById("result");
+      // スムーズなアニメーションでスクロールする場合
+      res.scrollIntoView({
+        behavior: 'smooth', // スムーズスクロール
+        block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
+      });
     }
 
+    async function topScroll() {
+      const pt = document.getElementById("pTitle");
+      // スムーズなアニメーションでスクロールする場合
+      pt.scrollIntoView({
+        behavior: 'smooth', // スムーズスクロール
+        block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
+      });
+    }
+    
     document.getElementById("startBtn").onclick = startDraw;
+    document.getElementById("scrollToTopBtn").onclick = topScroll;
   </script>
-  <br>©PureGreen
+  <!-- 
+  <button id="scrollToTopBtn">トップに戻る</button>
+   -->
+  <div id="bTitle">
+   <a href="#pTitle">トップに戻る</a>
+   <br>
+   <hr>©PureGreen
+  </div>
 </body>
 </html>

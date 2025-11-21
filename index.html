@@ -96,6 +96,54 @@
     .team.show {opacity: 1;transform: translateY(0);}
     .team.host {background: rgba(255,203,5,0.7);font-weight: bold;color: #fff;}
     .pot-label {padding: 10px 20px;border-radius: 35px;background: #ffcb05;color: #0f2b5e;font-weight: bold;margin-left: 15px;font-size: 0.45rem;}
+
+    @keyframes fireworks-animation {
+	  0% {
+		  transform: translate(-50%, 90vh);
+		  width: 4px;
+		  opacity: 1;
+   	}
+	  50% {
+	  	width: 4px;
+		  opacity: 1;
+	  }
+	  100% {
+		width: 400px;
+		opacity: 0;
+  	}
+  }
+
+  .c-firework,
+  .c-firework::before,
+  .c-firework::after {
+  	content: "";
+	  position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	aspect-ratio: 1;
+  	background: radial-gradient(circle, #ff0 10px, #000 0) 50% 00%,
+		radial-gradient(circle, #ff0 10px, #000 0) 00% 50%,
+		radial-gradient(circle, #ff0 10px, #000 0) 50% 99%,
+		radial-gradient(circle, #ff0 10px, #000 0) 99% 50%,
+		radial-gradient(circle, #ff0 10px, #000 0) 80% 90%,
+		radial-gradient(circle, #ff0 10px, #000 0) 95% 90%,
+		radial-gradient(circle, #ff0 10px, #000 0) 10% 60%,
+		radial-gradient(circle, #ff0 10px, #000 0) 31% 80%,
+		radial-gradient(circle, #ff0 10px, #000 0) 80% 10%,
+		radial-gradient(circle, #ff0 10px, #000 0) 90% 23%,
+		radial-gradient(circle, #ff0 10px, #000 0) 45% 20%,
+		radial-gradient(circle, #ff0 10px, #000 0) 13% 24%;
+  	background-size: 4px 4px;
+	  background-repeat: no-repeat;
+  	transform: translate(-50%, -50%);
+  	animation: fireworks-animation 4s infinite;
+  }
+  .c-firework::before {
+  	transform: translate(-50%, -50%) rotate(25deg) !important;
+  }
+  .c-firework::after {
+  	transform: translate(-50%, -50%) rotate(-37deg) !important;
+  }
   </style>
 </head>
 <body>
@@ -110,7 +158,17 @@
   </div>
   <!-- 日本専用演出用（最初は非表示） -->
   <div id="japanLog"></div>
-  <div id="japanSpecial">ニッポン！</div>
+  <div id="japanSpecial">
+    ニッポン！
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+    <div class="c-firework"></div>
+  </div>
   <div id="status">
     <div id="statusText">抽選開始ボタンを押してスタート</div>
     <div id="loadingContainer">

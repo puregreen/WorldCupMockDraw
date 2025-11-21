@@ -207,6 +207,7 @@
       await new Promise(r => setTimeout(r, 2500));
 
       document.getElementById("statusText").textContent = "ポット1を抽選中…";
+showLoading(true);
       
       // ポット1残り
       const pot1rest = shuffle(pots[1].filter(t => !t.fixed));
@@ -217,7 +218,8 @@
       });
       await new Promise(r => setTimeout(r, 3000));
 
-      document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:3.5rem;">ポット1 完了！</span>`;
+showLoading(false);  document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:3.5rem;">ポット1 完了！</span>`;
+await new Promise(r => setTimeout(r, 1000));
       
       // ポット2〜4
       for (let p = 2; p <= 4; p++) {

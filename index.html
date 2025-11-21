@@ -34,6 +34,11 @@
     .loading-dots span:nth-child(3) {animation-delay: 1s;}
     @keyframes dotPulse {0%,100%{opacity:0} 50%{opacity:1}}
 
+    #bTitle {
+      font-size: 0.65rem;
+      color: white;
+      text-align: center;
+    }
     /* 日本専用・超ド派手演出 */
     #japanLog {
       width: 100vw;
@@ -348,8 +353,10 @@ await new Promise(r => setTimeout(r, 1000));
   <!-- 
   <button id="scrollToTopBtn">トップに戻る</button>
    -->
-  <a href="#pTitle">トップに戻る</a>
-  <br>
-  <hr>©PureGreen
+  <div id="bTitle">
+   <a href="#pTitle">トップに戻る</a>
+   <br>
+   <hr>©PureGreen
+  </div>
 </body>
 </html>

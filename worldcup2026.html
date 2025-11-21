@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 FIFAワールドカップ 模擬抽選会</title>
   <style>
     body {
@@ -11,60 +11,135 @@
       color: white;
       text-align: center;
       padding: 20px;
+      min-height: 100vh;
+      margin: 0;
     }
-    h1 { font-size: 2.8rem; margin-bottom: 10px; }
+    h1 { font-size: 3rem; margin: 20px 0; text-shadow: 0 0 20px #ffcb05; }
+
     button {
-      background: #ffcb05;
-      color: #0f2b5e;
-      font-size: 1.5rem;
-      font-weight: bold;
-      padding: 15px 40px;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      background: #ffcb05; color: #0f2b5e; font-size: 1.6rem; font-weight: bold;
+      padding: 18px 55px; border: none; border-radius: 50px; cursor: pointer;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6); margin: 20px;
       transition: all 0.3s;
     }
-    button:hover { transform: scale(1.05); }
+    button:hover:not(:disabled) { transform: translateY(-5px); }
+    button:disabled { background: #555; opacity: 0.7; }
+
+    /* ステータスエリア（画像＋文字をキレイに中央揃え） */
+    #status {
+      margin: 50px auto;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    #loadingContainer {
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+    #loadingContainer.show {
+      opacity: 1;
+    }
+
+    #loadingImg {
+      width: 100px;
+      height: 100px;
+      filter: drop-shadow(0 0 15px #ffcb05);
+    }
+
+    .loading-text {
+      font-size: 2.4rem;
+      font-weight: bold;
+      color: #ffcb05;
+      text-shadow: 0 0 15px rgba(255,203,5,0.8);
+      letter-spacing: 3px;
+    }
+
+    /* 点滅アニメーション（…がゆっくり動く） */
+    .loading-dots {
+      display: inline-block;
+    }
+    .loading-dots span {
+      opacity: 0;
+      animation: dotPulse 1.5s infinite;
+    }
+    .loading-dots span:nth-child(1) { animation-delay: 0s; }
+    .loading-dots span:nth-child(2) { animation-delay: 0.3s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes dotPulse {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
     #result {
-      max-width: 1200px;
-      margin: 40px auto;
+      max-width: 1400px; margin: 40px auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
     }
     .group {
-      background: rgba(255,255,255,0.15);
-      border-radius: 15px;
-      padding: 20px;
-      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.12);
+      border-radius: 20px; padding: 25px; backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.2);
     }
-    .group h2 {
-      margin: 0 0 15px 0;
-      font-size: 2rem;
-      color: #ffcb05;
-    }
+    .group h2 { margin: 0 0 20px; font-size: 2.6rem; color: #ffcb05; }
     .team {
-      background: rgba(255,255,255,0.2);
-      margin: 8px 0;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 1.1rem;
+      background: rgba(255,255,255,0.25); margin: 12px 0;
+      padding: 15px; border-radius: 12px; font-size: 1.3rem;
+      opacity: 0; transform: translateY(30px);
+      transition: all 0.7s ease-out;
     }
-    .host { color: #ffcb05; font-weight: bold; }
+    .team.show { opacity: 1; transform: translateY(0); }
+    .team.host { background: rgba(255,203,5,0.5); font-weight: bold; }
+    .pot-label {
+      padding: 6px 15px; border-radius: 20px;
+      background: #ffcb05; color: #0f2b5e; font-weight: bold; font-size: 0.9rem;
+      margin-left: 12px;
+    }
   </style>
 </head>
 <body>
-  <h1>2026 FIFAワールドカップ</h1>
-  <p>グループステージ抽選会（模擬）</p>
-  <button id="drawBtn">抽選開始！</button>
+  <h1>2026 FIFA ワールドカップ</h1>
+  <p style="font-size:1.6rem;">グループステージ抽選会（模擬）</p>
+  <button id="startBtn">抽選会を始める</button>
+
+  <div id="status">
+    <div id="statusText">ボタンを押して抽選を開始してください</div>
+
+    <!-- ここがローディングエリア！画像＋「抽選中…」文字が同時に表示 -->
+    <div id="loadingContainer">
+      <img id="loadingImg" src="./IMG_0261.gif" alt="抽選ボール">
+      <div class="loading-text">
+        抽選中
+        <div class="loading-dots">
+          <span>.</span><span>.</span><span>.</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div id="result"></div>
 
   <script>
-    // 48チーム（2026年大会想定・最新ランキング準拠）
+    // ローディング表示の制御
+    function showLoading(show = true, text = "抽選中") {
+      const container = document.getElementById("loadingContainer");
+      const statusText = document.getElementById("statusText");
+      if (show) {
+        container.classList.add("show");
+        statusText.textContent = "";
+      } else {
+        container.classList.remove("show");
+      }
+    }
+
+    // 以下は前回と同じロジック（省略せず完全版）
     const teams = [
-      // ポット1（開催国＋上位）
+       // ポット1（開催国＋上位）
       { name: "メキシコ", conf: "CONCACAF", pot: 1, fixed: "A" },
       { name: "カナダ", conf: "CONCACAF", pot: 1, fixed: "B" },
       { name: "アメリカ", conf: "CONCACAF", pot: 1, fixed: "D" },
@@ -118,86 +193,89 @@
       { name: "欧州PO3", conf: "UEFA", pot: 4 },
       { name: "欧州PO4", conf: "UEFA", pot: 4 },
       { name: "大陸間PO1", conf: "PO", pot: 4 },
-      { name: "大陸間PO2", conf: "PO", pot: 4 },
+      { name: "大陸間PO2", conf: "PO", pot: 4 }, 
     ];
 
     const GROUPS = "ABCDEFGHIJKL".split("");
+    let groups = {}, pots = {};
 
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+    function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+    function canPlace(t,g) { const c = g.reduce((a,x)=>(a[x.conf]=(a[x.conf]||0)+1,a),{}); return t.conf==="UEFA" ? (c[t.conf]||0)<2 : (c[t.conf]||0)===0; }
+
+    function addTeamToGroup(letter, team) {
+      const div = document.createElement("div");
+      div.className = "team";
+      div.innerHTML = `${team.pos}. ${team.name} <small>(${team.conf})</small>
+        <span class="pot-label">Pot ${team.pot}</span>`;
+      if (team.fixed) div.classList.add("host");
+      document.querySelector(`#group-${letter}`).appendChild(div);
+      setTimeout(() => div.classList.add("show"), 100);
+    }
+
+    function initGroups() {
+      groups = Object.fromEntries(GROUPS.map(g => [g, []]));
+      document.getElementById("result").innerHTML = "";
+      GROUPS.forEach(g => {
+        const div = document.createElement("div");
+        div.className = "group"; div.id = `group-${g}`;
+        div.innerHTML = `<h2>グループ ${g}</h2>`;
+        document.getElementById("result").appendChild(div);
+      });
+    }
+
+    async function drawPot(potNumber) {
+      showLoading(true);
+      document.getElementById("statusText").textContent = "";
+      await new Promise(r => setTimeout(r, 800));
+
+      const potTeams = shuffle([...pots[potNumber]]);
+      for (const team of potTeams) {
+        let avail = GROUPS.filter(g => groups[g].length < 4 && canPlace(team, groups[g]));
+        if (avail.length === 0) avail = GROUPS.filter(g => groups[g].length < 4);
+        const chosen = avail[Math.floor(Math.random() * avail.length)];
+        team.pos = groups[chosen].length + 1;
+        groups[chosen].push(team);
+        addTeamToGroup(chosen, team);
+        await new Promise(r => setTimeout(r, 750));
       }
-      return array;
+
+      showLoading(false);
+      document.getElementById("statusText").innerHTML = 
+        `<span style="color:#ffcb05; font-size:2.8rem; font-weight:bold;">ポット${potNumber} 完了！</span>`;
+      await new Promise(r => setTimeout(r, 2000));
     }
 
-    function canPlace(team, group) {
-      const confCount = group.reduce((acc, t) => {
-        acc[t.conf] = (acc[t.conf] || 0) + 1;
-        return acc;
-      }, {});
+    async function startDraw() {
+      const btn = document.getElementById("startBtn");
+      btn.disabled = true; btn.textContent = "抽選準備中…";
 
-      const current = confCount[team.conf] || 0;
-      if (team.conf === "UEFA") return current < 2;
-      return current === 0;
-    }
+      showLoading(false);
+      document.getElementById("statusText").textContent = "開催国を配置中…";
+      initGroups();
 
-    function draw() {
-      const groups = Object.fromEntries(GROUPS.map(g => [g, []]));
-      const pots = {1: [], 2: [], 3: [], 4: []};
+      pots = {1:[],2:[],3:[],4:[]};
       teams.forEach(t => pots[t.pot].push({...t}));
 
-      // 1. 開催国固定配置
-      teams.filter(t => t.fixed).forEach(host => {
-        groups[host.fixed] = [{...host, pos: 1}];
-      });
+      // 開催国
+      teams.filter(t => t.fixed).forEach(h => { h.pos=1; groups[h.fixed]=[h]; addTeamToGroup(h.fixed, h); });
+      await new Promise(r => setTimeout(r, 1800));
 
-      // 2. 残りのポット1
-      const pot1Rest = shuffle(pots[1].filter(t => !t.fixed));
-      const emptyGroups = GROUPS.filter(g => groups[g].length === 0);
-      pot1Rest.forEach((team, i) => {
-        const g = emptyGroups.length > 0 ? emptyGroups[i] : GROUPS.find(g => groups[g].length === 0);
-        team.pos = 1;
-        groups[g].push(team);
-      });
+      // ポット1残り
+      const rest1 = shuffle(pots[1].filter(t => !t.fixed));
+      let idx = 0; const empty = GROUPS.filter(g => groups[g].length === 0);
+      rest1.forEach(t => { const g = empty[idx++] || GROUPS.find(x=>groups[x].length===0); t.pos=1; groups[g].push(t); addTeamToGroup(g,t); });
+      await new Promise(r => setTimeout(r, 2000));
 
-      // 3. ポット2〜4
-      [2,3,4].forEach(pot => {
-        shuffle(pots[pot]).forEach(team => {
-          let available = GROUPS.filter(g => 
-            groups[g].length < 4 && canPlace(team, groups[g])
-          );
-          if (available.length === 0) {
-            available = GROUPS.filter(g => groups[g].length < 4);
-          }
-          const chosen = available[Math.floor(Math.random() * available.length)];
-          team.pos = groups[chosen].length + 1;
-          groups[chosen].push(team);
-        });
-      });
+      for (let p = 2; p <= 4; p++) await drawPot(p);
 
-      // 結果表示
-      const resultDiv = document.getElementById("result");
-      resultDiv.innerHTML = "";
-
-      GROUPS.forEach(letter => {
-        const div = document.createElement("div");
-        div.className = "group";
-        div.innerHTML = `<h2>グループ ${letter}</h2>`;
-        groups[letter]
-          .sort((a,b) => a.pos - b.pos)
-          .forEach(t => {
-            const cls = t.fixed ? "team host" : "team";
-            div.innerHTML += `<div class="${cls}">${t.pos}. ${t.name} <small>(${t.conf})</small></div>`;
-          });
-        resultDiv.appendChild(div);
-      });
+      document.getElementById("statusText").innerHTML = 
+        `<div style="font-size:3.2rem; color:#ffcb05; text-shadow:0 0 20px gold;">抽選終了！</div>
+         <div style="font-size:2rem; margin-top:20px;">新たなドラマが始まります！</div>`;
+      btn.textContent = "もう一度抽選する";
+      btn.disabled = false;
     }
 
-    document.getElementById("drawBtn").addEventListener("click", () => {
-      document.getElementById("result").innerHTML = "<p><img src=./IMG_0261.gif>抽選中...</p>";
-      setTimeout(draw, 800); // ちょっと演出
-    });
+    document.getElementById("startBtn").onclick = startDraw;
   </script>
   <br>©PureGreen
 </body>

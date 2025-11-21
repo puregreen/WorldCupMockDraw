@@ -205,6 +205,8 @@
         h.pos = 1; groups[h.fixed] = [h]; addTeam(h.fixed, h); announceDraw(h, h.fixed);
       });
       await new Promise(r => setTimeout(r, 2500));
+
+      document.getElementById("statusText").textContent = "ポット1を抽選中…";
       
       // ポット1残り
       const pot1rest = shuffle(pots[1].filter(t => !t.fixed));
@@ -215,12 +217,16 @@
       });
       await new Promise(r => setTimeout(r, 3000));
 
+      document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:3.5rem;">ポット1 完了！</span>`;
+      
       // ポット2〜4
       for (let p = 2; p <= 4; p++) {
         showLoading(true);
         document.getElementById("statusText").textContent = "";
         await new Promise(r => setTimeout(r, 1000));
 
+        document.getElementById("statusText").textContent = `${p}を抽選中…`;
+        
         const potTeams = shuffle(pots[p]);
         for (const team of potTeams) {
           let avail = GROUPS.filter(g => groups[g].length < 4 && canPlaceInGroup(team, groups[g]));

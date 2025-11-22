@@ -46,22 +46,21 @@
       margin: 30px auto;
       display: block;
     }
-    button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
-    button:disabled {background: #555;opacity: 0.7;}
-
-	button#startBtn {
+    button#startBtn2 {
       background: #ffcb05;
       color: #0f2b5e;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: bold;
-      padding: 20px 70px;
+      padding: 16px 60px;
       border: none;
-      border-radius: 60px;
+      border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.7);
-      margin: 35px auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      margin: 30px auto;
       display: block;
     }
+    button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
+    button:disabled {background: #555;opacity: 0.7;}
 	  
     /* ポット分け表（最初に表示） */
     /* スマホ対応：ポット表を縦に並べる */
@@ -278,8 +277,6 @@
 	  
 /* 抽選中・結果表示もスマホ最適化 */
     #status, #latestDraw, #result {max-width: 900px;margin: 30px auto;padding: 0 8px;}
-    #currentDraw {font-size: 2.4rem;padding: 20px 30px;}
-    #currentDraw .group-letter {font-size: 3.5rem;}
     #result {gap: 15px;}
     .group {padding: 18px;border-radius: 18px;}
     .group h2 {font-size: 2.1rem;margin-bottom: 15px;}

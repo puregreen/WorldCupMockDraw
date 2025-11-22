@@ -281,12 +281,41 @@
     .group {padding: 18px;border-radius: 18px;}
     .group h2 {font-size: 2.1rem;margin-bottom: 15px;}
     .team {padding: 10px;font-size: 1.1rem;margin: 5px 0;}
+/* ルール説明 */
+	.rule {
+	margin: 16px auto;
+	text-align: center;
+	display: block;
+	border: 1px solid #ffcb05;
+    }
+    .rule ul {
+	padding-left: 0;
+	list-style: none;
+	display: inline-block;
+	color: #ffcb05;
+	font-size: 0.6rem;
+    }
+    .rule li {
+	color: white;
+	font-size: 0.5rem;
+    }
+    .rule ul li {
+	text-align: left;
+    }
   </style>
 </head>
 <body>
   <div id="pTitle">
    <h1>2026 FIFA ワールドカップ</h1>
    <p style="font-size:0.8rem;">本戦グループステージ抽選会<br>（シミュレーション）</p>
+   <span class="rule">
+	<ul> 抽選ルール
+		<li> 開催国はグループA:メキシコ / B:カナダ / D:アメリカの1番目に固定 </li>
+		<li> ポット1から順に配置し、同一グループに 同じポットのチームが2つ以上入らない </li>
+		<li> 欧州（UEFA）は最大2チームまで、それ以外の大陸は最大1チームまで </li>
+
+	</ul>
+   </span>
   </div>
   <button id="startBtn">抽選開始</button>
   <!-- ここに最初にポット分け表を表示 -->
@@ -322,7 +351,8 @@
     </div>
   </div>
 
-  <div id="result"></div>
+  <div id="result">
+  </div>
 
   <script>
     document.getElementById("japanSpecial").style.display = "none";
@@ -587,7 +617,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ v0.05
+   <hr>©PureGreen │ v0.06
   </div>
 </body>
 </html>

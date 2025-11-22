@@ -225,6 +225,7 @@
   <!-- 日本専用演出用（最初は非表示） -->
   <div id="japanLog">テストページ</div>
   <div id="japanSpecial">
+	がんばれ！<br>
     ニッポン！
     <div class="c-firework"></div>
     <div class="c-firework"></div>
@@ -236,7 +237,7 @@
     <div class="c-firework"></div>
   </div>
   <div id="status">
-    <div id="statusText"><button id="startBtn">抽選開始</button></div>
+    <div id="statusText"><button id="startBtn2">抽選開始</button></div>
     <div id="loadingContainer">
       <img id="loadingImg" src="./IMG_0261.gif" alt="抽選中">
       <div class="loading-text">
@@ -502,6 +503,7 @@ await new Promise(r => setTimeout(r, 1000));
     }
     
     document.getElementById("startBtn").onclick = startDraw;
+	document.getElementById("startBtn2").onclick = startDraw;
     document.getElementById("scrollToTopBtn").onclick = topScroll;
   </script>
   <!-- 
@@ -510,7 +512,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen........
+   <hr>©PureGreen. v0.01
   </div>
 </body>
 </html>

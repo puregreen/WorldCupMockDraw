@@ -16,103 +16,131 @@
       50% {background: radial-gradient(circle, #fff 60%, #bc002d 90%);}
       100% {background: linear-gradient(135deg, #0f2b5e, #1a4d8c);}
     }
-    body {font-family: "Helvetica Neue", Arial, sans-serif;background: linear-gradient(135deg, #0f2b5e, #1a4d8c);color: white;text-align: center;padding: 20px;min-height: 100vh;margin: 0;}
-    h1 {font-size: 3.5rem;margin: 20px 0;text-shadow: 0 0 30px #ffcb05;}
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2b5e, #1a4d8c);
+      color: white;
+      text-align: center;
+      padding: 15px 8px;
+      min-height: 100vh;
+      margin: 0;
+      transition: background 1.5s;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin: 30px 0 20px;
+      text-shadow: 0 0 25px #ffcb05;
+    }
+	  
     button {background: #ffcb05;color: #0f2b5e;font-size: 1.8rem;font-weight: bold;padding: 22px 70px;border: none;border-radius: 60px;cursor: pointer;box-shadow: 0 12px 40px rgba(0,0,0,0.7);transition: all 0.3s;}
     button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
     button:disabled {background: #555;opacity: 0.7;}
-
+	  
+    button#startBtn {
+      background: #ffcb05;
+      color: #0f2b5e;
+      font-size: 1.8rem;
+      font-weight: bold;
+      padding: 20px 70px;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+      margin: 35px auto;
+      display: block;
+    }
     /* ポット分け表（最初に表示） */
     /* スマホ対応：ポット表を縦に並べる */
     /* ポット表：PC・タブレットは横4列、スマホは縦1列 */
     /* === ポット表：400px以上で2列、未満で1列 === */
+    /* ポット表：400px以上で2列、未満で1列 */
     #potTable {
       max-width: 1500px;
-      margin: 40px auto;
-      padding: 0 15px;
+      margin: 30px auto;
+      padding: 0 10px;
       display: grid;
-      gap: 28px;
-      grid-template-columns: repeat(4, 1fr); /* PC・タブレット */
+      gap: 18px;
+      grid-template-columns: repeat(4, 1fr);
     }
 
-    /* 幅800px以上 → 4列 */
-    @media (min-width: 800px) {
-      #potTable { grid-template-columns: repeat(4, 1fr); }
-    }
-
-    /* 幅400px以上〜799px → 2列（スマホ横持ち・小さいタブレット） */
     @media (min-width: 400px) and (max-width: 799px) {
       #potTable { grid-template-columns: 1fr 1fr; }
     }
 
-    /* 幅400px未満 → 1列（狭いスマホ縦持ち） */
     @media (max-width: 399px) {
-      #potTable { grid-template-columns: 1fr; }
+      #potTable { grid-template-columns: 1fr; gap: 15px; }
     }
 
     .pot {
       background: rgba(255,255,255,0.14);
-      border-radius: 25px;
-      padding: 28px 22px;
-      backdrop-filter: blur(14px);
-      border: 2px solid rgba(255,203,5,0.4);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-    }
-    .pot h2 {
-      font-size: 2.4rem;
-      color: #ffcb05;
-      margin: 0 0 25px;
-      text-shadow: 0 0 20px gold;
-      border-bottom: 3px solid #ffcb05;
-      padding-bottom: 12px;
+      border-radius: 20px;
+      padding: 18px 15px;
+      backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255,203,5,0.4);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.35);
     }
 
-    /* === 国旗＋国名が横並びで超綺麗に整列 === */
+    .pot h2 {
+      font-size: 1.9rem;
+      color: #ffcb05;
+      margin: 0 0 14px;
+      text-shadow: 0 0 15px gold;
+      border-bottom: 2px solid #ffcb05;
+      padding-bottom: 8px;
+    }
+
+    /* 幅400pxでも絶対に折り返さない！超コンパクト＆綺麗 */
     .pot-team {
-      background: rgba(255,255,255,0.22);
-      margin: 11px 0;
-      padding: 14px 18px;
-      border-radius: 16px;
-      font-size: 1.5rem;
+      background: rgba(255,255,255,0.2);
+      margin: 6px 0;
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 1.15rem;           /* 文字小さく */
       font-weight: 500;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      gap: 16px;
-      transition: all 0.3s;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      gap: 10px;                    /* 旗と文字の間を狭く */
+      line-height: 1.2;
+      white-space: nowrap;          /* 折り返し禁止 */
+      overflow: hidden;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      transition: all 0.25s;
     }
+
     .pot-team:hover {
       background: rgba(255,203,5,0.25);
-      transform: translateY(-3px);
+      transform: translateY(-2px);
     }
+
     .pot-team img {
-      width: 64px;
-      height: 43px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      width: 42px;                  /* 旗を小さく */
+      height: 28px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
       flex-shrink: 0;
     }
+
     .pot-team span {
-      text-align: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
       flex: 1;
     }
 
-    /* 日本は赤白で激アツ！ */
+    /* 日本は小さくても目立つ！ */
     .pot-team.japan {
-      background: linear-gradient(135deg, #bc002d, #ffffff, #bc002d);
+      background: linear-gradient(135deg, #bc002d, #fff);
       color: #bc002d;
       font-weight: bold;
-      font-size: 1.85rem !important;
-      transform: scale(1.05);
-      box-shadow: 0 0 35px rgba(188,0,45,0.9);
-      border: 2px solid #fff;
+      font-size: 1.35rem !important;   /* 日本だけ少し大きめに */
+      padding: 9px 10px;
+      border: 1.5px solid #fff;
+      box-shadow: 0 0 20px rgba(188,0,45,0.8);
     }
     .pot-team.japan img {
-      width: 76px;
-      height: 51px;
-      border: 3px solid #fff;
-      box-shadow: 0 0 20px #fff;
+      width: 50px;
+      height: 33px;
+      border: 2px solid #fff;
     }
 
 
@@ -241,12 +269,24 @@
   .c-firework::after {
   	transform: translate(-50%, -50%) rotate(-37deg) !important;
   }
+
+/* 調整 */
+    body.japan-mode {background: radial-gradient(circle, #fff 10%, #bc002d 40%, #fff 70%);animation: japanFlash 2s ease-out;}
+    @keyframes japanFlash {0% {background: radial-gradient(circle, #fff 0%, #bc002d 0%);} 50% {background: radial-gradient(circle, #fff 60%, #bc002d 90%);} 100% {background: linear-gradient(135deg, #0f2b5e, #1a4d8c);}}
+    #japanSpecial {position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%) scale(0);font-size: 8rem;font-weight: 900;color: #bc002d;text-shadow: 0 0 100px #fff, 0 0 150px #bc002d;z-index: 9999;pointer-events: none;display: none;animation: japanBoom 3s ease-out forwards;}
+    @keyframes japanBoom {0% {transform: translate(-50%, -50%) scale(0); opacity: 0;} 40% {transform: translate(-50%, -50%) scale(1.4); opacity: 1;} 70% {transform: translate(-50%, -50%) scale(1); opacity: 1;} 100% {transform: translate(-50%, -50%) scale(0.9); opacity: 0;}}
+
+    #result {display: grid;grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));gap: 20px;}
+    .group {background: rgba(255,255,255,0.15);border-radius: 22px;padding: 25px;backdrop-filter: blur(12px);}
+    .group h2 {font-size: 2.5rem;margin-bottom: 20px;}
+    .team {padding: 14px;border-radius: 12px;font-size: 1.25rem;margin: 8px 0;}
+	  
   </style>
 </head>
 <body>
   <div id="pTitle">
    <h1>2026 FIFA ワールドカップ</h1>
-   <p style="font-size:1.9rem;">本戦グループステージ抽選会（模擬）</p>
+   <p style="font-size:1.7rem;margin:15px;color:#ffcb05;">本戦グループステージ抽選会（模擬）</p>
   </div>
   <button id="startBtn">抽選開始</button>
   <!-- ここに最初にポット分け表を表示 -->
@@ -363,7 +403,10 @@
         teams.filter(t => t.pot === potNum).forEach(t => {
           const teamDiv = document.createElement("div");
           teamDiv.className = `pot-team${t.name === "日本" ? " japan" : ""}`;
-          teamDiv.innerHTML = `<img src="${getFlagUrl(t.name, 40,30)}" alt="${t.name}">${t.name}`;
+          teamDiv.innerHTML = `
+            <img src="${getFlag(t.name, "72x48")}" alt="${t.name}">
+            <span>${t.name}</span>
+          `;
           div.appendChild(teamDiv);
         });
         table.appendChild(div);
@@ -547,7 +590,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen. v0.03.1
+   <hr>©PureGreen. v0.03.3
   </div>
 </body>
 </html>

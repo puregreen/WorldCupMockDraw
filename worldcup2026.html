@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 FIFAワールドカップ 本戦抽選会（模擬）│サッカー日本代表応援</title>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <style>
     a {color: #fff;}
     /* 日本決まった瞬間用フラッシュ */
@@ -303,39 +302,6 @@
     .rule ul li {
 	text-align: left;
     }
-    /* === 抽選終了後のシェアボタンエリア === */
-    #shareButtons {
-      margin: 40px auto;
-      padding: 20px;
-      max-width: 800px;
-      display: none;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    #shareButtons.show {display: flex !important;}
-
-    .share-btn {
-      background: #ffcb05;
-      color: #0f2b5e;
-      font-size: 1.5rem;
-      font-weight: bold;
-      padding: 16px 40px;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      transition: all 0.4s;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .share-btn:hover {
-      transform: translateY(-8px) scale(1.08);
-      box-shadow: 0 20px 50px rgba(255,203,5,0.5);
-    }
-    .share-btn.screenshot {background: #1da1f2;} /* Twitterブルー */
-    .share-btn.xshare {background: #000000;}
   </style>
 </head>
 <body>
@@ -388,16 +354,6 @@
   <div id="result">
   </div>
 
-  <!-- 抽選終了後に表示されるシェアボタン！ -->
-  <div id="shareButtons">
-    <button class="share-btn screenshot">
-      スクリーンショット保存
-    </button>
-    <button class="share-btn xshare">
-      Xにシェア
-    </button>
-  </div>
-	
   <script>
     document.getElementById("japanSpecial").style.display = "none";
     // 48チーム（2026年大会想定・最新ランキング準拠）
@@ -650,32 +606,7 @@ await new Promise(r => setTimeout(r, 1000));
         block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
       });
     }
-
-      // シェアボタンを表示！
-      document.getElementById("shareButtons").classList.add("show");
-    }
-
-    // スクリーンショットボタン
-    document.querySelector(".share-btn.screenshot").onclick = async () => {
-      const element = document.querySelector("#result");
-      const canvas = await html2canvas(element, {
-        backgroundColor: null,
-        scale: 2,
-        logging: false
-      });
-      const link = document.createElement("a");
-      link.download = "2026ワールドカップ抽選結果.png";
-      link.href = canvas.toDataURL();
-      link.click();
-    };
-
-    // X（Twitter）にシェアボタン
-    document.querySelector(".share-btn.xshare").onclick = () => {
-      const text = "2026年ワールドカップ抽選結果をシミュレートしてみた！\n日本はどのグループに？\n#W杯2026 #日本代表";
-      const url = encodeURIComponent(window.location.href);
-      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
-    };
-	  
+    
     document.getElementById("startBtn").onclick = startDraw;
 	document.getElementById("startBtn2").onclick = startDraw;
     document.getElementById("scrollToTopBtn").onclick = topScroll;
@@ -686,7 +617,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.07
+   <hr>©PureGreen │ テストv0.06.5
   </div>
 </body>
 </html>

@@ -24,44 +24,56 @@
 
     /* ポット分け表（最初に表示） */
     /* スマホ対応：ポット表を縦に並べる */
+    /* ポット表：PC・タブレットは横4列、スマホは縦1列 */
     #potTable {
-      max-width: 500px;
-      margin: 30px auto;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding: 0 10px;
+      max-width: 1500px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);  /* デフォルト：横4列 */
+      gap: 30px;
     }
+
+    /* スマホ（幅768px以下）では縦1列に自動切替 */
+    @media (max-width: 768px) {
+      #potTable {
+        grid-template-columns: 1fr;  /* 縦1列 */
+        gap: 25px;
+      }
+    }
+
     .pot {
       background: rgba(255,255,255,0.15);
-      border-radius: 20px;
-      padding: 25px 20px;
+      border-radius: 25px;
+      padding: 30px;
       backdrop-filter: blur(12px);
       border: 2px solid rgba(255,203,5,0.5);
       box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
     .pot h2 {
-      font-size: 2.2rem;
+      font-size: 2.6rem;
       color: #ffcb05;
-      margin: 0 0 20px;
+      margin: 0 0 25px;
       text-shadow: 0 0 20px gold;
       border-bottom: 3px solid #ffcb05;
-      padding-bottom: 10px;
+      padding-bottom: 12px;
     }
     .pot-team {
       background: rgba(255,255,255,0.25);
-      margin: 10px 0;
-      padding: 14px 18px;
-      border-radius: 14px;
-      font-size: 1.4rem;
+      margin: 12px 0;
+      padding: 16px 20px;
+      border-radius: 15px;
+      font-size: 1.5rem;
       display: flex;
       align-items: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
     }
+    .pot-team:hover {transform: translateY(-3px);}
     .pot-team img {
-      width: 56px;
-      height: 37px;
-      margin-right: 16px;
+      width: 60px;
+      height: 40px;
+      margin-right: 18px;
       border-radius: 8px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.4);
     }
@@ -69,9 +81,9 @@
       background: linear-gradient(135deg, #bc002d, #fff);
       color: #bc002d;
       font-weight: bold;
-      font-size: 1.65rem;
+      font-size: 1.75rem;
       transform: scale(1.05);
-      box-shadow: 0 8px 25px rgba(188,0,45,0.6);
+      box-shadow: 0 10px 30px rgba(188,0,45,0.6);
     }
 
     /* スマホでも読みやすい文字サイズ調整 */
@@ -319,9 +331,10 @@
 	  
     // ページ読み込み時にポット分け表を表示
     // スマホ対応：ポット表を縦に並べる
+    // 完全レスポンシブ対応ポット表
     window.onload = function() {
       const table = document.getElementById("potTable");
-      table.innerHTML = ""; // 初期化
+      table.innerHTML = "";
       [1,2,3,4].forEach(potNum => {
         const div = document.createElement("div");
         div.className = "pot";
@@ -337,7 +350,7 @@
     };
 	  
     // 国旗URL生成
-    function getFlagUrl(name,w,h) {
+    function getFlagUrl(name,w=120,h=90) {
       const map =flagMap;
       return `https://flagcdn.com/${w}x${h}/${map[name] || "un"}.png`;
     }
@@ -513,7 +526,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen. v0.01
+   <hr>©PureGreen. v0.02
   </div>
 </body>
 </html>

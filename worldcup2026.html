@@ -28,17 +28,24 @@
     #potTable {
       max-width: 1500px;
       margin: 40px auto;
-      padding: 0 20px;
+      padding: 0 15px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);  /* デフォルト：横4列 */
-      gap: 30px;
+      gap: 28px;
+      grid-template-columns: repeat(4, 1fr); /* PC・タブレット・スマホ横持ち */
     }
 
-    /* スマホ（幅768px以下）では縦1列に自動切替 */
+    /* スマホ縦持ち（768px以下）→ 2列 */
     @media (max-width: 768px) {
       #potTable {
-        grid-template-columns: 1fr;  /* 縦1列 */
-        gap: 25px;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* 超狭スマホ（480px以下）→ 1列（保険） */
+    @media (max-width: 480px) {
+      #potTable {
+        grid-template-columns: 1fr;
+        gap: 22px;
       }
     }
 
@@ -526,7 +533,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen. v0.02
+   <hr>©PureGreen. v0.02.
   </div>
 </body>
 </html>

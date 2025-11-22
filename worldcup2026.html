@@ -657,6 +657,38 @@ await new Promise(r => setTimeout(r, 1000));
 
 	// スクリーンショットボタン
     document.querySelector(".share-btn.screenshot").onclick = async () => {
+	 document.getElementById('result').style.zIndex = 9999;
+     // クラスのインスタンス化
+     const currentDate = new Date();
+     // 年
+     const year = currentDate.getFullYear();
+     // 月
+     const month = currentDate.getMonth() + 1;
+     // 日
+     const day = currentDate.getDate();
+     // 曜日のリスト
+     const dayOfWeek = ["日", "月", "火", "水", "木", "金", "土"];
+     // 曜日の番号を取得
+     const weekNumber = currentDate.getDay();
+     // 時間
+     const hour = currentDate.getHours();
+     // 分
+     const min = currentDate.getMinutes();
+     // 秒
+     const sec = currentDate.getSeconds();
+     // ミリ秒
+     const msec = currentDate.getMilliseconds();
+
+     const yyyyMMddHHmmssfff = () => {
+      const date =
+      year +
+      String(month).padStart(2, "0") +
+      String(day).padStart(2, "0") +
+      String(hour).padStart(2, "0") +
+      String(min).padStart(2, "0") +
+      String(sec).padStart(2, "0") +
+      String(msec).padStart(3, "0");
+     };
       const element = document.querySelector("#result");
       const canvas = await html2canvas(element, {
         backgroundColor: null,
@@ -664,7 +696,7 @@ await new Promise(r => setTimeout(r, 1000));
         logging: false
       });
       const link = document.createElement("a");
-      link.download = "2026ワールドカップ抽選結果.png";
+      link.download = "2026worldcup_" + yyyyMMddHHmmssfff() + ".png";
       link.href = canvas.toDataURL();
       link.click();
     };

@@ -25,72 +25,94 @@
     /* ポット分け表（最初に表示） */
     /* スマホ対応：ポット表を縦に並べる */
     /* ポット表：PC・タブレットは横4列、スマホは縦1列 */
+    /* === ポット表：400px以上で2列、未満で1列 === */
     #potTable {
       max-width: 1500px;
       margin: 40px auto;
       padding: 0 15px;
       display: grid;
       gap: 28px;
-      grid-template-columns: repeat(4, 1fr); /* PC・タブレット・スマホ横持ち */
+      grid-template-columns: repeat(4, 1fr); /* PC・タブレット */
     }
 
-    /* スマホ縦持ち（768px以下）→ 2列 */
-    @media (max-width: 768px) {
-      #potTable {
-        grid-template-columns: 1fr 1fr;
-      }
+    /* 幅800px以上 → 4列 */
+    @media (min-width: 800px) {
+      #potTable { grid-template-columns: repeat(4, 1fr); }
     }
 
-    /* 超狭スマホ（400px以下）→ 1列（保険） */
-    @media (max-width: 400px) {
-      #potTable {
-        grid-template-columns: 1fr;
-        gap: 22px;
-      }
+    /* 幅400px以上〜799px → 2列（スマホ横持ち・小さいタブレット） */
+    @media (min-width: 400px) and (max-width: 799px) {
+      #potTable { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* 幅400px未満 → 1列（狭いスマホ縦持ち） */
+    @media (max-width: 399px) {
+      #potTable { grid-template-columns: 1fr; }
     }
 
     .pot {
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.14);
       border-radius: 25px;
-      padding: 30px;
-      backdrop-filter: blur(12px);
-      border: 2px solid rgba(255,203,5,0.5);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      padding: 28px 22px;
+      backdrop-filter: blur(14px);
+      border: 2px solid rgba(255,203,5,0.4);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
     }
     .pot h2 {
-      font-size: 1.6rem;
+      font-size: 2.4rem;
       color: #ffcb05;
       margin: 0 0 25px;
       text-shadow: 0 0 20px gold;
       border-bottom: 3px solid #ffcb05;
       padding-bottom: 12px;
     }
+
+    /* === 国旗＋国名が横並びで超綺麗に整列 === */
     .pot-team {
-      background: rgba(255,255,255,0.25);
-      margin: 12px 0;
-      padding: 16px 20px;
-      border-radius: 15px;
-      font-size: 0.8rem;
+      background: rgba(255,255,255,0.22);
+      margin: 11px 0;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 1.5rem;
+      font-weight: 500;
       display: flex;
       align-items: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
+      justify-content: flex-start;
+      gap: 16px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
-    .pot-team:hover {transform: translateY(-3px);}
+    .pot-team:hover {
+      background: rgba(255,203,5,0.25);
+      transform: translateY(-3px);
+    }
     .pot-team img {
-      width: 60px;
-      height: 40px;
-      margin-right: 18px;
+      width: 64px;
+      height: 43px;
       border-radius: 8px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      flex-shrink: 0;
     }
+    .pot-team span {
+      text-align: left;
+      flex: 1;
+    }
+
+    /* 日本は赤白で激アツ！ */
     .pot-team.japan {
-      background: linear-gradient(135deg, #bc002d, #fff);
+      background: linear-gradient(135deg, #bc002d, #ffffff, #bc002d);
       color: #bc002d;
       font-weight: bold;
-      font-size: 0.9rem;
+      font-size: 1.85rem !important;
       transform: scale(1.05);
-      box-shadow: 0 10px 30px rgba(188,0,45,0.6);
+      box-shadow: 0 0 35px rgba(188,0,45,0.9);
+      border: 2px solid #fff;
+    }
+    .pot-team.japan img {
+      width: 76px;
+      height: 51px;
+      border: 3px solid #fff;
+      box-shadow: 0 0 20px #fff;
     }
 
 
@@ -525,7 +547,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen. v0.02...
+   <hr>©PureGreen. v0.03.1
   </div>
 </body>
 </html>

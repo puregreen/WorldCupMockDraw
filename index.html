@@ -22,6 +22,81 @@
     button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
     button:disabled {background: #555;opacity: 0.7;}
 
+    /* ポット分け表（最初に表示） */
+    /* スマホ対応：ポット表を縦に並べる */
+    /* ポット表：PC・タブレットは横4列、スマホは縦1列 */
+    #potTable {
+      max-width: 1500px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);  /* デフォルト：横4列 */
+      gap: 30px;
+    }
+
+    /* スマホ（幅768px以下）では縦1列に自動切替 */
+    @media (max-width: 768px) {
+      #potTable {
+        grid-template-columns: 1fr;  /* 縦1列 */
+        gap: 25px;
+      }
+    }
+
+    .pot {
+      background: rgba(255,255,255,0.15);
+      border-radius: 25px;
+      padding: 30px;
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255,203,5,0.5);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .pot h2 {
+      font-size: 2.6rem;
+      color: #ffcb05;
+      margin: 0 0 25px;
+      text-shadow: 0 0 20px gold;
+      border-bottom: 3px solid #ffcb05;
+      padding-bottom: 12px;
+    }
+    .pot-team {
+      background: rgba(255,255,255,0.25);
+      margin: 12px 0;
+      padding: 16px 20px;
+      border-radius: 15px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+    .pot-team:hover {transform: translateY(-3px);}
+    .pot-team img {
+      width: 60px;
+      height: 40px;
+      margin-right: 18px;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    }
+    .pot-team.japan {
+      background: linear-gradient(135deg, #bc002d, #fff);
+      color: #bc002d;
+      font-weight: bold;
+      font-size: 1.75rem;
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(188,0,45,0.6);
+    }
+
+    /* スマホでも読みやすい文字サイズ調整 */
+    @media (max-width: 480px) {
+      h1 {font-size: 2rem;}
+      .pot h2 {font-size: 1.9rem;}
+      .pot-team {font-size: 1.3rem;padding: 12px 16px;}
+      .pot-team.japan {font-size: 1.5rem;}
+      .pot-team img {width: 50px;height: 33px;}
+      button {font-size: 1.6rem;padding: 18px 50px;}
+    }
+
+	  
     #status {margin: 50px auto;min-height: 180px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 30px;}
     #loadingContainer {opacity: 0;transition: opacity 0.7s;}
     #loadingContainer.show {opacity: 1;}
@@ -92,10 +167,11 @@
     #result {max-width: 1600px;margin: 60px auto;display: grid;grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));gap: 35px;}
     .group {background: rgba(255,255,255,0.15);border-radius: 28px;padding: 35px;backdrop-filter: blur(15px);border: 1px solid rgba(255,255,255,0.3);}
     .group h2 {margin: 0 0 30px;font-size: 3.2rem;color: #ffcb05;}
-    .team {background: rgba(255,255,255,0.3);margin: 16px 0;padding: 20px;border-radius: 16px;font-size: 0.65rem;opacity: 0;transform: translateY(40px);transition: all 0.8s;text-align: left;}
+    .team {background: rgba(255,255,255,0.3);margin: 16px 0;padding: 20px;border-radius: 16px;font-size: 0.65rem;opacity: 0;transform: translateY(40px);transition: all 0.8s;text-align:left;}
     .team.show {opacity: 1;transform: translateY(0);}
-    .team.host {background: rgba(255,203,5,0.7);font-weight: bold;color: #fff;}
-    .pot-label {padding: 10px 20px;border-radius: 35px;background: #ffcb05;color: #0f2b5e;font-weight: bold;margin-left: 15px;font-size: 0.45rem;position: absolute;right: 0;}
+    .team.host {background: rgba(255,203,5,0.7);font-weight: bold;color: #fff;text-align:left;
+				}
+    .pot-label {padding: 10px 20px;border-radius: 35px;background: #ffcb05;color: #0f2b5e;font-weight: bold;margin-left: 15px;font-size: 0.45rem; position: absolute;right: 0;}
 
     @keyframes fireworks-animation {
 	  0% {
@@ -152,14 +228,17 @@
    <p style="font-size:1.9rem;">本戦グループステージ抽選会（模擬）</p>
   </div>
   <button id="startBtn">抽選開始</button>
+  <!-- ここに最初にポット分け表を表示 -->
+  <div id="potTable"></div>
   <!-- 最新1件だけド派手に表示 -->
   <div id="latestDraw">
     <div id="currentDraw"></div>
   </div>
   <!-- 日本専用演出用（最初は非表示） -->
-  <div id="japanLog"></div>
+  <div id="japanLog">欧州プレイオフ&大陸間プレイオフは決まり次第更新します。</div>
   <div id="japanSpecial">
-    がんばれ！<br>ニッポン！
+	がんばれ！<br>
+    ニッポン！
     <div class="c-firework"></div>
     <div class="c-firework"></div>
     <div class="c-firework"></div>
@@ -170,7 +249,7 @@
     <div class="c-firework"></div>
   </div>
   <div id="status">
-    <div id="statusText">抽選開始ボタンを押してスタート</div>
+    <div id="statusText"><button id="startBtn2">抽選開始</button></div>
     <div id="loadingContainer">
       <img id="loadingImg" src="./IMG_0261.gif" alt="抽選中">
       <div class="loading-text">
@@ -247,9 +326,32 @@
 
     const GROUPS = "ABCDEFGHIJKL".split("");
 
+    // 国旗マップ
+    const flagMap = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
+	  
+    // ページ読み込み時にポット分け表を表示
+    // スマホ対応：ポット表を縦に並べる
+    // 完全レスポンシブ対応ポット表
+    window.onload = function() {
+      const table = document.getElementById("potTable");
+      table.innerHTML = "";
+      [1,2,3,4].forEach(potNum => {
+        const div = document.createElement("div");
+        div.className = "pot";
+        div.innerHTML = `<h2>ポット ${potNum}</h2>`;
+        teams.filter(t => t.pot === potNum).forEach(t => {
+          const teamDiv = document.createElement("div");
+          teamDiv.className = `pot-team${t.name === "日本" ? " japan" : ""}`;
+          teamDiv.innerHTML = `<img src="${getFlagUrl(t.name, 84,63)}" alt="${t.name}">${t.name}`;
+          div.appendChild(teamDiv);
+        });
+        table.appendChild(div);
+      });
+    };
+	  
     // 国旗URL生成
-    function getFlagUrl(name,w,h) {
-      const map = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
+    function getFlagUrl(name,w=120,h=90) {
+      const map =flagMap;
       return `https://flagcdn.com/${w}x${h}/${map[name] || "un"}.png`;
     }
 
@@ -261,9 +363,9 @@
         document.body.classList.add("japan-mode");
         document.getElementById("japanSpecial").style.display = "block";
         document.getElementById("japanLog").innerHTML = `
-		 絶対に負けられない戦いがある！│
+		絶対に負けられない戦いがある！│
 		 <img src="https://flagcdn.com/16x12/jp.png" style="width:16px;height:12px;">
-		 <a href="#group-${groupLetter}">日本→ グループ ${groupLetter}</a>
+		 <a href="#group-${groupLetter}">日本→ グループ ${groupLetter}</a>│がんばれ日本！
 		`;
 
         el.innerHTML = `
@@ -329,6 +431,9 @@
     async function startDraw() {
       const btn = document.getElementById("startBtn");
       document.getElementById("japanLog").textContent = "";
+	  // ポットテーブル
+	  document.getElementById("potTable").textContent = "";
+		
       // スムーズなアニメーションでスクロールする場合
       btn.scrollIntoView({
         behavior: 'smooth', // スムーズスクロール
@@ -412,6 +517,7 @@ await new Promise(r => setTimeout(r, 1000));
     }
     
     document.getElementById("startBtn").onclick = startDraw;
+	document.getElementById("startBtn2").onclick = startDraw;
     document.getElementById("scrollToTopBtn").onclick = topScroll;
   </script>
   <!-- 
@@ -420,7 +526,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen
+   <hr>©PureGreen │ v0.03
   </div>
 </body>
 </html>

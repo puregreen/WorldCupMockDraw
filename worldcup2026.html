@@ -654,6 +654,27 @@ await new Promise(r => setTimeout(r, 1000));
         block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
       });
     }
+
+	// スクリーンショットボタン
+    document.querySelector(".share-btn.screenshot").onclick = async () => {
+      const element = document.querySelector("#result");
+      const canvas = await html2canvas(element, {
+        backgroundColor: null,
+        scale: 2,
+        logging: false
+      });
+      const link = document.createElement("a");
+      link.download = "2026ワールドカップ抽選結果.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    };
+
+    // X（Twitter）にシェアボタン
+    document.querySelector(".share-btn.xshare").onclick = () => {
+      const text = "2026年ワールドカップ抽選結果をシミュレートしてみた！\n日本はどのグループに？\n#W杯2026 #日本代表";
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
+    };
     
     document.getElementById("startBtn").onclick = startDraw;
 	document.getElementById("startBtn2").onclick = startDraw;
@@ -665,7 +686,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.9
+   <hr>©PureGreen │ テストv0.06.10
   </div>
 </body>
 </html>

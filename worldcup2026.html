@@ -16,80 +16,39 @@
       50% {background: radial-gradient(circle, #fff 60%, #bc002d 90%);}
       100% {background: linear-gradient(135deg, #0f2b5e, #1a4d8c);}
     }
-    /* =====青グラデーション ===== */
-    body {
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      background: linear-gradient(135deg, #0f2b5e, #1a4d8c);
-      color: white;
-      text-align: center;
-      padding: 20px 15px;
-      min-height: 100vh;
-      margin: 0;
-      transition: background 1.5s;
-    }
-
-    h1 {
-      font-size: 3.6rem;
-      margin: 40px 0;
-      text-shadow: 0 0 30px #ffcb05;
-      color: white;
-    }
+    body {font-family: "Helvetica Neue", Arial, sans-serif;background: linear-gradient(135deg, #0f2b5e, #1a4d8c);color: white;text-align: center;padding: 20px;min-height: 100vh;margin: 0;}
+    h1 {font-size: 3.5rem;margin: 20px 0;text-shadow: 0 0 30px #ffcb05;}
     button {background: #ffcb05;color: #0f2b5e;font-size: 1.8rem;font-weight: bold;padding: 22px 70px;border: none;border-radius: 60px;cursor: pointer;box-shadow: 0 12px 40px rgba(0,0,0,0.7);transition: all 0.3s;}
     button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
     button:disabled {background: #555;opacity: 0.7;}
-    button#startBtn {
-      background: #ffcb05;
-      color: #0f2b5e;
-      font-size: 2rem;
-      font-weight: bold;
-      padding: 25px 80px;
-      border: none;
-      border-radius: 70px;
-      cursor: pointer;
-      box-shadow: 0 15px 50px rgba(0,0,0,0.7);
-      transition: all 0.4s;
-      margin: 40px auto;
-      display: block;
-    }
-    button#startBtn:hover:not(:disabled) {
-      transform: translateY(-10px) scale(1.08);
-      box-shadow: 0 20px 60px rgba(255,203,5,0.5);
-    }
+
     /* ポット分け表（最初に表示） */
     /* スマホ対応：ポット表を縦に並べる */
     /* ポット表：PC・タブレットは横4列、スマホは縦1列 */
-    /* ===== ポット表：レスポンシブ ===== */
     #potTable {
       max-width: 1500px;
       margin: 40px auto;
-      padding: 0 15px;
+      padding: 0 20px;
       display: grid;
-      gap: 28px;
-      grid-template-columns: repeat(4, 1fr); /* PC・タブレット・スマホ横持ち */
+      grid-template-columns: repeat(4, 1fr);  /* デフォルト：横4列 */
+      gap: 30px;
     }
 
-    /* スマホ縦持ち（768px以下）→ 2列 */
+    /* スマホ（幅768px以下）では縦1列に自動切替 */
     @media (max-width: 768px) {
       #potTable {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    /* 超狭スマホ（480px以下）→ 1列（保険） */
-    @media (max-width: 480px) {
-      #potTable {
-        grid-template-columns: 1fr;
-        gap: 22px;
+        grid-template-columns: 1fr;  /* 縦1列 */
+        gap: 25px;
       }
     }
 
     .pot {
-      background: rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.15);
       border-radius: 25px;
-      padding: 30px 25px;
-      backdrop-filter: blur(14px);
-      border: 2px solid rgba(255,203,5,0.4);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+      padding: 30px;
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255,203,5,0.5);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
     .pot h2 {
       font-size: 2.6rem;
@@ -103,48 +62,59 @@
       background: rgba(255,255,255,0.25);
       margin: 12px 0;
       padding: 16px 20px;
-      border-radius: 16px;
+      border-radius: 15px;
       font-size: 1.5rem;
       display: flex;
       align-items: center;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      transition: all 0.3s;
+      transition: transform 0.2s;
     }
-    .pot-team:hover {
-      background: rgba(255,203,5,0.25);
-      transform: translateY(-4px);
-    }
+    .pot-team:hover {transform: translateY(-3px);}
     .pot-team img {
       width: 60px;
       height: 40px;
       margin-right: 18px;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
     }
     .pot-team.japan {
       background: linear-gradient(135deg, #bc002d, #fff);
       color: #bc002d;
       font-weight: bold;
-      font-size: 1.8rem;
-      transform: scale(1.06);
-      box-shadow: 0 0 30px rgba(188,0,45,0.7);
+      font-size: 1.75rem;
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(188,0,45,0.6);
     }
-		
-/* ローディング、日本大盛り上げなど */
-    #status, #latestDraw, #result {max-width: 1200px;margin: 50px auto;}
-    #currentDraw {font-size: 4rem;padding: 35px 60px;max-width: 900px;}
-    #currentDraw .group-letter {font-size: 5.5rem;}
-    body.japan-mode {background: radial-gradient(circle, #fff 10%, #bc002d 40%, #fff 70%);animation: japanFlash 2s ease-out;}
-    @keyframes japanFlash {0% {background: radial-gradient(circle, #fff 0%, #bc002d 0%);} 50% {background: radial-gradient(circle, #fff 60%, #bc002d 90%);} 100% {background: linear-gradient(135deg, #0f2b5e, #1a4d8c);}}
-    #japanSpecial {position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%) scale(0);font-size: 10rem;font-weight: 900;color: #bc002d;text-shadow: 0 0 100px #fff, 0 0 150px #bc002d;z-index: 9999;pointer-events: none;display: none;animation: japanBoom 3s ease-out forwards;}
-    @keyframes japanBoom {0% {transform: translate(-50%, -50%) scale(0); opacity: 0;} 40% {transform: translate(-50%, -50%) scale(1.4); opacity: 1;} 70% {transform: translate(-50%, -50%) scale(1); opacity: 1;} 100% {transform: translate(-50%, -50%) scale(0.9); opacity: 0;}}
 
-    #result {display: grid;grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));gap: 30px;}
-    .group {background: rgba(255,255,255,0.15);border-radius: 28px;padding: 35px;backdrop-filter: blur(15px);border: 1px solid rgba(255,255,255,0.3);}
-    .group h2 {font-size: 3rem;color: #ffcb05;}
-    .team {background: rgba(255,255,255,0.3);margin: 16px 0;padding: 20px;border-radius: 16px;font-size: 1.45rem;opacity: 0;transform: translateY(40px);transition: all 0.8s;}
-    .team.show {opacity: 1;transform: translateY(0);}
-/* 日本ログ */
+    /* スマホでも読みやすい文字サイズ調整 */
+    @media (max-width: 480px) {
+      h1 {font-size: 2rem;}
+      .pot h2 {font-size: 1.9rem;}
+      .pot-team {font-size: 1.3rem;padding: 12px 16px;}
+      .pot-team.japan {font-size: 1.5rem;}
+      .pot-team img {width: 50px;height: 33px;}
+      button {font-size: 1.6rem;padding: 18px 50px;}
+    }
+
+	  
+    #status {margin: 50px auto;min-height: 180px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 30px;}
+    #loadingContainer {opacity: 0;transition: opacity 0.7s;}
+    #loadingContainer.show {opacity: 1;}
+    #loadingImg {width: 120px;height: 120px;filter: drop-shadow(0 0 25px #ffcb05);}
+
+    .loading-text {font-size: 2.8rem;font-weight: bold;color: #ffcb05;text-shadow: 0 0 25px rgba(255,203,5,1);letter-spacing: 5px;}
+    .loading-dots span {opacity: 0;animation: dotPulse 1.8s infinite;}
+    .loading-dots span:nth-child(1) {animation-delay: 0s;}
+    .loading-dots span:nth-child(2) {animation-delay: 0.5s;}
+    .loading-dots span:nth-child(3) {animation-delay: 1s;}
+    @keyframes dotPulse {0%,100%{opacity:0} 50%{opacity:1}}
+
+    #bTitle {
+      font-size: 0.65rem;
+      color: white;
+      text-align: center;
+    }
+    /* 日本専用・超ド派手演出 */
     #japanLog {
       width: 100vw;
       background: linear-gradient(135deg, #0f2b5e, #1a4d8c);
@@ -158,7 +128,51 @@
       margin: 0;
       z-index: 9999;
     }
-/* 花火 */
+    #japanSpecial {
+      position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%) scale(0);
+      font-size: 2rem;font-weight: 900;color: #bc002d;text-shadow: 0 0 80px #fff, 0 0 120px #bc002d;
+      z-index: 9999;pointer-events: none;opacity: 0;
+      animation: japanBoom 3s ease-out forwards;
+      letter-spacing: 10px;
+    }
+    @keyframes japanBoom {
+      0%   {transform: translate(-50%, -50%) scale(0); opacity: 0;}
+      40%  {transform: translate(-50%, -50%) scale(1.3); opacity: 1;}
+      70%  {transform: translate(-50%, -50%) scale(1); opacity: 1;}
+      100% {transform: translate(-50%, -50%) scale(0.9); opacity: 0;}
+    }
+    
+    /* 最新1件をド派手に表示 */
+    #latestDraw {margin: 60px auto;padding: 30px;min-height: 200px;perspective: 1500px;}
+    #currentDraw {
+      background: linear-gradient(135deg, rgba(255,203,5,0.4), rgba(255,203,5,0.15));
+      border: 4px solid #ffcb05;
+      border-radius: 30px;
+      padding: 35px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      opacity: 0;
+      transform: scale(0.8) translateY(100px) rotateX(-45deg);
+      transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+      backdrop-filter: blur(15px);
+      text-shadow: 0 0 30px gold;
+    }
+    #currentDraw.show {opacity: 1;transform: scale(1) translateY(0) rotateX(0);}
+    #currentDraw img {width: 100px;height: 66px;margin-right: 35px;border-radius: 14px;box-shadow: 0 8px 30px rgba(0,0,0,0.6);vertical-align: middle;}
+    #currentDraw .group-letter {color: #ffff00;font-size: 1rem;text-shadow: 0 0 50px gold;margin: 0 30px;font-weight: 900;}
+
+    #result {max-width: 1600px;margin: 60px auto;display: grid;grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));gap: 35px;}
+    .group {background: rgba(255,255,255,0.15);border-radius: 28px;padding: 35px;backdrop-filter: blur(15px);border: 1px solid rgba(255,255,255,0.3);}
+    .group h2 {margin: 0 0 30px;font-size: 3.2rem;color: #ffcb05;}
+    .team {background: rgba(255,255,255,0.3);margin: 16px 0;padding: 20px;border-radius: 16px;font-size: 0.65rem;opacity: 0;transform: translateY(40px);transition: all 0.8s;text-align:left;}
+    .team.show {opacity: 1;transform: translateY(0);}
+    .team.host {background: rgba(255,203,5,0.7);font-weight: bold;color: #fff;text-align:left;
+				}
+    .pot-label {padding: 10px 20px;border-radius: 35px;background: #ffcb05;color: #0f2b5e;font-weight: bold;margin-left: 15px;font-size: 0.45rem; position: absolute;right: 0;}
+
     @keyframes fireworks-animation {
 	  0% {
 		  transform: translate(-50%, 90vh);
@@ -211,7 +225,7 @@
 <body>
   <div id="pTitle">
    <h1>2026 FIFA ワールドカップ</h1>
-   <p style="font-size:1.9rem;margin:20px;color:#ffcb05;">本戦グループステージ抽選会（模擬）</p>
+   <p style="font-size:1.9rem;">本戦グループステージ抽選会（模擬）</p>
   </div>
   <button id="startBtn">抽選開始</button>
   <!-- ここに最初にポット分け表を表示 -->
@@ -512,7 +526,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen. v0.03
+   <hr>©PureGreen. v0.02
   </div>
 </body>
 </html>

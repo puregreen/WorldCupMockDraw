@@ -21,7 +21,7 @@
       background: linear-gradient(135deg, #0f2b5e, #1a4d8c);
       color: white;
       text-align: center;
-      padding: 15px 8px;
+      padding: 15px 6px;
       min-height: 100vh;
       margin: 0;
       transition: background 1.5s;
@@ -29,11 +29,23 @@
 	  
     h1 {
       font-size: 1.8rem;
-      margin: 30px 0 20px;
-      text-shadow: 0 0 25px #ffcb05;
+      margin: 20px 0 15px;
+      text-shadow: 0 0 20px #ffcb05;
     }
 	  
-    button {background: #ffcb05;color: #0f2b5e;font-size: 1.8rem;font-weight: bold;padding: 22px 70px;border: none;border-radius: 60px;cursor: pointer;box-shadow: 0 12px 40px rgba(0,0,0,0.7);transition: all 0.3s;}
+    button#startBtn {
+      background: #ffcb05;
+      color: #0f2b5e;
+      font-size: 1.6rem;
+      font-weight: bold;
+      padding: 16px 60px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      margin: 30px auto;
+      display: block;
+    }
     button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
     button:disabled {background: #555;opacity: 0.7;}
 
@@ -56,11 +68,11 @@
     /* ポット表：PC・タブレットは横4列、スマホは縦1列 */
     #potTable {
       max-width: 1500px;
-      margin: 40px auto;
-      padding: 0 20px;
+      margin: 20px auto;
+      padding: 0 8px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);  /* デフォルト：横4列 */
-      gap: 18px;
+      gap: 12px;
     }
 
     @media (min-width: 400px) and (max-width: 799px) {
@@ -72,74 +84,70 @@
     }
 
     .pot {
-      background: rgba(255,255,255,0.14);
-      border-radius: 20px;
-      padding: 18px 15px;
-      backdrop-filter: blur(12px);
-      border: 1.5px solid rgba(255,203,5,0.4);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+      background: rgba(255,255,255,0.13);
+      border-radius: 16px;
+      padding: 12px 10px;
+      border: 1px solid rgba(255,203,5,0.35);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
 	  
     .pot h2 {
-      font-size: 1.9rem;
+      font-size: 1.5rem;
       color: #ffcb05;
-      margin: 0 0 14px;
-      text-shadow: 0 0 15px gold;
-      border-bottom: 2px solid #ffcb05;
-      padding-bottom: 8px;
+      margin: 0 0 8px;
+      text-shadow: 0 0 12px gold;
+      border-bottom: 1.5px solid #ffcb05;
+      padding-bottom: 6px;
     }
 	  
     .pot-team {
-      background: rgba(255,255,255,0.2);
-      margin: 6px 0;
-      padding: 8px 10px;
-      border-radius: 12px;
-      font-size: 1.15rem;           /* 文字小さく */
+      background: rgba(255,255,255,0.18);
+      margin: 3px 0;
+      padding: 5px 8px;
+      border-radius: 10px;
+      font-size: 1rem;              /* 超小さく */
       font-weight: 500;
       display: flex;
       align-items: center;
-      gap: 10px;                    /* 旗と文字の間を狭く */
-      line-height: 1.2;
-      white-space: nowrap;          /* 折り返し禁止 */
+      gap: 6px;                     /* 極小間隔 */
+      line-height: 1.1;
+      white-space: nowrap;
       overflow: hidden;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-      transition: all 0.25s;
+      transition: background 0.2s;
     }
 	  
     .pot-team:hover {
-      background: rgba(255,203,5,0.25);
-      transform: translateY(-2px);
+      background: rgba(255,203,5,0.22);
     }
 	  
-    .pot-team img {
-      width: 42px;                  /* 旗を小さく */
-      height: 28px;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+   .pot-team img {
+      width: 32px;                  /* 超ミニ旗 */
+      height: 21px;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
       flex-shrink: 0;
     }
 
-	.pot-team span {
+    .pot-team span {
       overflow: hidden;
       text-overflow: ellipsis;
-      flex: 1;
     }
-
+	  
 /* 日本は小さくても目立つ！ */
    .pot-team.japan {
       background: linear-gradient(135deg, #bc002d, #fff);
       color: #bc002d;
       font-weight: bold;
-      font-size: 1.35rem !important;   /* 日本だけ少し大きめに */
-      padding: 9px 10px;
-      border: 1.5px solid #fff;
-      box-shadow: 0 0 20px rgba(188,0,45,0.8);
+      font-size: 1.18rem !important;
+      padding: 6px 8px;
+      border: 1px solid #fff;
+      box-shadow: 0 0 15px rgba(188,0,45,0.8);
     }
-
-   .pot-team.japan img {
-      width: 50px;
-      height: 33px;
-      border: 2px solid #fff;
+	  
+    .pot-team.japan img {
+      width: 38px;
+      height: 25px;
+      border: 1.5px solid #fff;
     }
 
 
@@ -269,12 +277,13 @@
   }
 	  
 /* 抽選中・結果表示もスマホ最適化 */
- #status, #latestDraw, #result {max-width: 1000px;margin: 40px auto;padding: 0 10px;
-  }
-	#result {display: grid;grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));gap: 20px;}
-    .group {background: rgba(255,255,255,0.15);border-radius: 22px;padding: 25px;backdrop-filter: blur(12px);}
-    .group h2 {font-size: 2.5rem;margin-bottom: 20px;}
-    .team {padding: 14px;border-radius: 12px;font-size: 1.25rem;margin: 8px 0;}
+    #status, #latestDraw, #result {max-width: 900px;margin: 30px auto;padding: 0 8px;}
+    #currentDraw {font-size: 2.4rem;padding: 20px 30px;}
+    #currentDraw .group-letter {font-size: 3.5rem;}
+    #result {gap: 15px;}
+    .group {padding: 18px;border-radius: 18px;}
+    .group h2 {font-size: 2.1rem;margin-bottom: 15px;}
+    .team {padding: 10px;font-size: 1.1rem;margin: 5px 0;}
   </style>
 </head>
 <body>
@@ -581,7 +590,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.04
+   <hr>©PureGreen │ テストv0.05
   </div>
 </body>
 </html>

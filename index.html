@@ -248,9 +248,9 @@
     const GROUPS = "ABCDEFGHIJKL".split("");
 
     // 国旗URL生成
-    function getFlagUrl(name) {
+    function getFlagUrl(name,w,h) {
       const map = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
-      return `https://flagcdn.com/120x90/${map[name] || "un"}.png`;
+      return `https://flagcdn.com/${w}x${h}/${map[name] || "un"}.png`;
     }
 
     // 最新1件をド派手に表示（上書き）
@@ -278,7 +278,7 @@
 
       } else {
        el.innerHTML = `
-        <img src="${getFlagUrl(team.name)}" alt="${team.name}"><br>
+        <img src="${getFlagUrl(team.name,120,90)}" alt="${team.name}"><br>
         <span>${team.name}</span><br>
         <span class="group-letter">→ グループ ${groupLetter}</span>
       `;
@@ -306,7 +306,9 @@
     function addTeam(letter, team) {
       const div = document.createElement("div");
       div.className = "team";
-      div.innerHTML = `${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
+      div.innerHTML = `
+	  <img src="${getFlagUrl(team.name,16,12)}" alt="${team.name}">
+	  ${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
       if (team.fixed) div.classList.add("host");
       document.querySelector(`#group-${letter}`).appendChild(div);
       setTimeout(() => div.classList.add("show"), 100);

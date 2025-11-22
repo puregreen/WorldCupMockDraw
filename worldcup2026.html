@@ -37,11 +37,11 @@
     }
     .pot-team {
       background: rgba(255,255,255,0.25);margin: 12px 0;padding: 16px 20px;
-      border-radius: 15px;font-size: 0.5rem;display: flex;align-items: center;
+      border-radius: 15px;font-size: 0.3rem;display: flex;align-items: center;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
     .pot-team img {width: 16px;height: 12px;margin-right: 18px;border-radius: 8px;}
-    .pot-team.japan {background: linear-gradient(135deg, #bc002d, #fff);color: #bc002d;font-weight: bold;font-size: 0.7rem;}
+    .pot-team.japan {background: linear-gradient(135deg, #bc002d, #fff);color: #bc002d;font-weight: bold;font-size: 0.35rem;}
 	  
     #status {margin: 50px auto;min-height: 180px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 30px;}
     #loadingContainer {opacity: 0;transition: opacity 0.7s;}
@@ -173,11 +173,9 @@
    <h1>2026 FIFA ワールドカップ</h1>
    <p style="font-size:1.9rem;">本戦グループステージ抽選会（模擬）</p>
   </div>
-	
+  <button id="startBtn">抽選開始</button>
   <!-- ここに最初にポット分け表を表示 -->
   <div id="potTable"></div>
-	
-  <button id="startBtn">抽選開始</button>
   <!-- 最新1件だけド派手に表示 -->
   <div id="latestDraw">
     <div id="currentDraw"></div>

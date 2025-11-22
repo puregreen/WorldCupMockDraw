@@ -634,7 +634,10 @@ await new Promise(r => setTimeout(r, 1000));
         `<div style="font-size:4.5rem;color:#ffcb05;text-shadow:0 0 50px gold;">抽選終了！</div>`;
       btn.textContent = "もう一度抽選";
       btn.disabled = false;
-      
+
+      // ← ここでシェアボタンを表示！
+      document.getElementById("shareButtons").classList.add("show");
+		
       const res = document.getElementById("result");
       // スムーズなアニメーションでスクロールする場合
       res.scrollIntoView({
@@ -662,7 +665,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.8
+   <hr>©PureGreen │ テストv0.06.9
   </div>
 </body>
 </html>

@@ -23,25 +23,67 @@
     button:disabled {background: #555;opacity: 0.7;}
 
     /* ポット分け表（最初に表示） */
+    /* スマホ対応：ポット表を縦に並べる */
     #potTable {
-      max-width: 1400px;margin: 40px auto;display: grid;
-      grid-template-columns: repeat(4, 1fr);gap: 25px;padding: 0 20px;
+      max-width: 500px;
+      margin: 30px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 0 10px;
     }
     .pot {
-      background: rgba(255,255,255,0.15);border-radius: 25px;padding: 30px;
-      backdrop-filter: blur(12px);border: 2px solid rgba(255,203,5,0.4);
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 25px 20px;
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255,203,5,0.5);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
     .pot h2 {
-      font-size: 0.8rem;color: #ffcb05;margin: 0 0 25px;text-shadow: 0 0 20px gold;
-      border-bottom: 3px solid #ffcb05;padding-bottom: 10px;
+      font-size: 2.2rem;
+      color: #ffcb05;
+      margin: 0 0 20px;
+      text-shadow: 0 0 20px gold;
+      border-bottom: 3px solid #ffcb05;
+      padding-bottom: 10px;
     }
     .pot-team {
-      background: rgba(255,255,255,0.25);margin: 12px 0;padding: 16px 20px;
-      border-radius: 15px;font-size: 0.3rem;display: flex;align-items: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      background: rgba(255,255,255,0.25);
+      margin: 10px 0;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
-    .pot-team img {width: 16px;height: 12px;margin-right: 18px;border-radius: 8px;}
-    .pot-team.japan {background: linear-gradient(135deg, #bc002d, #fff);color: #bc002d;font-weight: bold;font-size: 0.35rem;}
+    .pot-team img {
+      width: 56px;
+      height: 37px;
+      margin-right: 16px;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    }
+    .pot-team.japan {
+      background: linear-gradient(135deg, #bc002d, #fff);
+      color: #bc002d;
+      font-weight: bold;
+      font-size: 1.65rem;
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(188,0,45,0.6);
+    }
+
+    /* スマホでも読みやすい文字サイズ調整 */
+    @media (max-width: 480px) {
+      h1 {font-size: 2rem;}
+      .pot h2 {font-size: 1.9rem;}
+      .pot-team {font-size: 1.3rem;padding: 12px 16px;}
+      .pot-team.japan {font-size: 1.5rem;}
+      .pot-team img {width: 50px;height: 33px;}
+      button {font-size: 1.6rem;padding: 18px 50px;}
+    }
+
 	  
     #status {margin: 50px auto;min-height: 180px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 30px;}
     #loadingContainer {opacity: 0;transition: opacity 0.7s;}
@@ -275,16 +317,18 @@
     const flagMap = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
 	  
     // ページ読み込み時にポット分け表を表示
+    // スマホ対応：ポット表を縦に並べる
     window.onload = function() {
       const table = document.getElementById("potTable");
-      [1,2,3,4].forEach(pot => {
+      table.innerHTML = ""; // 初期化
+      [1,2,3,4].forEach(potNum => {
         const div = document.createElement("div");
         div.className = "pot";
-        div.innerHTML = `<h2>ポット ${pot}</h2>`;
-        teams.filter(t => t.pot === pot).forEach(t => {
+        div.innerHTML = `<h2>ポット ${potNum}</h2>`;
+        teams.filter(t => t.pot === potNum).forEach(t => {
           const teamDiv = document.createElement("div");
-          teamDiv.className = "pot-team" + (t.name === "日本" ? " japan" : "");
-          teamDiv.innerHTML = `<img src="https://flagcdn.com/16x12/${flagMap[t.name]}.png" alt="${t.name}"><br>${t.name}`;
+          teamDiv.className = `pot-team${t.name === "日本" ? " japan" : ""}`;
+          teamDiv.innerHTML = `<img src="${getFlagUrl(t.name, 84,63)}" alt="${t.name}">${t.name}`;
           div.appendChild(teamDiv);
         });
         table.appendChild(div);

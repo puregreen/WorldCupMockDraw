@@ -22,6 +22,27 @@
     button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
     button:disabled {background: #555;opacity: 0.7;}
 
+    /* ポット分け表（最初に表示） */
+    #potTable {
+      max-width: 1400px;margin: 40px auto;display: grid;
+      grid-template-columns: repeat(4, 1fr);gap: 25px;padding: 0 20px;
+    }
+    .pot {
+      background: rgba(255,255,255,0.15);border-radius: 25px;padding: 30px;
+      backdrop-filter: blur(12px);border: 2px solid rgba(255,203,5,0.4);
+    }
+    .pot h2 {
+      font-size: 2.8rem;color: #ffcb05;margin: 0 0 25px;text-shadow: 0 0 20px gold;
+      border-bottom: 3px solid #ffcb05;padding-bottom: 10px;
+    }
+    .pot-team {
+      background: rgba(255,255,255,0.25);margin: 12px 0;padding: 16px 20px;
+      border-radius: 15px;font-size: 1.5rem;display: flex;align-items: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .pot-team img {width: 60px;height: 40px;margin-right: 18px;border-radius: 8px;}
+    .pot-team.japan {background: linear-gradient(135deg, #bc002d, #fff);color: #bc002d;font-weight: bold;font-size: 1.7rem;}
+	  
     #status {margin: 50px auto;min-height: 180px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 30px;}
     #loadingContainer {opacity: 0;transition: opacity 0.7s;}
     #loadingContainer.show {opacity: 1;}
@@ -152,6 +173,10 @@
    <h1>2026 FIFA ワールドカップ</h1>
    <p style="font-size:1.9rem;">本戦グループステージ抽選会（模擬）</p>
   </div>
+	
+  <!-- ここに最初にポット分け表を表示 -->
+  <div id="potTable"></div>
+	
   <button id="startBtn">抽選開始</button>
   <!-- 最新1件だけド派手に表示 -->
   <div id="latestDraw">
@@ -248,9 +273,29 @@
 
     const GROUPS = "ABCDEFGHIJKL".split("");
 
+    // 国旗マップ
+    const flagMap = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
+	  
+    // ページ読み込み時にポット分け表を表示
+    window.onload = function() {
+      const table = document.getElementById("potTable");
+      [1,2,3,4].forEach(pot => {
+        const div = document.createElement("div");
+        div.className = "pot";
+        div.innerHTML = `<h2>ポット ${pot}</h2>`;
+        teams.filter(t => t.pot === pot).forEach(t => {
+          const teamDiv = document.createElement("div");
+          teamDiv.className = "pot-team" + (t.name === "日本" ? " japan" : "");
+          teamDiv.innerHTML = `<img src="https://flagcdn.com/84x63/${flagMap[t.name]}.png" alt="${t.name}">${t.name}`;
+          div.appendChild(teamDiv);
+        });
+        table.appendChild(div);
+      });
+    };
+	  
     // 国旗URL生成
     function getFlagUrl(name,w,h) {
-      const map = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
+      const map =flagMap;
       return `https://flagcdn.com/${w}x${h}/${map[name] || "un"}.png`;
     }
 

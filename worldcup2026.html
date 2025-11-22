@@ -40,7 +40,7 @@
       border-radius: 15px;font-size: 0.5rem;display: flex;align-items: center;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
-    .pot-team img {width: 60px;height: 40px;margin-right: 18px;border-radius: 8px;}
+    .pot-team img {width: 16px;height: 12px;margin-right: 18px;border-radius: 8px;}
     .pot-team.japan {background: linear-gradient(135deg, #bc002d, #fff);color: #bc002d;font-weight: bold;font-size: 0.7rem;}
 	  
     #status {margin: 50px auto;min-height: 180px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 30px;}
@@ -286,7 +286,7 @@
         teams.filter(t => t.pot === pot).forEach(t => {
           const teamDiv = document.createElement("div");
           teamDiv.className = "pot-team" + (t.name === "日本" ? " japan" : "");
-          teamDiv.innerHTML = `<img src="https://flagcdn.com/16x12/${flagMap[t.name]}.png" alt="${t.name}">${t.name}`;
+          teamDiv.innerHTML = `<img src="https://flagcdn.com/16x12/${flagMap[t.name]}.png" alt="${t.name}"><br>${t.name}`;
           div.appendChild(teamDiv);
         });
         table.appendChild(div);

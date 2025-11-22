@@ -341,7 +341,7 @@
         teams.filter(t => t.pot === potNum).forEach(t => {
           const teamDiv = document.createElement("div");
           teamDiv.className = `pot-team${t.name === "日本" ? " japan" : ""}`;
-          teamDiv.innerHTML = `<img src="${getFlagUrl(t.name, 84,63)}" alt="${t.name}">${t.name}`;
+          teamDiv.innerHTML = `<img src="${getFlagUrl(t.name, 40,30)}" alt="${t.name}">${t.name}`;
           div.appendChild(teamDiv);
         });
         table.appendChild(div);

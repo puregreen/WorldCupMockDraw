@@ -737,11 +737,75 @@ style.textContent = `
 document.head.appendChild(style);
 
     // X（Twitter）にシェアボタン
-    document.querySelector(".share-btn.xshare").onclick = () => {
-      const text = "2026年ワールドカップ抽選結果をシミュレートしてみた！\n日本はどのグループに？\n#W杯2026 #日本代表";
-      const url = encodeURIComponent(window.location.href);
-      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
-    };
+document.querySelector(".share-btn.xshare").onclick = async () => {
+  try {
+    const element = document.getElementById("result");
+
+    // 一時的に背景を強制（白くなる対策）
+    const originalBg = document.body.style.background;
+    document.body.style.background = "linear-gradient(135deg, #0f2b5e, #1a4d8c)";
+
+    const canvas = await html2canvas(element, {
+      scale: window.devicePixelRatio || 2,
+      useCORS: true,
+      backgroundColor: "#0f2b5e",
+      logging: false,
+      width: element.scrollWidth,
+      height: element.scrollHeight
+    });
+
+    document.body.style.background = originalBg;
+
+    // Canvas → Blob → File に変換
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+    const file = new File([blob], "2026worldcup_draw.png", { type: "image/png" });
+
+    // スマホ・PC両対応の共有API
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      // スマホ（Android/iOS）のネイティブ共有（最高にカッコいい！）
+      await navigator.share({
+        files: [file],
+        title: "2026ワールドカップ抽選結果",
+        text: "日本はどのグループに入った？！\n2026年W杯グループステージシミュレーション結果！\n#W杯2026 #日本代表"
+      });
+    } else {
+      // PCや古いブラウザ → 従来のTwitter Web Intent + 画像はダウンロードしてから手動添付
+      const url = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "2026worldcup_draw.png";
+      link.click();
+
+      // 同時にツイート画面を開く
+      const text = encodeURIComponent("2026ワールドカップ抽選結果！日本はどのグループ？\n画像をダウンロードしたら一緒に投稿してね！\n#W杯2026 #日本代表");
+      const shareUrl = `https://twitter.com/intent/tweet?text=${text}`;
+      window.open(shareUrl, "_blank");
+
+      // トースト通知
+      showToast("画像をダウンロードしました！Xで投稿してください！");
+    }
+
+  } catch (err) {
+    console.error(err);
+    // フォールバック：画像なしでツイート画面を開く
+    const text = encodeURIComponent("2026ワールドカップ抽選結果をシミュレートしてみた！\n日本はどのグループ？\n🇯🇵サッカー日本代表を応援しよう⚽️\n#W杯2026 #日本代表 @MILKSATOKYO @PureGreenX");
+    window.open(`https://twitter.com/intent/tweet?text=${text}`, "_blank");
+  }
+};
+
+// トースト通知（共通）
+function showToast(message) {
+  const toast = document.createElement("div");
+  toast.textContent = message;
+  toast.style.cssText = `
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: #ffcb05; color: #0f2b5e; padding: 16px 36px; border-radius: 50px;
+    font-size: 1.4rem; font-weight: bold; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    animation: toast 3.5s ease-out forwards;
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
     
     document.getElementById("startBtn").onclick = startDraw;
 	document.getElementById("startBtn2").onclick = startDraw;
@@ -753,7 +817,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.13
+   <hr>©PureGreen │ テストv0.06.14
   </div>
 </body>
 </html>

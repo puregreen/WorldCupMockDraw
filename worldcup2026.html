@@ -494,7 +494,7 @@
 }
 
 /* スマホ：1列（横スクロール完全防止！） */
-@media (max-width: 499px) {
+@media (max-width: 440px) {
   .pot-table-compact {
     grid-template-columns: 1fr;
     gap: 14px;
@@ -592,7 +592,7 @@
   <button id="startBtn">抽選開始</button>
 
 	<!-- 抽選会タブ内にポット表をコピー表示（コンパクト版） -->
-<div style="margin: 20px auto 40px; max-width: 1300px; padding: 0 10px;">
+<div style="margin: 20px auto 40px; max-width: 1300px; padding: 0 10px;" id="potMini">
   <h2 style="color:#ffcb05; font-size:1.6rem; text-shadow:0 0 20px gold; margin-bottom:16px;">
     本大会ポット分け（抽選用）
   </h2>
@@ -995,6 +995,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById("japanLog").textContent = "";
 	  // ポットテーブル
 	  // document.getElementById("potTable").textContent = "";
+	  document.getElementById("potMini").classList.remove("show");
 		
       // スムーズなアニメーションでスクロールする場合
       btn.scrollIntoView({
@@ -1329,7 +1330,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.07.15
+   <hr>©PureGreen │ テストv0.07.16
   </div>
 </body>
 </html>

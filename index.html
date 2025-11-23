@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2026 FIFAワールドカップ 本戦抽選会（模擬）</title>
-  <style>
+  <title>2026 FIFAワールドカップ 本戦抽選会（模擬）│サッカー日本代表応援</title>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+	<style>
     a {color: #fff;}
     /* 日本決まった瞬間用フラッシュ */
     body.japan-mode {
@@ -302,6 +303,94 @@
     .rule ul li {
 	text-align: left;
     }
+	  
+/* === 抽選終了後のシェアボタンエリア === */
+    #shareButtons {
+      margin: 40px auto;
+      padding: 20px;
+      max-width: 800px;
+      display: none;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    #shareButtons.show {display: flex !important;}
+
+    .share-btn {
+      background: #ffcb05;
+      color: #0f2b5e;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 16px 40px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      transition: all 0.4s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .share-btn:hover {
+      transform: translateY(-8px) scale(1.08);
+      box-shadow: 0 20px 50px rgba(255,203,5,0.5);
+    }
+    .share-btn.screenshot {background: #1da1f2;} /* Twitterブルー */
+    .share-btn.xshare {background: #000000;}
+
+/* スクショ＆シェアボタンを右下・左下に常時固定！ */
+  #fixedButtons {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 9998;
+    display: none;
+    justify-content: space-between;
+    pointer-events: none; /* 背景タップは無効にしない */
+    gap: 20px;
+  }
+  #fixedButtons.show {
+    display: flex;
+  }
+
+  .fixed-btn {
+    background: #ffcb05;
+    color: #0f2b5e;
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 16px 28px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+    transition: all 0.4s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    pointer-events: auto; /* ボタンだけはタップ可能 */
+    backdrop-filter: blur(10px);
+    min-width: 140px;
+    justify-content: center;
+  }
+  .fixed-btn:hover {
+    transform: translateY(-10px) scale(1.1);
+    box-shadow: 0 20px 60px rgba(255,203,5,0.6);
+  }
+  .fixed-btn.screenshot {
+    background: #1da1f2; /* Twitterブルー */
+    color: white;
+  }
+  .fixed-btn.xshare {
+    background: #000000;
+    color: white;
+  }
+
+  /* スマホでも見やすい調整 */
+  @media (max-width: 480px) {
+    #fixedButtons { bottom: 15px; left: 15px; right: 15px; }
+    .fixed-btn { font-size: 1.2rem; padding: 14px 20px; }
+  }
   </style>
 </head>
 <body>
@@ -341,7 +430,7 @@
   <div id="status">
     <div id="statusText"><button id="startBtn2">抽選開始</button></div>
     <div id="loadingContainer">
-      <img id="loadingImg" src="./IMG_0261.gif" alt="抽選中">
+      <img id="loadingImg" src="./IMG_0293.gif" alt="抽選中">
       <div class="loading-text">
         抽選中
         <div class="loading-dots" style="display:inline-block">
@@ -354,6 +443,24 @@
   <div id="result">
   </div>
 
+<!-- 抽選終了後に表示されるシェアボタン！ -->
+  <div id="shareButtons">
+    <button class="share-btn screenshot">
+      スクショ
+    </button>
+    <button class="share-btn xshare">
+      シェア
+    </button>
+  </div>
+  <div id="fixedButtons">
+    <button class="fixed-btn screenshot">
+      スクショ
+    </button>
+    <button class="fixed-btn xshare">
+      シェア
+    </button>
+  </div>
+	
   <script>
     document.getElementById("japanSpecial").style.display = "none";
     // 48チーム（2026年大会想定・最新ランキング準拠）
@@ -531,6 +638,11 @@
         block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
       });
       btn.disabled = true; btn.textContent = "抽選中…";
+ 
+	  // ← ここで固定ボタンを即非表示！
+	  // document.getElementById("shareButtons").classList.add("show");
+	  document.getElementById("fixedButtons").classList.remove("show");
+		
       showLoading(false);
       // showTitle(false);
       document.getElementById("statusText").textContent = "開催国を配置中…";
@@ -589,7 +701,12 @@ await new Promise(r => setTimeout(r, 1000));
         `<div style="font-size:4.5rem;color:#ffcb05;text-shadow:0 0 50px gold;">抽選終了！</div>`;
       btn.textContent = "もう一度抽選";
       btn.disabled = false;
+
+      // ← ここでシェアボタンを表示！
+      // document.getElementById("shareButtons").classList.add("show");
+      document.getElementById("fixedButtons").classList.add("show");
       
+		
       const res = document.getElementById("result");
       // スムーズなアニメーションでスクロールする場合
       res.scrollIntoView({
@@ -606,18 +723,249 @@ await new Promise(r => setTimeout(r, 1000));
         block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
       });
     }
+
+	// スクリーンショットボタン
+  // スクリーンショット保存（ファイル名に現在時刻を付与）
+// スクリーンショット保存（タブレット白問題＋スマホ反応しない問題を完全解決！）
+document.querySelector(".fixed-btn.screenshot").onclick = async () => {
+  try {
+    // 結果エリアをキャプチャ（背景を強制指定）
+    const element = document.getElementById("result");
     
+    // 一時的に背景を強制適用（白くなるのを防ぐ）
+    const originalBg = document.body.style.background;
+    document.body.style.background = "linear-gradient(135deg, #0f2b5e, #1a4d8c)";
+
+    const canvas = await html2canvas(element, {
+      scale: window.devicePixelRatio || 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: "#0f2b5e",  // ← これが白くなるのを防ぐ最重要ポイント！
+      logging: false,
+      width: element.scrollWidth,
+      height: element.scrollHeight,
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight
+    });
+
+    // 背景をもとに戻す
+    document.body.style.background = originalBg;
+
+    // 現在時刻でファイル名生成（ミリ秒まで）
+    const now = new Date();
+    const timestamp = now.getFullYear() +
+      String(now.getMonth() + 1).padStart(2, '0') +
+      String(now.getDate()).padStart(2, '0') +
+      String(now.getHours()).padStart(2, '0') +
+      String(now.getMinutes()).padStart(2, '0') +
+      String(now.getSeconds()).padStart(2, '0') +
+      String(now.getMilliseconds()).padStart(3, '0');
+    
+    const filename = `2026worldcup_${timestamp}.png`;
+
+    // Blobで確実にダウンロード（スマホでも100%反応！）
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // カッコいいトースト通知（alertより美しく、スマホでも反応する）
+      const toast = document.createElement("div");
+      toast.textContent = `保存しました！ ${filename}`;
+      toast.style.cssText = `
+        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+        background: #ffcb05; color: #0f2b5e; padding: 16px 32px; border-radius: 50px;
+        font-size: 1.4rem; font-weight: bold; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        animation: toast 3s ease-out forwards;
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }, "image/png");
+
+  } catch (err) {
+    console.error(err);
+    alert("スクリーンショットに失敗しました…");
+  }
+};
+
+
+
+// X（Twitter）にシェアボタン
+// X（Twitter）に画像付き＋メンション付きでシェア！
+// Xシェアもスクショも「必ず横並びで見やすい」ように強制！
+async function captureResultForShare() {
+  const resultArea = document.getElementById("result");
+
+  // 元のスタイル保存
+  const originalStyle = resultArea.style.cssText;
+
+  // 強制：横4列＋見やすい＋折り返し防止
+  resultArea.style.cssText = `
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 25px !important;
+    padding: 40px 30px !important;
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    background: rgba(255,255,255,0.08) !important;
+    border-radius: 30px !important;
+  `;
+
+  // 各グループを整える
+  document.querySelectorAll(".group").forEach(g => {
+    g.style.cssText += `
+      padding: 28px !important;
+      border-radius: 25px !important;
+      min-width: 280px !important;
+      background: rgba(255,255,255,0.15) !important;
+    `;
+  });
+
+  // チーム名が折り返さないように超重要設定！
+  document.querySelectorAll(".team").forEach(t => {
+    t.style.cssText += `
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      font-size: 1.15rem !important;
+      padding: 12px 16px !important;
+      margin: 8px 0 !important;
+    `;
+  });
+
+  // グループタイトルも美しく
+  document.querySelectorAll(".group h2").forEach(h => {
+    h.style.fontSize = "2.6rem";
+    h.style.marginBottom = "20px";
+  });
+
+  // レイアウト完全反映待ち
+  await new Promise(r => setTimeout(r, 200));
+
+  const canvas = await html2canvas(resultArea, {
+    scale: window.devicePixelRatio || 2,
+    useCORS: true,
+    backgroundColor: "#0f2b5e",
+    logging: false,
+    width: resultArea.scrollWidth + 80,
+    height: resultArea.scrollHeight + 140,
+    windowWidth: document.body.scrollWidth
+  });
+
+  // 元に戻す（画面表示はユーザーの好み通り）
+  resultArea.style.cssText = originalStyle;
+  document.querySelectorAll(".group, .team, .group h2").forEach(el => {
+    el.style.cssText = el.style.cssText.replace(/!important/g, '').replace(/;$/g, '');
+  });
+
+  return canvas;
+}
+
+// スクリーンショット保存（横4列・折り返しなし）
+document.querySelector(".fixed-btn.xshare").onclick = async () => {
+  try {
+    const canvas = await captureResultForShare();  // 前回の横4列・折り返しなし関数
+
+    // html2canvasのBlobをfetch経由で再変換（互換性向上）
+    const dataUrl = canvas.toDataURL("image/png");
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+
+    // ★超強化Fileオブジェクト（2025年Android Chrome対応）★
+    const file = new File(
+      [blob],
+      "2026worldcup_draw.png",
+      {
+        type: "image/png",
+        lastModified: Date.now(),  // 必須：タイムスタンプを明示
+      }
+    );
+
+    const tweetText = `@MILKSATOKYO @PureGreenX\n2026ワールドカップ抽選シミュレーション結果！\n日本はどのグループに入った？！サッカー日本代表を応援しよう！\n#W杯2026 #日本代表`;
+
+    // ★直接添付テスト（canShareで厳密チェック）★
+    if (navigator.share && navigator.canShare({ files: [file] })) {
+      const sharePromise = navigator.share({
+        files: [file],
+        title: "2026ワールドカップ抽選結果",
+        text: tweetText
+      });
+
+      // 成功監視（AndroidでPromiseがresolveするまで待つ）
+      sharePromise.then(() => {
+        showToast("シェアに直接投稿成功！");
+      }).catch((err) => {
+        console.error("Share failed:", err);
+        fallbackToDownloadAndTweet(canvas, tweetText);
+      });
+    } else {
+      // フォールバック：即ダウンロード＋Twitter Intent
+      fallbackToDownloadAndTweet(canvas, tweetText);
+    }
+
+  } catch (err) {
+    console.error("Share error:", err);
+    fallbackToTweetOnly(tweetText);
+  }
+};
+
+// フォールバック1：画像ダウンロード＋Twitter Intent
+function fallbackToDownloadAndTweet(canvas, tweetText) {
+  canvas.toBlob((blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "2026worldcup_draw.png";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+  const enc = encodeURIComponent(tweetText);
+  window.open(`https://twitter.com/intent/tweet?text=${enc}`, "_blank");
+  showToast("画像をダウンロードしました！Xで添付して投稿♪");
+}
+
+// フォールバック2：画像なしTwitter投稿
+function fallbackToTweetOnly(tweetText) {
+  const enc = encodeURIComponent(tweetText.replace(/\n/g, ' '));  // 改行をスペースに（Intent互換）
+  window.open(`https://twitter.com/intent/tweet?text=${enc}`, "_blank");
+  showToast("X投稿画面を開きました！");
+}
+
+// トースト通知
+function showToast(message) {
+  const toast = document.createElement("div");
+  toast.textContent = message;
+  toast.style.cssText = `
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: #ffcb05; color: #0f2b5e; padding: 16px 36px; border-radius: 50px;
+    font-size: 1.4rem; font-weight: bold; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    animation: toast 3.5s ease-out forwards;
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
+
+// トーストアニメ
+const style = document.createElement("style");
+style.textContent = `@keyframes toast {0% { opacity: 0; transform: translateX(-50%) translateY(20px); }15% { opacity: 1; transform: translateX(-50%) translateY(0); }85% { opacity: 1; transform: translateX(-50%) translateY(0); }100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }}`;
+document.head.appendChild(style);
+	  
     document.getElementById("startBtn").onclick = startDraw;
 	document.getElementById("startBtn2").onclick = startDraw;
     document.getElementById("scrollToTopBtn").onclick = topScroll;
+
   </script>
-  <!-- 
-  <button id="scrollToTopBtn">トップに戻る</button>
-   -->
+	
+	
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ v0.06
+   <hr>©PureGreen │ v0.07
   </div>
 </body>
 </html>

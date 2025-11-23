@@ -472,6 +472,95 @@
     #fixedButtons { bottom: 15px; left: 15px; right: 15px; }
     .fixed-btn { font-size: 1.2rem; padding: 14px 20px; }
   }
+
+/* 抽選会タブ内・超コンパクト版ポット表 */
+.pot-table-compact {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  background: rgba(255,255,255,0.06);
+  padding: 16px;
+  border-radius: 18px;
+  border: 1.5px solid rgba(255,203,5,0.4);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* タブレット：2列 */
+@media (max-width: 899px) {
+  .pot-table-compact {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* スマホ：1列（横スクロール完全防止！） */
+@media (max-width: 499px) {
+  .pot-table-compact {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 14px;
+  }
+}
+
+/* 各ポットのスタイル（超コンパクト） */
+.pot-compact {
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 10px 8px;
+  border: 1px solid rgba(255,203,5,0.25);
+  text-align: center;
+}
+
+.pot-compact h3 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  color: #ffcb05;
+  text-shadow: 0 0 10px gold;
+  font-weight: bold;
+}
+
+.pot-compact .team-mini {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 8px;
+  margin: 3px 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.pot-compact .team-mini img {
+  width: 26px;
+  height: 19px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+}
+
+.pot-compact .team-mini span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 日本は小さくてもド派手！ */
+.pot-compact .team-mini.japan {
+  background: linear-gradient(135deg, #fff 30%, #bc002d 70%);
+  color: #bc002d;
+  font-weight: 900;
+  font-size: 0.94rem !important;
+  border: 1px solid #fff;
+  box-shadow: 0 0 10px rgba(188,0,45,0.7);
+}
+.pot-compact .team-mini.japan img {
+  width: 30px;
+  height: 22px;
+  border: 1.3px solid #fff;
+}
+		
   </style>
 </head>
 <body>
@@ -504,19 +593,10 @@
 
 	<!-- 抽選会タブ内にポット表をコピー表示（コンパクト版） -->
 <div style="margin: 20px auto 40px; max-width: 1300px; padding: 0 10px;">
-  <h2 style="color:#ffcb05; font-size:1.8rem; text-shadow:0 0 20px gold; margin-bottom:20px;">
+  <h2 style="color:#ffcb05; font-size:1.6rem; text-shadow:0 0 20px gold; margin-bottom:16px;">
     本大会ポット分け（抽選用）
   </h2>
-  <div id="potTableInDraw" style="
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    background: rgba(255,255,255,0.06);
-    padding: 20px;
-    border-radius: 20px;
-    border: 1.5px solid rgba(255,203,5,0.4);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-  ">
+  <div id="potTableInDraw" class="pot-table-compact">
     <!-- ここにポットを自動生成 -->
   </div>
 </div>
@@ -757,49 +837,24 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderPotTableInDraw() {
   const container = document.getElementById("potTableInDraw");
   if (!container) return;
-
-  container.innerHTML = ""; // 初期化
+  container.innerHTML = "";
 
   [1,2,3,4].forEach(potNum => {
     const potDiv = document.createElement("div");
-    potDiv.style.cssText = `
-      background: rgba(255,255,255,0.1);
-      border-radius: 14px;
-      padding: 12px;
-      border: 1px solid rgba(255,203,5,0.3);
-    `;
+    potDiv.className = "pot-compact";
 
     const h3 = document.createElement("h3");
     h3.textContent = `ポット ${potNum}`;
-    h3.style.cssText = `
-      margin: 0 0 10px;
-      color: #ffcb05;
-      font-size: 1.3rem;
-      text-align: center;
-      text-shadow: 0 0 10px gold;
-    `;
     potDiv.appendChild(h3);
 
     teams
       .filter(t => t.pot === potNum)
       .forEach(t => {
         const teamDiv = document.createElement("div");
-        teamDiv.style.cssText = `
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 6px 8px;
-          background: rgba(255,255,255,0.15);
-          border-radius: 10px;
-          margin: 4px 0;
-          font-size: 0.95rem;
-          font-weight: ${t.name === "日本" ? "900" : "500"};
-          color: ${t.name === "日本" ? "#bc002d" : "white"};
-          background: ${t.name === "日本" ? "linear-gradient(135deg, #fff, #bc002d)" : "rgba(255,255,255,0.15)"};
-        `;
+        teamDiv.className = `team-mini${t.name === "日本" ? " japan" : ""}`;
         teamDiv.innerHTML = `
-          <img src="${getFlagUrl(t.name, 64, 48)}" style="width:28px;height:21px;border-radius:3px;box-shadow:0 1px 4px #000;">
-          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.name}</span>
+          <img src="${getFlagUrl(t.name, 60, 45)}" alt="${t.name}">
+          <span>${t.name}</span>
         `;
         potDiv.appendChild(teamDiv);
       });
@@ -810,18 +865,16 @@ function renderPotTableInDraw() {
 
 // ページ読み込み時とタブ切り替え時に実行
 document.addEventListener('DOMContentLoaded', () => {
-  renderPotTableInDraw(); // 初回表示
+  renderPotTableInDraw();
 
-  // タブが「抽選会」に切り替わるたびに再描画（万が一のズレ防止）
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn.dataset.tab === "draw") {
-        setTimeout(renderPotTableInDraw, 300); // アニメーション後
+        setTimeout(renderPotTableInDraw, 300);
       }
     });
   });
-});	
-	  
+});	  
     // ページ読み込み時にポット分け表を表示
     // スマホ対応：ポット表を縦に並べる
     // 完全レスポンシブ対応ポット表
@@ -1276,7 +1329,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.07.12
+   <hr>©PureGreen │ テストv0.07.13
   </div>
 </body>
 </html>

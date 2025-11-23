@@ -1270,7 +1270,7 @@ document.querySelector(".fixed-btn.xshare").onclick = async () => {
 
       // 成功監視（AndroidでPromiseがresolveするまで待つ）
       sharePromise.then(() => {
-        showToast("シェアに直接投稿成功！");
+        showToast("シェア成功！");
       }).catch((err) => {
         console.error("Share failed:", err);
         fallbackToDownloadAndTweet(canvas, tweetText);
@@ -1305,7 +1305,7 @@ function fallbackToDownloadAndTweet(canvas, tweetText) {
 function fallbackToTweetOnly(tweetText) {
   const enc = encodeURIComponent(tweetText.replace(/\n/g, ' '));  // 改行をスペースに（Intent互換）
   window.open(`https://twitter.com/intent/tweet?text=${enc}`, "_blank");
-  showToast("X投稿画面を開きました！");
+  showToast("シェア画面を開きました！");
 }
 
 // トースト通知
@@ -1337,7 +1337,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ v0.09
+   <hr>©PureGreen │ v0.10
   </div>
 </body>
 </html>

@@ -656,50 +656,46 @@ await new Promise(r => setTimeout(r, 1000));
     }
 
 	// スクリーンショットボタン
-    document.querySelector(".share-btn.screenshot").onclick = async () => {
-	 document.getElementById('result').style.zIndex = 9999;
-     // クラスのインスタンス化
-     const currentDate = new Date();
-     // 年
-     const year = currentDate.getFullYear();
-     // 月
-     const month = currentDate.getMonth() + 1;
-     // 日
-     const day = currentDate.getDate();
-     // 曜日のリスト
-     const dayOfWeek = ["日", "月", "火", "水", "木", "金", "土"];
-     // 曜日の番号を取得
-     const weekNumber = currentDate.getDay();
-     // 時間
-     const hour = currentDate.getHours();
-     // 分
-     const min = currentDate.getMinutes();
-     // 秒
-     const sec = currentDate.getSeconds();
-     // ミリ秒
-     const msec = currentDate.getMilliseconds();
-
-     const yyyyMMddHHmmssfff = () => {
-      const date =
-      year +
-      String(month).padStart(2, "0") +
-      String(day).padStart(2, "0") +
-      String(hour).padStart(2, "0") +
-      String(min).padStart(2, "0") +
-      String(sec).padStart(2, "0") +
-      String(msec).padStart(3, "0");
-     };
+  // スクリーンショット保存（ファイル名に現在時刻を付与）
+  document.querySelector(".share-btn.screenshot").onclick = async () => {
+    try {
       const element = document.querySelector("#result");
+
+      // 高画質でキャプチャ
       const canvas = await html2canvas(element, {
         backgroundColor: null,
         scale: 2,
-        logging: false
+        logging: false,
+        useCORS: true,
+        allowTaint: true
       });
+
+      // 現在の日時を「yyyyMMddHHmmssfff」形式で取得（ミリ秒3桁）
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const date = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+
+      const timestamp = `${year}${month}${date}${hours}${minutes}${seconds}${milliseconds}`;
+      const filename = `2026worldcup_${timestamp}.png`;
+
+      // ダウンロード実行
       const link = document.createElement("a");
-      link.download = "2026worldcup_" + yyyyMMddHHmmssfff() + ".png";
-      link.href = canvas.toDataURL();
+      link.download = filename;
+      link.href = canvas.toDataURL("image/png");
       link.click();
-    };
+
+      // 成功したらちょっとフィードバック
+      alert(`保存しました！\n${filename}`);
+    } catch (err) {
+      console.error(err);
+      alert("スクショに失敗しました…");
+    }
+  };
 
     // X（Twitter）にシェアボタン
     document.querySelector(".share-btn.xshare").onclick = () => {
@@ -718,7 +714,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.10
+   <hr>©PureGreen │ テストv0.06.11
   </div>
 </body>
 </html>

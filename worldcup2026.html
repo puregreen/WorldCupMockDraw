@@ -630,6 +630,11 @@
         block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
       });
       btn.disabled = true; btn.textContent = "抽選中…";
+ 
+	  // ← ここで固定ボタンを即非表示！
+	  document.getElementById("shareButtons").classList.add("show");
+	  document.getElementById("fixedButtons").classList.remove("show");
+		
       showLoading(false);
       // showTitle(false);
       document.getElementById("statusText").textContent = "開催国を配置中…";
@@ -690,7 +695,7 @@ await new Promise(r => setTimeout(r, 1000));
       btn.disabled = false;
 
       // ← ここでシェアボタンを表示！
-      // document.getElementById("shareButtons").classList.add("show");
+      document.getElementById("shareButtons").classList.add("show");
       document.getElementById("fixedButtons").classList.add("show");
       
 		
@@ -965,7 +970,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.25
+   <hr>©PureGreen │ テストv0.06.26
   </div>
 </body>
 </html>

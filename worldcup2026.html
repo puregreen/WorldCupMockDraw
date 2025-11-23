@@ -1121,16 +1121,17 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 		
      // 描画後にクリック有効化（メインのポット表と抽選タブ内両方）
-	  if (originalRender) originalRender();
-      makeTeamsClickable();
-    };
+	 // if (originalRender) originalRender();
+      //makeTeamsClickable();
+		
+    }; 
 
-// 抽選タブ内コピーも対応
-//const originalRenderInDraw = renderPotTableInDraw;
-//renderPotTableInDraw = function() {
-//  originalRenderInDraw();
-//  setTimeout(makeTeamsClickable, 100);
-//};	  
+	// 抽選タブ内コピーも対応
+      const originalRenderInDraw = renderPotTableInDraw;
+      renderPotTableInDraw = function() {
+      originalRenderInDraw();
+      setTimeout(makeTeamsClickable, 100);
+     };	 
 	  
 	  // ページ読み込み後に実行
 document.addEventListener('DOMContentLoaded', () => {
@@ -1594,7 +1595,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10.12
+   <hr>©PureGreen │ テストv0.10.13
   </div>
 </body>
 </html>

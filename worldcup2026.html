@@ -886,7 +886,7 @@ document.querySelector(".fixed-btn.xshare").onclick = async () => {
       }
     );
 
-    const tweetText = `@MILKSATOKYO @PureGreenX\n2026ワールドカップ抽選結果！\n日本はどのグループに入った？！\n#W杯2026 #日本代表`;
+    const tweetText = `@MILKSATOKYO @PureGreenX\n2026ワールドカップ抽選シミュレーション結果！\n日本はどのグループに入った？！サッカー日本代表を応援しよう！\n#W杯2026 #日本代表`;
 
     // ★直接添付テスト（canShareで厳密チェック）★
     if (navigator.share && navigator.canShare({ files: [file] })) {
@@ -898,7 +898,7 @@ document.querySelector(".fixed-btn.xshare").onclick = async () => {
 
       // 成功監視（AndroidでPromiseがresolveするまで待つ）
       sharePromise.then(() => {
-        showToast("Xに直接投稿成功！");
+        showToast("シェアに直接投稿成功！");
       }).catch((err) => {
         console.error("Share failed:", err);
         fallbackToDownloadAndTweet(canvas, tweetText);
@@ -965,7 +965,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.28
+   <hr>©PureGreen │ テストv0.06.29
   </div>
 </body>
 </html>

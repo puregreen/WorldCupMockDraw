@@ -452,6 +452,14 @@
       シェア
     </button>
   </div>
+  <div id="fixedButtons">
+    <button class="fixed-btn screenshot">
+      スクショ
+    </button>
+    <button class="fixed-btn xshare">
+      シェア
+    </button>
+  </div>
 	
   <script>
     document.getElementById("japanSpecial").style.display = "none";
@@ -632,7 +640,7 @@
       btn.disabled = true; btn.textContent = "抽選中…";
  
 	  // ← ここで固定ボタンを即非表示！
-	  document.getElementById("shareButtons").classList.add("show");
+	  // document.getElementById("shareButtons").classList.add("show");
 	  document.getElementById("fixedButtons").classList.remove("show");
 		
       showLoading(false);
@@ -695,7 +703,7 @@ await new Promise(r => setTimeout(r, 1000));
       btn.disabled = false;
 
       // ← ここでシェアボタンを表示！
-      document.getElementById("shareButtons").classList.add("show");
+      // document.getElementById("shareButtons").classList.add("show");
       document.getElementById("fixedButtons").classList.add("show");
       
 		
@@ -950,27 +958,19 @@ document.head.appendChild(style);
     document.getElementById("startBtn").onclick = startDraw;
 	document.getElementById("startBtn2").onclick = startDraw;
     document.getElementById("scrollToTopBtn").onclick = topScroll;
-	document.querySelector("#fixedButtons .screenshot").onclick = () => {
+	document.querySelector(".fixed-btn.screenshot").onclick = () => {
      document.querySelector(".share-btn.screenshot").click();
     };
-   document.querySelector("#fixedButtons .xshare").onclick = () => {
+   document.querySelector(".fixed-btn.xshare").onclick = () => {
     document.querySelector(".share-btn.xshare").click();
    };
   </script>
 	
-<div id="fixedButtons">
-  <button class="fixed-btn screenshot">
-    スクショ
-  </button>
-  <button class="fixed-btn xshare">
-    シェア
-  </button>
-</div>
 	
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.26
+   <hr>©PureGreen │ テストv0.06.27
   </div>
 </body>
 </html>

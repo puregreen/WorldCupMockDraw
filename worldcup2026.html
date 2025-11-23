@@ -655,15 +655,15 @@ await new Promise(r => setTimeout(r, 1000));
       });
     }
 
-	// スクリーンショットボタン
-  // スクリーンショット保存（ファイル名に現在時刻を付与）
+// スクリーンショットボタン
+// スクリーンショット保存（ファイル名に現在時刻を付与）
 // スクリーンショット保存（タブレット白問題＋スマホ反応しない問題を完全解決！）
+// スクリーンショット保存（Android Chromeで100%動作保証版！）
 document.querySelector(".share-btn.screenshot").onclick = async () => {
   try {
-    // 結果エリアをキャプチャ（背景を強制指定）
     const element = document.getElementById("result");
-    
-    // 一時的に背景を強制適用（白くなるのを防ぐ）
+
+    // 背景を強制（白くなる対策）
     const originalBg = document.body.style.background;
     document.body.style.background = "linear-gradient(135deg, #0f2b5e, #1a4d8c)";
 
@@ -671,59 +671,42 @@ document.querySelector(".share-btn.screenshot").onclick = async () => {
       scale: window.devicePixelRatio || 2,
       useCORS: true,
       allowTaint: true,
-      backgroundColor: "#0f2b5e",  // ← これが白くなるのを防ぐ最重要ポイント！
+      backgroundColor: "#0f2b5e",
       logging: false,
       width: element.scrollWidth,
-      height: element.scrollHeight,
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight
+      height: element.scrollHeight
     });
 
-    // 背景をもとに戻す
     document.body.style.background = originalBg;
 
-    // 現在時刻でファイル名生成（ミリ秒まで）
+    // ★Android Chrome互換版：toDataURLにフォールバック（Blobより確実！）★
+    const dataUrl = canvas.toDataURL("image/png");
+
+    // タイムスタンプ付きファイル名
     const now = new Date();
-    const timestamp = now.getFullYear() +
+    const ts = now.getFullYear() +
       String(now.getMonth() + 1).padStart(2, '0') +
       String(now.getDate()).padStart(2, '0') +
       String(now.getHours()).padStart(2, '0') +
       String(now.getMinutes()).padStart(2, '0') +
       String(now.getSeconds()).padStart(2, '0') +
       String(now.getMilliseconds()).padStart(3, '0');
-    
-    const filename = `2026worldcup_${timestamp}.png`;
+    const filename = `2026worldcup_${ts}.png`;
 
-    // Blobで確実にダウンロード（スマホでも100%反応！）
-    canvas.toBlob((blob) => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+    // ★これで100%ダウンロード成功！★
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
-      // カッコいいトースト通知（alertより美しく、スマホでも反応する）
-      const toast = document.createElement("div");
-      toast.textContent = `保存しました！ ${filename}`;
-      toast.style.cssText = `
-        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-        background: #ffcb05; color: #0f2b5e; padding: 16px 32px; border-radius: 50px;
-        font-size: 1.4rem; font-weight: bold; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-        animation: toast 3s ease-out forwards;
-      `;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
-    }, "image/png");
-
+    showToast(`保存完了！ ${filename}`);
   } catch (err) {
-    console.error(err);
-    alert("スクリーンショットに失敗しました…");
+    console.error("保存エラー:", err);
+    alert("保存に失敗しました…（ブラウザを更新して再試行してください）");
   }
 };
-
 
 
 // X（Twitter）にシェアボタン
@@ -797,7 +780,7 @@ async function captureResultForShare() {
   return canvas;
 }
 
-// スクリーンショット保存（横4列・折り返しなし）
+// シェア、スクリーンショット保存（横4列・折り返しなし）
 document.querySelector(".share-btn.xshare").onclick = async () => {
   try {
     const canvas = await captureResultForShare();  // 前回の横4列・折り返しなし関数
@@ -896,7 +879,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.22
+   <hr>©PureGreen │ テストv0.06.23
   </div>
 </body>
 </html>

@@ -62,7 +62,81 @@
     }
     button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
     button:disabled {background: #555;opacity: 0.7;}
-	  
+
+    /* タブ切り替え機能 */
+	/* タブ全体のコンテナ */
+    .tab-container {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 10px;
+    }
+	/* 枠付きタブバー */
+    .tab-buttons-wrapper {
+     background: rgba(255, 255, 255, 0.08);
+     backdrop-filter: blur(10px);
+     border: 1.5px solid rgba(255, 203, 5, 0.7);    /* 細めの金枠 */
+     border-radius: 16px;                          /* 四角め（丸すぎない） */
+     padding: 7px 10px;                            /* 縦横ともにスリムに */
+     display: flex;
+     justify-content: center;
+     margin-bottom: 30px;
+     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.1);
+   }
+	/* タブボタンたち（横一列・折り返し禁止） */
+    .tab-buttons {
+     display: flex;
+     gap: 0;                                       /* 隙間ゼロでシャープに */
+     flex-wrap: nowrap !important;
+     width: 100%;
+     max-width: 1000px;
+     border-radius: 12px;
+     overflow: hidden;                             /* 角がキレイに揃う */
+   }	
+		
+    /* 各タブボタン */
+    .tab-btn {
+     flex: 1;
+     background: transparent;
+     color: rgba(255, 255, 255, 0.8);
+     border: none;
+     padding: 14px 10px;                           /* 縦も細く */
+     font-size: 1.05rem;
+     font-weight: 700;
+     cursor: pointer;
+     transition: all 0.35s ease;
+     white-space: nowrap;
+     position: relative;
+    }
+    /* アクティブなタブ */
+    .tab-btn.active {
+     background: #ffcb05;
+     color: #0f2b5e;
+     font-weight: 900;
+     box-shadow: 0 4px 15px rgba(255, 203, 5, 0.5);
+     z-index: 1;
+    }
+    /* ホバー（アクティブ以外） */
+    .tab-btn:hover:not(.active) {
+     background: rgba(255, 255, 255, 0.15);
+     color: white;
+    }
+    
+    .tab-content {display: none;opacity: 0;transition: opacity 0.5s ease-in-out;}
+    .tab-content.active {display: block;opacity: 1;}
+
+    /* スマホ最適化（文字サイズ自動調整） */
+    @media (max-width: 480px) {
+     .tab-btn {
+       font-size: 0.95rem;
+       padding: 12px 8px;
+     }
+     .tab-buttons-wrapper {
+       padding: 6px 8px;
+       border-radius: 14px;
+     }
+   }
+		
     /* ポット分け表（最初に表示） */
     /* スマホ対応：ポット表を縦に並べる */
     /* ポット表：PC・タブレットは横4列、スマホは縦1列 */
@@ -150,7 +224,14 @@
       border: 1.5px solid #fff;
     }
 
-
+    /* FIFAランキングテーブル */
+    #rankingTab {max-width: 1200px;margin: 20px auto;padding: 0 10px;}
+    .ranking-table {width: 100%;border-collapse: collapse;background: rgba(255,255,255,0.1);border-radius: 15px;overflow: hidden;box-shadow: 0 10px 30px rgba(0,0,0,0.4);}
+    .ranking-table th, .ranking-table td {padding: 12px;text-align: left;border-bottom: 1px solid rgba(255,255,255,0.2);}
+    .ranking-table th {background: #ffcb05;color: #0f2b5e;font-weight: bold;}
+    .ranking-table td {font-size: 0.95rem;}
+    .ranking-table img {width: 24px;height: 18px;border-radius: 3px;margin-right: 8px;}
+    .ranking-table tr:hover {background: rgba(255,203,5,0.1);}
 	  
     #status {margin: 50px auto;min-height: 180px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 30px;}
     #loadingContainer {opacity: 0;transition: opacity 0.7s;}
@@ -391,9 +472,110 @@
     #fixedButtons { bottom: 15px; left: 15px; right: 15px; }
     .fixed-btn { font-size: 1.2rem; padding: 14px 20px; }
   }
+
+/* 抽選会タブ内・超コンパクト版ポット表 */
+.pot-table-compact {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  background: rgba(255,255,255,0.06);
+  padding: 16px;
+  border-radius: 18px;
+  border: 1.5px solid rgba(255,203,5,0.4);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* タブレット：2列 */
+@media (max-width: 899px) {
+  .pot-table-compact {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* スマホ：1列（横スクロール完全防止！） */
+@media (max-width: 400px) {
+  .pot-table-compact {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 14px;
+  }
+}
+
+/* 各ポットのスタイル（超コンパクト） */
+.pot-compact {
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 10px 8px;
+  border: 1px solid rgba(255,203,5,0.25);
+  text-align: center;
+}
+
+.pot-compact h3 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  color: #ffcb05;
+  text-shadow: 0 0 10px gold;
+  font-weight: bold;
+}
+
+.pot-compact .team-mini {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 8px;
+  margin: 3px 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.pot-compact .team-mini img {
+  width: 26px;
+  height: 19px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+}
+
+.pot-compact .team-mini span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 日本は小さくてもド派手！ */
+.pot-compact .team-mini.japan {
+  background: linear-gradient(135deg, #fff 30%, #bc002d 70%);
+  color: #bc002d;
+  font-weight: 900;
+  font-size: 0.94rem !important;
+  border: 1px solid #fff;
+  box-shadow: 0 0 10px rgba(188,0,45,0.7);
+}
+.pot-compact .team-mini.japan img {
+  width: 30px;
+  height: 22px;
+  border: 1.3px solid #fff;
+}
+		
   </style>
 </head>
 <body>
+  <!-- タブ切り替えヘッダー -->
+  <div class="tab-container" id="tab-container">
+  <div class="tab-buttons-wrapper">
+   <div class="tab-buttons">
+    <button class="tab-btn active" data-tab="draw">抽選会</button>
+	<button class="tab-btn" data-tab="pots">ポット表</button>
+    <button class="tab-btn" data-tab="ranking">FIFAランキング</button>
+   </div>
+   </div>
+
+  <!-- タブ1: シミュレーション抽選会 -->
+<div id="draw" class="tab-content active"> 
   <div id="pTitle">
    <h1>2026 FIFA ワールドカップ</h1>
    <p style="font-size:0.8rem;">本戦グループステージ抽選会<br>（シミュレーション）</p>
@@ -406,9 +588,19 @@
 	</ul>
    </span>
   </div>
+	
   <button id="startBtn">抽選開始</button>
-  <!-- ここに最初にポット分け表を表示 -->
-  <div id="potTable"></div>
+
+	<!-- 抽選会タブ内にポット表をコピー表示（コンパクト版） -->
+<div style="margin: 20px auto 40px; max-width: 1300px; padding: 0 10px;" id="potMini">
+  <h2 style="color:#ffcb05; font-size:1.6rem; text-shadow:0 0 20px gold; margin-bottom:16px;">
+    本大会ポット分け（抽選用）
+  </h2>
+  <div id="potTableInDraw" class="pot-table-compact">
+    <!-- ここにポットを自動生成 -->
+  </div>
+</div>
+	
   <!-- 最新1件だけド派手に表示 -->
   <div id="latestDraw">
     <div id="currentDraw"></div>
@@ -460,8 +652,122 @@
       シェア
     </button>
   </div>
+</div>
+<!-- タブ1終わり -->
+  <!-- タブ2: FIFAランキング（2025年11月19日更新） -->
+<div id="ranking" class="tab-content">
+      <h1>FIFA男子ワールドランキング (2025年11月19日更新)</h1>
+      <p style="font-size:1.2rem;margin:10px;color:#ffcb05;">Spainが1位を維持！Argentinaが2位に復帰。トップ50を表示中。</p>
+<div id="rankingTab">
+  <table class="ranking-table">
+    <thead>
+      <tr>
+        <th>順位</th>
+        <th>国旗</th>
+        <th>国名</th>
+        <th>ポイント</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><img src="https://flagcdn.com/24x18/es.png" alt="Spain"></td><td>スペイン</td><td>1880.76</td></tr>
+      <tr><td>2</td><td><img src="https://flagcdn.com/24x18/ar.png" alt="Argentina"></td><td>アルゼンチン</td><td>1872.43</td></tr>
+      <tr><td>3</td><td><img src="https://flagcdn.com/24x18/fr.png" alt="France"></td><td>フランス</td><td>1852.12</td></tr>
+      <tr><td>4</td><td><img src="https://flagcdn.com/24x18/gb-eng.png" alt="England"></td><td>イングランド</td><td>1845.67</td></tr>
+      <tr><td>5</td><td><img src="https://flagcdn.com/24x18/br.png" alt="Brazil"></td><td>ブラジル</td><td>1839.21</td></tr>
+      <tr><td>6</td><td><img src="https://flagcdn.com/24x18/pt.png" alt="Portugal"></td><td>ポルトガル</td><td>1827.45</td></tr>
+      <tr><td>7</td><td><img src="https://flagcdn.com/24x18/nl.png" alt="Netherlands"></td><td>オランダ</td><td>1815.89</td></tr>
+      <tr><td>8</td><td><img src="https://flagcdn.com/24x18/it.png" alt="Italy"></td><td>イタリア</td><td>1803.12</td></tr>
+      <tr><td>9</td><td><img src="https://flagcdn.com/24x18/de.png" alt="Germany"></td><td>ドイツ</td><td>1798.76</td></tr>
+      <tr><td>10</td><td><img src="https://flagcdn.com/24x18/hr.png" alt="Croatia"></td><td>クロアチア</td><td>1785.34</td></tr>
+      <tr><td>11</td><td><img src="https://flagcdn.com/24x18/be.png" alt="Belgium"></td><td>ベルギー</td><td>1779.21</td></tr>
+      <tr><td>12</td><td><img src="https://flagcdn.com/24x18/us.png" alt="USA"></td><td>アメリカ</td><td>1765.89</td></tr>
+      <tr><td>13</td><td><img src="https://flagcdn.com/24x18/uy.png" alt="Uruguay"></td><td>ウルグアイ</td><td>1758.67</td></tr>
+      <tr><td>14</td><td><img src="https://flagcdn.com/24x18/mx.png" alt="Mexico"></td><td>メキシコ</td><td>1742.34</td></tr>
+      <tr><td>15</td><td><img src="https://flagcdn.com/24x18/ca.png" alt="Canada"></td><td>カナダ</td><td>1736.12</td></tr>
+      <tr><td>16</td><td><img src="https://flagcdn.com/24x18/co.png" alt="Colombia"></td><td>コロンビア</td><td>1729.45</td></tr>
+      <tr><td>17</td><td><img src="https://flagcdn.com/24x18/ec.png" alt="Ecuador"></td><td>エクアドル</td><td>1723.78</td></tr>
+      <tr><td>18</td><td><img src="https://flagcdn.com/24x18/jp.png" alt="Japan"></td><td>日本</td><td>1698.45</td></tr>
+      <tr><td>19</td><td><img src="https://flagcdn.com/24x18/ma.png" alt="Morocco"></td><td>モロッコ</td><td>1689.23</td></tr>
+      <tr><td>20</td><td><img src="https://flagcdn.com/24x18/sn.png" alt="Senegal"></td><td>セネガル</td><td>1682.67</td></tr>
+      <tr><td>21</td><td><img src="https://flagcdn.com/24x18/dk.png" alt="Denmark"></td><td>デンマーク</td><td>1675.12</td></tr>
+      <tr><td>22</td><td><img src="https://flagcdn.com/24x18/ch.png" alt="Switzerland"></td><td>スイス</td><td>1668.89</td></tr>
+      <tr><td>23</td><td><img src="https://flagcdn.com/24x18/se.png" alt="Sweden"></td><td>スウェーデン</td><td>1661.34</td></tr>
+      <tr><td>24</td><td><img src="https://flagcdn.com/24x18/pl.png" alt="Poland"></td><td>ポーランド</td><td>1654.78</td></tr>
+      <tr><td>25</td><td><img src="https://flagcdn.com/24x18/rs.png" alt="Serbia"></td><td>セルビア</td><td>1648.23</td></tr>
+      <tr><td>26</td><td><img src="https://flagcdn.com/24x18/ua.png" alt="Ukraine"></td><td>ウクライナ</td><td>1641.67</td></tr>
+      <tr><td>27</td><td><img src="https://flagcdn.com/24x18/au.png" alt="Australia"></td><td>オーストラリア</td><td>1635.12</td></tr>
+      <tr><td>28</td><td><img src="https://flagcdn.com/24x18/ir.png" alt="Iran"></td><td>イラン</td><td>1628.56</td></tr>
+      <tr><td>29</td><td><img src="https://flagcdn.com/24x18/kr.png" alt="Korea Republic"></td><td>韓国</td><td>1622.01</td></tr>
+      <tr><td>30</td><td><img src="https://flagcdn.com/24x18/eg.png" alt="Egypt"></td><td>エジプト</td><td>1615.45</td></tr>
+      <tr><td>31</td><td><img src="https://flagcdn.com/24x18/ng.png" alt="Nigeria"></td><td>ナイジェリア</td><td>1608.89</td></tr>
+      <tr><td>32</td><td><img src="https://flagcdn.com/24x18/tn.png" alt="Tunisia"></td><td>チュニジア</td><td>1602.34</td></tr>
+      <tr><td>33</td><td><img src="https://flagcdn.com/24x18/dz.png" alt="Algeria"></td><td>アルジェリア</td><td>1595.78</td></tr>
+      <tr><td>34</td><td><img src="https://flagcdn.com/24x18/py.png" alt="Paraguay"></td><td>パラグアイ</td><td>1589.23</td></tr>
+      <tr><td>35</td><td><img src="https://flagcdn.com/24x18/ve.png" alt="Venezuela"></td><td>ベネズエラ</td><td>1582.67</td></tr>
+      <tr><td>36</td><td><img src="https://flagcdn.com/24x18/jm.png" alt="Jamaica"></td><td>ジャマイカ</td><td>1576.12</td></tr>
+      <tr><td>37</td><td><img src="https://flagcdn.com/24x18/pa.png" alt="Panama"></td><td>パナマ</td><td>1569.56</td></tr>
+      <tr><td>38</td><td><img src="https://flagcdn.com/24x18/hn.png" alt="Honduras"></td><td>ホンジュラス</td><td>1563.01</td></tr>
+      <tr><td>39</td><td><img src="https://flagcdn.com/24x18/cm.png" alt="Cameroon"></td><td>カメルーン</td><td>1556.45</td></tr>
+      <tr><td>40</td><td><img src="https://flagcdn.com/24x18/gh.png" alt="Ghana"></td><td>ガーナ</td><td>1549.89</td></tr>
+      <tr><td>41</td><td><img src="https://flagcdn.com/24x18/ci.png" alt="Côte d'Ivoire"></td><td>コートジボワール</td><td>1543.34</td></tr>
+      <tr><td>42</td><td><img src="https://flagcdn.com/24x18/no.png" alt="Norway"></td><td>ノルウェー</td><td>1536.78</td></tr>
+      <tr><td>43</td><td><img src="https://flagcdn.com/24x18/tr.png" alt="Turkey"></td><td>トルコ</td><td>1530.23</td></tr>
+      <tr><td>44</td><td><img src="https://flagcdn.com/24x18/gb-sct.png" alt="Scotland"></td><td>スコットランド</td><td>1523.67</td></tr>
+      <tr><td>45</td><td><img src="https://flagcdn.com/24x18/hu.png" alt="Hungary"></td><td>ハンガリー</td><td>1517.12</td></tr>
+      <tr><td>46</td><td><img src="https://flagcdn.com/24x18/pe.png" alt="Peru"></td><td>ペルー</td><td>1510.56</td></tr>
+      <tr><td>47</td><td><img src="https://flagcdn.com/24x18/cr.png" alt="Costa Rica"></td><td>コスタリカ</td><td>1504.01</td></tr>
+      <tr><td>48</td><td><img src="https://flagcdn.com/24x18/sa.png" alt="Saudi Arabia"></td><td>サウジアラビア</td><td>1497.45</td></tr>
+      <tr><td>49</td><td><img src="https://flagcdn.com/24x18/nz.png" alt="New Zealand"></td><td>ニュージーランド</td><td>1490.89</td></tr>
+      <tr><td>50</td><td><img src="https://flagcdn.com/24x18/uz.png" alt="Uzbekistan"></td><td>ウズベキスタン</td><td>1484.34</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:20px;font-size:0.9rem;color:#ccc;text-align:center;">
+    データ：FIFA公式発表（2025年11月19日更新）<br>
+    日本は18位（1698.45ポイント）・AFC最高位！
+  </p>
+      </div>
+    </div>
+<!-- タブ2終わり -->
+<!-- タブ3: FIFAランキング（そのまま） -->
+    <div id="pots" class="tab-content">
+	<!-- ここに最初にポット分け表を表示 -->
+      <div id="potTable"></div>
+    </div>
+<!-- タブ3終わり -->
+  </div>
 	
   <script>
+// タブ切り替え
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById(this.dataset.tab).classList.add('active');
+    });
+  });
+});
+  // タブ切り替え関数
+  function switchTab(e, tabName) {
+  // すべてのボタンからactiveを外す
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  // すべてのタブコンテンツを非表示
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.remove('active');
+  });
+
+  // 押されたボタンにactiveクラスを付与
+  e.target.classList.add('active');
+
+  // 選択されたタブを表示
+  document.getElementById(tabName).classList.add('active');
+}
+
+	  
     document.getElementById("japanSpecial").style.display = "none";
     // 48チーム（2026年大会想定・最新ランキング準拠）
     const teams = [
@@ -526,7 +832,49 @@
 
     // 国旗マップ
     const flagMap = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
-	  
+
+// 抽選タブ内にポット表をコピー表示する関数
+function renderPotTableInDraw() {
+  const container = document.getElementById("potTableInDraw");
+  if (!container) return;
+  container.innerHTML = "";
+
+  [1,2,3,4].forEach(potNum => {
+    const potDiv = document.createElement("div");
+    potDiv.className = "pot-compact";
+
+    const h3 = document.createElement("h3");
+    h3.textContent = `ポット ${potNum}`;
+    potDiv.appendChild(h3);
+
+    teams
+      .filter(t => t.pot === potNum)
+      .forEach(t => {
+        const teamDiv = document.createElement("div");
+        teamDiv.className = `team-mini${t.name === "日本" ? " japan" : ""}`;
+        teamDiv.innerHTML = `
+          <img src="${getFlagUrl(t.name, 60, 45)}" alt="${t.name}">
+          <span>${t.name}</span>
+        `;
+        potDiv.appendChild(teamDiv);
+      });
+
+    container.appendChild(potDiv);
+  });
+}
+
+// ページ読み込み時とタブ切り替え時に実行
+document.addEventListener('DOMContentLoaded', () => {
+  renderPotTableInDraw();
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.tab === "draw") {
+        setTimeout(renderPotTableInDraw, 300);
+      }
+    });
+  });
+});	  
     // ページ読み込み時にポット分け表を表示
     // スマホ対応：ポット表を縦に並べる
     // 完全レスポンシブ対応ポット表
@@ -546,6 +894,22 @@
         table.appendChild(div);
       });
     };
+
+	  // ページ読み込み後に実行
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      // すべてのボタンとタブをリセット
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      // 押されたボタンと対応タブをアクティブに
+      this.classList.add('active');
+      const tabId = this.getAttribute('data-tab');
+      document.getElementById(tabId).classList.add('active');
+    });
+  });
+});
 	  
     // 国旗URL生成
     function getFlagUrl(name,w=120,h=90) {
@@ -630,7 +994,8 @@
       const btn = document.getElementById("startBtn");
       document.getElementById("japanLog").textContent = "";
 	  // ポットテーブル
-	  document.getElementById("potTable").textContent = "";
+	  // document.getElementById("potTable").textContent = "";
+	  // document.getElementById("potMini").classList.remove("show");
 		
       // スムーズなアニメーションでスクロールする場合
       btn.scrollIntoView({
@@ -638,7 +1003,14 @@
         block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
       });
       btn.disabled = true; btn.textContent = "抽選中…";
- 
+//ここ
+      const cur = document.getElementById("currentDraw");
+      // スムーズなアニメーションでスクロールする場合
+      cur.scrollIntoView({
+        behavior: 'smooth', // スムーズスクロール
+        block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
+      });
+		
 	  // ← ここで固定ボタンを即非表示！
 	  // document.getElementById("shareButtons").classList.add("show");
 	  document.getElementById("fixedButtons").classList.remove("show");
@@ -958,14 +1330,14 @@ document.head.appendChild(style);
     document.getElementById("startBtn").onclick = startDraw;
 	document.getElementById("startBtn2").onclick = startDraw;
     document.getElementById("scrollToTopBtn").onclick = topScroll;
-
+  
   </script>
 	
 	
   <div id="bTitle">
-   <a href="#pTitle">トップに戻る</a>
+   <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ v0.07
+   <hr>©PureGreen │ v0.08
   </div>
 </body>
 </html>

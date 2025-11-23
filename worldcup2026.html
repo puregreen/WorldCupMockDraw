@@ -337,6 +337,60 @@
     }
     .share-btn.screenshot {background: #1da1f2;} /* Twitterブルー */
     .share-btn.xshare {background: #000000;}
+
+/* スクショ＆シェアボタンを右下・左下に常時固定！ */
+  #fixedButtons {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 9998;
+    display: none;
+    justify-content: space-between;
+    pointer-events: none; /* 背景タップは無効にしない */
+    gap: 20px;
+  }
+  #fixedButtons.show {
+    display: flex;
+  }
+
+  .fixed-btn {
+    background: #ffcb05;
+    color: #0f2b5e;
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 16px 28px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+    transition: all 0.4s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    pointer-events: auto; /* ボタンだけはタップ可能 */
+    backdrop-filter: blur(10px);
+    min-width: 140px;
+    justify-content: center;
+  }
+  .fixed-btn:hover {
+    transform: translateY(-10px) scale(1.1);
+    box-shadow: 0 20px 60px rgba(255,203,5,0.6);
+  }
+  .fixed-btn.screenshot {
+    background: #1da1f2; /* Twitterブルー */
+    color: white;
+  }
+  .fixed-btn.xshare {
+    background: #000000;
+    color: white;
+  }
+
+  /* スマホでも見やすい調整 */
+  @media (max-width: 480px) {
+    #fixedButtons { bottom: 15px; left: 15px; right: 15px; }
+    .fixed-btn { font-size: 1.2rem; padding: 14px 20px; }
+  }
   </style>
 </head>
 <body>
@@ -636,7 +690,9 @@ await new Promise(r => setTimeout(r, 1000));
       btn.disabled = false;
 
       // ← ここでシェアボタンを表示！
-      document.getElementById("shareButtons").classList.add("show");
+      // document.getElementById("shareButtons").classList.add("show");
+      document.getElementById("fixedButtons").classList.add("show");
+      
 		
       const res = document.getElementById("result");
       // スムーズなアニメーションでスクロールする場合
@@ -889,14 +945,27 @@ document.head.appendChild(style);
     document.getElementById("startBtn").onclick = startDraw;
 	document.getElementById("startBtn2").onclick = startDraw;
     document.getElementById("scrollToTopBtn").onclick = topScroll;
+	document.querySelector("#fixedButtons .screenshot").onclick = () => {
+     document.querySelector(".share-btn.screenshot").click();
+    };
+   document.querySelector("#fixedButtons .xshare").onclick = () => {
+    document.querySelector(".share-btn.xshare").click();
+   };
   </script>
-  <!-- 
-  <button id="scrollToTopBtn">トップに戻る</button>
-   -->
+	
+<div id="fixedButtons">
+  <button class="fixed-btn screenshot">
+    スクショ
+  </button>
+  <button class="fixed-btn xshare">
+    シェア
+  </button>
+</div>
+	
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.24
+   <hr>©PureGreen │ テストv0.06.25
   </div>
 </body>
 </html>

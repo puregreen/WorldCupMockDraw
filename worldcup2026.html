@@ -1305,7 +1305,7 @@ function fallbackToDownloadAndTweet(canvas, tweetText) {
 function fallbackToTweetOnly(tweetText) {
   const enc = encodeURIComponent(tweetText.replace(/\n/g, ' '));  // 改行をスペースに（Intent互換）
   window.open(`https://twitter.com/intent/tweet?text=${enc}`, "_blank");
-  showToast("シェアを開きました！");
+  showToast("シェア画面を開きました！");
 }
 
 // トースト通知
@@ -1337,7 +1337,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.08.2
+   <hr>©PureGreen │ テストv0.10.3
   </div>
 </body>
 </html>

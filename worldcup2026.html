@@ -72,56 +72,54 @@
     }
 	/* 枠付きタブバー */
     .tab-buttons-wrapper {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      border: 2px solid rgba(255, 203, 5, 0.6);
-      border-radius: 60px;
-      padding: 10px 16px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5),inset 0 0 30px rgba(255, 203, 5, 0.1);
-      display: flex;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
+     background: rgba(255, 255, 255, 0.08);
+     backdrop-filter: blur(10px);
+     border: 1.5px solid rgba(255, 203, 5, 0.7);    /* 細めの金枠 */
+     border-radius: 16px;                          /* 四角め（丸すぎない） */
+     padding: 7px 10px;                            /* 縦横ともにスリムに */
+     display: flex;
+     justify-content: center;
+     margin-bottom: 30px;
+     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.1);
+   }
 	/* タブボタンたち（横一列・折り返し禁止） */
     .tab-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 12px;                     /* スマホでもキツすぎない間隔 */
-      flex-wrap: nowrap !important;  /* 絶対折り返さない */
-      width: 100%;
-      max-width: 1000px;
-    }	
+     display: flex;
+     gap: 0;                                       /* 隙間ゼロでシャープに */
+     flex-wrap: nowrap !important;
+     width: 100%;
+     max-width: 1000px;
+     border-radius: 12px;
+     overflow: hidden;                             /* 角がキレイに揃う */
+   }	
 		
     /* 各タブボタン */
     .tab-btn {
-      flex: 1;                       /* 3つ均等幅にする */
-      min-width: 120px;              /* 最低でもこれだけは確保 */
-      background: rgba(255, 255, 255, 0.15);
-      color: white;
-      border: none;
-      padding: 16px 8px;
-      border-radius: 50px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      font-weight: bold;
-      transition: all 0.35s ease;
-      white-space: nowrap;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+     flex: 1;
+     background: transparent;
+     color: rgba(255, 255, 255, 0.8);
+     border: none;
+     padding: 14px 10px;                           /* 縦も細く */
+     font-size: 1.05rem;
+     font-weight: 700;
+     cursor: pointer;
+     transition: all 0.35s ease;
+     white-space: nowrap;
+     position: relative;
     }
     /* アクティブなタブ */
     .tab-btn.active {
-      background: #ffcb05;
-      color: #0f2b5e;
-      transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 15px 35px rgba(255, 203, 5, 0.7);
-      font-weight: 900;
-      letter-spacing: 1px;
+     background: #ffcb05;
+     color: #0f2b5e;
+     font-weight: 900;
+     box-shadow: 0 4px 15px rgba(255, 203, 5, 0.5);
+     z-index: 1;
     }
     /* ホバー（アクティブ以外） */
     .tab-btn:hover:not(.active) {
-      background: rgba(255, 255, 255, 0.3);
-      transform: translateY(-3px);
+     background: rgba(255, 255, 255, 0.15);
+     color: white;
     }
     
     .tab-content {display: none;opacity: 0;transition: opacity 0.5s ease-in-out;}
@@ -129,19 +127,15 @@
 
     /* スマホ最適化（文字サイズ自動調整） */
     @media (max-width: 480px) {
-      .tab-btn {
-        font-size: 0.95rem;
-        padding: 14px 6px;
-        min-width: 100px;
-      }
-      .tab-buttons {
-        gap: 8px;
-      }
-      .tab-buttons-wrapper {
-        padding: 8px 12px;
-        border-radius: 50px;
-      }
-    }
+     .tab-btn {
+       font-size: 0.95rem;
+       padding: 12px 8px;
+     }
+     .tab-buttons-wrapper {
+       padding: 6px 8px;
+       border-radius: 14px;
+     }
+   }
 		
     /* ポット分け表（最初に表示） */
     /* スマホ対応：ポット表を縦に並べる */
@@ -1192,7 +1186,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.07.8
+   <hr>©PureGreen │ テストv0.07.9
   </div>
 </body>
 </html>

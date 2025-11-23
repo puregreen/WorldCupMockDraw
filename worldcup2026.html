@@ -1086,20 +1086,6 @@ function makeTeamsClickable() {
   });
 }
 
-// 描画後にクリック有効化（メインのポット表と抽選タブ内両方）
-const originalRender = window.onload;
-window.onload = function() {
-  if (originalRender) originalRender();
-  makeTeamsClickable();
-};
-
-// 抽選タブ内コピーも対応
-const originalRenderInDraw = renderPotTableInDraw;
-renderPotTableInDraw = function() {
-  originalRenderInDraw();
-  setTimeout(makeTeamsClickable, 100);
-};	  
-
 // ページ読み込み時とタブ切り替え時に実行
 document.addEventListener('DOMContentLoaded', () => {
   renderPotTableInDraw();
@@ -1133,8 +1119,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         table.appendChild(div);
       });
+		
+     // 描画後にクリック有効化（メインのポット表と抽選タブ内両方）
+	  if (originalRender) originalRender();
+      makeTeamsClickable();
     };
 
+// 抽選タブ内コピーも対応
+const originalRenderInDraw = renderPotTableInDraw;
+renderPotTableInDraw = function() {
+  originalRenderInDraw();
+  setTimeout(makeTeamsClickable, 100);
+};	  
+	  
 	  // ページ読み込み後に実行
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1597,7 +1594,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10.10
+   <hr>©PureGreen │ テストv0.10.11
   </div>
 </body>
 </html>

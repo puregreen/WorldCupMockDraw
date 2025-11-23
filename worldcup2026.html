@@ -751,6 +751,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 国旗マップ
     const flagMap = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
+
+// 抽選タブ内にポット表をコピー表示する関数
+function renderPotTableInDraw() {
+  const container = document.getElementById("potTableInDraw");
+  if (!container) return;
+
+  container.innerHTML = ""; // 初期化
+
+  [1,2,3,4].forEach(potNum => {
+    const potDiv = document.createElement("div");
+    potDiv.style.cssText = `
+      background: rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid rgba(255,203,5,0.3);
+    `;
+
+    const h3 = document.createElement("h3");
+    h3.textContent = `ポット ${potNum}`;
+    h3.style.cssText = `
+      margin: 0 0 10px;
+      color: #ffcb05;
+      font-size: 1.3rem;
+      text-align: center;
+      text-shadow: 0 0 10px gold;
+    `;
+    potDiv.appendChild(h3);
+
+    teams
+      .filter(t => t.pot === potNum)
+      .forEach(t => {
+        const teamDiv = document.createElement("div");
+        teamDiv.style.cssText = `
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 8px;
+          background: rgba(255,255,255,0.15);
+          border-radius: 10px;
+          margin: 4px 0;
+          font-size: 0.95rem;
+          font-weight: ${t.name === "日本" ? "900" : "500"};
+          color: ${t.name === "日本" ? "#bc002d" : "white"};
+          background: ${t.name === "日本" ? "linear-gradient(135deg, #fff, #bc002d)" : "rgba(255,255,255,0.15)"};
+        `;
+        teamDiv.innerHTML = `
+          <img src="${getFlagUrl(t.name, 64, 48)}" style="width:28px;height:21px;border-radius:3px;box-shadow:0 1px 4px #000;">
+          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.name}</span>
+        `;
+        potDiv.appendChild(teamDiv);
+      });
+
+    container.appendChild(potDiv);
+  });
+}
+
+// ページ読み込み時とタブ切り替え時に実行
+document.addEventListener('DOMContentLoaded', () => {
+  renderPotTableInDraw(); // 初回表示
+
+  // タブが「抽選会」に切り替わるたびに再描画（万が一のズレ防止）
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.tab === "draw") {
+        setTimeout(renderPotTableInDraw, 300); // アニメーション後
+      }
+    });
+  });
+});	
 	  
     // ページ読み込み時にポット分け表を表示
     // スマホ対応：ポット表を縦に並べる
@@ -1199,83 +1268,14 @@ document.head.appendChild(style);
     document.getElementById("startBtn").onclick = startDraw;
 	document.getElementById("startBtn2").onclick = startDraw;
     document.getElementById("scrollToTopBtn").onclick = topScroll;
-
-
-// 抽選タブ内にポット表をコピー表示する関数
-function renderPotTableInDraw() {
-  const container = document.getElementById("potTableInDraw");
-  if (!container) return;
-
-  container.innerHTML = ""; // 初期化
-
-  [1,2,3,4].forEach(potNum => {
-    const potDiv = document.createElement("div");
-    potDiv.style.cssText = `
-      background: rgba(255,255,255,0.1);
-      border-radius: 14px;
-      padding: 12px;
-      border: 1px solid rgba(255,203,5,0.3);
-    `;
-
-    const h3 = document.createElement("h3");
-    h3.textContent = `ポット ${potNum}`;
-    h3.style.cssText = `
-      margin: 0 0 10px;
-      color: #ffcb05;
-      font-size: 1.3rem;
-      text-align: center;
-      text-shadow: 0 0 10px gold;
-    `;
-    potDiv.appendChild(h3);
-
-    teams
-      .filter(t => t.pot === potNum)
-      .forEach(t => {
-        const teamDiv = document.createElement("div");
-        teamDiv.style.cssText = `
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 6px 8px;
-          background: rgba(255,255,255,0.15);
-          border-radius: 10px;
-          margin: 4px 0;
-          font-size: 0.95rem;
-          font-weight: ${t.name === "日本" ? "900" : "500"};
-          color: ${t.name === "日本" ? "#bc002d" : "white"};
-          background: ${t.name === "日本" ? "linear-gradient(135deg, #fff, #bc002d)" : "rgba(255,255,255,0.15)"};
-        `;
-        teamDiv.innerHTML = `
-          <img src="${getFlagUrl(t.name, 64, 48)}" style="width:28px;height:21px;border-radius:3px;box-shadow:0 1px 4px #000;">
-          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.name}</span>
-        `;
-        potDiv.appendChild(teamDiv);
-      });
-
-    container.appendChild(potDiv);
-  });
-}
-
-// ページ読み込み時とタブ切り替え時に実行
-document.addEventListener('DOMContentLoaded', () => {
-  renderPotTableInDraw(); // 初回表示
-
-  // タブが「抽選会」に切り替わるたびに再描画（万が一のズレ防止）
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (btn.dataset.tab === "draw") {
-        setTimeout(renderPotTableInDraw, 300); // アニメーション後
-      }
-    });
-  });
-});	  
+  
   </script>
 	
 	
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.07.10
+   <hr>©PureGreen │ テストv0.07.11
   </div>
 </body>
 </html>

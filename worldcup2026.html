@@ -844,7 +844,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 	  
-    document.getElementById("japanSpecial").style.display = "none";
+    // document.getElementById("japanSpecial").style.display = "none";
     // 48チーム（2026年大会想定・最新ランキング準拠）
     const teams = [
       // ポット1（開催国＋上位）
@@ -1016,6 +1016,9 @@ function renderPotTableInDraw() {
 document.addEventListener('DOMContentLoaded', () => {
   renderPotTableInDraw();
 
+  const japanSpecial = document.getElementById("japanSpecial");
+  if (japanSpecial) japanSpecial.style.display = "none";
+
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn.dataset.tab === "draw") {
@@ -1152,7 +1155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
       });
       btn.disabled = true; btn.textContent = "抽選中…";
-//ここ
+		
       const cur = document.getElementById("currentDraw");
       // スムーズなアニメーションでスクロールする場合
       cur.scrollIntoView({
@@ -1506,7 +1509,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10.8
+   <hr>©PureGreen │ テストv0.10.9
   </div>
 </body>
 </html>

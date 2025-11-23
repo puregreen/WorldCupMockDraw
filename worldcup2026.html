@@ -1333,11 +1333,31 @@ document.head.appendChild(style);
   
   </script>
 	
+<!-- モーダル本体 -->
+<div id="teamModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close">&times;</span>
+    <div class="modal-flag">
+      <img id="modalFlag" src="" alt="">
+    </div>
+    <h2 id="modalTeamName"></h2>
+    <div class="modal-info">
+      <p><strong>大陸連盟：</strong><span id="modalConf"></span></p>
+      <p><strong>ポット：</strong><span id="modalPot"></span></p>
+      <p><strong>FIFAランキング：</strong><span id="modalRank"></span>位</p>
+      <p id="modalExtra" style="margin-top:12px; color:#ffcb05; font-weight:bold;"></p>
+    </div>
+    <div id="playoffInfo" style="display:none; margin-top:15px; padding:15px; background:rgba(255,203,5,0.15); border-radius:12px; border:1px solid #ffcb05;">
+      <p style="margin:0; font-size:1rem; color:#ffcb05;"><strong>プレーオフ情報</strong></p>
+      <p id="playoffText"></p>
+    </div>
+  </div>
+</div>
 	
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10.4
+   <hr>©PureGreen │ テストv0.10.5
   </div>
 </body>
 </html>

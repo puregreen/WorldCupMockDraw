@@ -415,6 +415,7 @@
   <div class="tab-container">
    <div class="tab-buttons">
     <button class="tab-btn active" data-tab="draw">抽選会</button>
+	<button class="tab-btn" data-tab="pots">ポット表</button>
     <button class="tab-btn" data-tab="ranking">FIFAランキング</button>
    </div>
 
@@ -433,8 +434,6 @@
    </span>
   </div>
   <button id="startBtn">抽選開始</button>
-  <!-- ここに最初にポット分け表を表示 -->
-  <div id="potTable"></div>
   <!-- 最新1件だけド派手に表示 -->
   <div id="latestDraw">
     <div id="currentDraw"></div>
@@ -561,6 +560,13 @@
   </p>
       </div>
     </div>
+<!-- タブ2終わり -->
+<!-- タブ3: FIFAランキング（そのまま） -->
+    <div id="ranking" class="tab-content">
+	<!-- ここに最初にポット分け表を表示 -->
+      <div id="potTable"></div>
+    </div>
+<!-- タブ3終わり -->
   </div>
 	
   <script>
@@ -779,7 +785,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const btn = document.getElementById("startBtn");
       document.getElementById("japanLog").textContent = "";
 	  // ポットテーブル
-	  document.getElementById("potTable").textContent = "";
+	  // document.getElementById("potTable").textContent = "";
 		
       // スムーズなアニメーションでスクロールする場合
       btn.scrollIntoView({
@@ -1114,7 +1120,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.07.5
+   <hr>©PureGreen │ テストv0.07.6
   </div>
 </body>
 </html>

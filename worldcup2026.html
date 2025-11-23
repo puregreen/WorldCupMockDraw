@@ -1012,6 +1012,94 @@ function renderPotTableInDraw() {
   });
 }
 
+// モーダル表示関数
+function openTeamModal(teamName) {
+  const modal = document.getElementById("teamModal");
+  const flagImg = document.getElementById("modalFlag");
+  const nameEl = document.getElementById("modalTeamName");
+  const confEl = document.getElementById("modalConf");
+  const potEl = document.getElementById("modalPot");
+  const rankEl = document.getElementById("modalRank");
+  const extraEl = document.getElementById("modalExtra");
+  const playoffBox = document.getElementById("playoffInfo");
+  const playoffText = document.getElementById("playoffText");
+
+  const team = teams.find(t => t.name === teamName) || {};
+  const detail = teamDetails[teamName] || {};
+
+  // 基本情報
+  nameEl.textContent = teamName;
+  confEl.textContent = team.conf === "UEFA" ? "欧州" : 
+                      team.conf === "CONMEBOL" ? "南米" :
+                      team.conf === "AFC" ? "アジア" :
+                      team.conf === "CAF" ? "アフリカ" :
+                      team.conf === "CONCACAF" ? "北中米" : "その他";
+  potEl.textContent = team.pot ? `${team.pot}` : "-";
+  rankEl.textContent = detail.rank || "未確定";
+
+  // 国旗
+  const code = flagMap[teamName] || "un";
+  flagImg.src = `https://flagcdn.com/256x192/${code}.png`;
+
+  // 特別メッセージ
+  extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
+
+  // プレーオフ情報
+  if (teamName.includes("PO") && detail.playoff) {
+    playoffBox.style.display = "block";
+    playoffText.textContent = detail.name ? 
+      `${detail.name}（${detail.playoff}）` : detail.playoff;
+  } else {
+    playoffBox.style.display = "none";
+  }
+
+  // 日本特別演出
+  if (teamName === "日本") {
+    document.querySelector(".modal-content").classList.add("japan-mode");
+    extraEl.textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
+  } else {
+    document.querySelector(".modal-content").classList.remove("japan-mode");
+  }
+
+  modal.style.display = "flex";
+}
+
+// モーダル閉じる
+document.querySelector(".modal-close").onclick = () => {
+  document.getElementById("teamModal").style.display = "none";
+};
+document.getElementById("teamModal").onclick = (e) => {
+  if (e.target === document.getElementById("teamModal")) {
+    e.target.style.display = "none";
+  }
+};
+
+// ★重要：ポット表のチームをクリック可能にする（メイン＋コピー両方対応）
+function makeTeamsClickable() {
+  document.querySelectorAll(".pot-team, .team-mini").forEach(el => {
+    el.style.cursor = "pointer";
+    el.onclick = () => {
+      const teamName = el.querySelector("span")?.textContent || 
+                      el.textContent.trim();
+      openTeamModal(teamName);
+    };
+  });
+}
+
+// 描画後にクリック有効化（メインのポット表と抽選タブ内両方）
+const originalRender = window.onload;
+window.onload = function() {
+  if (originalRender) originalRender();
+  makeTeamsClickable();
+};
+
+// 抽選タブ内コピーも対応
+const originalRenderInDraw = renderPotTableInDraw;
+renderPotTableInDraw = function() {
+  originalRenderInDraw();
+  setTimeout(makeTeamsClickable, 100);
+};	  
+
 // ページ読み込み時とタブ切り替え時に実行
 document.addEventListener('DOMContentLoaded', () => {
   renderPotTableInDraw();
@@ -1509,7 +1597,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10.9
+   <hr>©PureGreen │ テストv0.10.10
   </div>
 </body>
 </html>

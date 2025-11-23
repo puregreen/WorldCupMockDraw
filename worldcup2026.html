@@ -727,7 +727,7 @@ await new Promise(r => setTimeout(r, 1000));
 	// スクリーンショットボタン
   // スクリーンショット保存（ファイル名に現在時刻を付与）
 // スクリーンショット保存（タブレット白問題＋スマホ反応しない問題を完全解決！）
-document.querySelector(".share-btn.screenshot").onclick = async () => {
+document.querySelector(".fixed-btn.screenshot").onclick = async () => {
   try {
     // 結果エリアをキャプチャ（背景を強制指定）
     const element = document.getElementById("result");
@@ -867,7 +867,7 @@ async function captureResultForShare() {
 }
 
 // スクリーンショット保存（横4列・折り返しなし）
-document.querySelector(".share-btn.xshare").onclick = async () => {
+document.querySelector(".fixed-btn.xshare").onclick = async () => {
   try {
     const canvas = await captureResultForShare();  // 前回の横4列・折り返しなし関数
 
@@ -958,19 +958,14 @@ document.head.appendChild(style);
     document.getElementById("startBtn").onclick = startDraw;
 	document.getElementById("startBtn2").onclick = startDraw;
     document.getElementById("scrollToTopBtn").onclick = topScroll;
-	document.querySelector(".fixed-btn.screenshot").onclick = () => {
-     document.querySelector(".share-btn.screenshot").click();
-    };
-   document.querySelector(".fixed-btn.xshare").onclick = () => {
-    document.querySelector(".share-btn.xshare").click();
-   };
+
   </script>
 	
 	
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.27
+   <hr>©PureGreen │ テストv0.06.28
   </div>
 </body>
 </html>

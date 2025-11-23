@@ -742,42 +742,51 @@ document.head.appendChild(style);
 async function captureResultForShare() {
   const resultArea = document.getElementById("result");
 
-  // ① 保存前に強制的に横4列（PC風）にする
+  // ① 元のスタイルを保存
   const originalStyle = resultArea.style.cssText;
+
+  // ② 強制的に「横2列・見やすいレイアウト」に変更
   resultArea.style.cssText = `
     display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 20px !important;
-    padding: 30px 20px !important;
-    max-width: 1400px !important;
+    grid-template-columns: 1fr 1fr !important;     /* 横2列固定！ */
+    gap: 30px !important;
+    padding: 40px 30px !important;
+    max-width: 1000px !important;
     margin: 0 auto !important;
+    background: rgba(255,255,255,0.08) !important;
+    border-radius: 30px !important;
+    backdrop-filter: blur(10px) !important;
   `;
 
-  // ② 少し待ってからキャプチャ（レイアウト反映のため）
-  await new Promise(r => setTimeout(r, 100));
+  // グループのスタイルも少し整える
+  document.querySelectorAll(".group").forEach(g => {
+    g.style.cssText += "padding: 30px; border-radius: 25px; min-height: 380px;";
+  });
+
+  // レイアウト反映待ち
+  await new Promise(r => setTimeout(r, 150));
 
   const canvas = await html2canvas(resultArea, {
     scale: window.devicePixelRatio || 2,
     useCORS: true,
     backgroundColor: "#0f2b5e",
     logging: false,
-    width: resultArea.scrollWidth,
-    height: resultArea.scrollHeight + 100, // 余白確保
+    width: resultArea.scrollWidth + 60,
+    height: resultArea.scrollHeight + 120,
     windowWidth: document.body.scrollWidth
   });
 
-  // ③ 元のレイアウトに戻す（スマホユーザーの表示はそのまま）
+  // 元に戻す（画面表示はユーザーの好み通り）
   resultArea.style.cssText = originalStyle;
+  document.querySelectorAll(".group").forEach(g => g.style.cssText = g.style.cssText.replace(/min-height[^;]+;?/g, ''));
 
   return canvas;
 }
 
-// ============= スクリーンショット保存（見やすい横並び） =============
+// ============= スクリーンショット保存（横2列・超見やすい） =============
 document.querySelector(".share-btn.screenshot").onclick = async () => {
   try {
     const canvas = await captureResultForShare();
-
-    // タイムスタンプ付きファイル名
     const now = new Date();
     const ts = now.getFullYear() +
       String(now.getMonth()+1).padStart(2,'0') +
@@ -786,7 +795,6 @@ document.querySelector(".share-btn.screenshot").onclick = async () => {
       String(now.getMinutes()).padStart(2,'0') +
       String(now.getSeconds()).padStart(2,'0') +
       String(now.getMilliseconds()).padStart(3,'0');
-
     const filename = `2026worldcup_${ts}.png`;
 
     canvas.toBlob(blob => {
@@ -794,12 +802,12 @@ document.querySelector(".share-btn.screenshot").onclick = async () => {
       const a = document.createElement("a");
       a.href = url; a.download = filename; a.click();
       URL.revokeObjectURL(url);
-      showToast(`保存完了！ ${filename}`);
+      showToast(`保存しました！ ${filename}`);
     });
-  } catch (e) { alert("保存失敗…"); }
+  } catch (e) { console.error(e); alert("保存失敗…"); }
 };
 
-// ============= Xシェア（画像付き＋メンション＋横並び） =============
+// ============= Xシェア（画像付き・横2列・メンション付き） =============
 document.querySelector(".share-btn.xshare").onclick = async () => {
   try {
     const canvas = await captureResultForShare();
@@ -818,7 +826,6 @@ document.querySelector(".share-btn.xshare").onclick = async () => {
         text: tweetText
       });
     } else {
-      // PC用：画像DL＋ツイート画面
       canvas.toBlob(blob => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -827,7 +834,7 @@ document.querySelector(".share-btn.xshare").onclick = async () => {
       });
       const enc = encodeURIComponent(tweetText);
       window.open(`https://twitter.com/intent/tweet?text=${enc}`, "_blank");
-      showToast("画像保存しました！Xで投稿してね♪");
+      showToast("画像保存＆X投稿画面を開きました！");
     }
   } catch (e) {
     console.error(e);
@@ -860,7 +867,7 @@ function showToast(message) {
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.17
+   <hr>©PureGreen │ テストv0.06.18
   </div>
 </body>
 </html>

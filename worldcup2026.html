@@ -659,6 +659,7 @@ await new Promise(r => setTimeout(r, 1000));
   // スクリーンショット保存（ファイル名に現在時刻を付与）
   document.querySelector(".share-btn.screenshot").onclick = async () => {
     try {
+	  document.getElementById('result').style.zIndex = 9999;
       const element = document.querySelector("#result");
 
       // 高画質でキャプチャ
@@ -688,7 +689,9 @@ await new Promise(r => setTimeout(r, 1000));
       link.download = filename;
       link.href = canvas.toDataURL("image/png");
       link.click();
-
+		
+      document.getElementById('result').style.zIndex = 9998;
+		
       // 成功したらちょっとフィードバック
       alert(`保存しました！\n${filename}`);
     } catch (err) {
@@ -714,7 +717,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.11
+   <hr>©PureGreen │ テストv0.06.12
   </div>
 </body>
 </html>

@@ -742,48 +742,72 @@ document.head.appendChild(style);
 async function captureResultForShare() {
   const resultArea = document.getElementById("result");
 
-  // ① 元のスタイルを保存
+  // 元のスタイル保存
   const originalStyle = resultArea.style.cssText;
 
-  // ② 強制的に「横2列・見やすいレイアウト」に変更
+  // 強制：横4列＋見やすい＋折り返し防止
   resultArea.style.cssText = `
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important;     /* 横2列固定！ */
-    gap: 30px !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 25px !important;
     padding: 40px 30px !important;
-    max-width: 1000px !important;
+    max-width: 1600px !important;
     margin: 0 auto !important;
     background: rgba(255,255,255,0.08) !important;
     border-radius: 30px !important;
-    backdrop-filter: blur(10px) !important;
   `;
 
-  // グループのスタイルも少し整える
+  // 各グループを整える
   document.querySelectorAll(".group").forEach(g => {
-    g.style.cssText += "padding: 30px; border-radius: 25px; min-height: 380px;";
+    g.style.cssText += `
+      padding: 28px !important;
+      border-radius: 25px !important;
+      min-width: 280px !important;
+      background: rgba(255,255,255,0.15) !important;
+    `;
   });
 
-  // レイアウト反映待ち
-  await new Promise(r => setTimeout(r, 150));
+  // チーム名が折り返さないように超重要設定！
+  document.querySelectorAll(".team").forEach(t => {
+    t.style.cssText += `
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      font-size: 1.15rem !important;
+      padding: 12px 16px !important;
+      margin: 8px 0 !important;
+    `;
+  });
+
+  // グループタイトルも美しく
+  document.querySelectorAll(".group h2").forEach(h => {
+    h.style.fontSize = "2.6rem";
+    h.style.marginBottom = "20px";
+  });
+
+  // レイアウト完全反映待ち
+  await new Promise(r => setTimeout(r, 200));
 
   const canvas = await html2canvas(resultArea, {
     scale: window.devicePixelRatio || 2,
     useCORS: true,
     backgroundColor: "#0f2b5e",
     logging: false,
-    width: resultArea.scrollWidth + 60,
-    height: resultArea.scrollHeight + 120,
+    width: resultArea.scrollWidth + 80,
+    height: resultArea.scrollHeight + 140,
     windowWidth: document.body.scrollWidth
   });
 
   // 元に戻す（画面表示はユーザーの好み通り）
   resultArea.style.cssText = originalStyle;
-  document.querySelectorAll(".group").forEach(g => g.style.cssText = g.style.cssText.replace(/min-height[^;]+;?/g, ''));
+  document.querySelectorAll(".group, .team, .group h2").forEach(el => {
+    el.style.cssText = el.style.cssText.replace(/!important/g, '').replace(/;$/g, '');
+  });
 
   return canvas;
 }
 
-// ============= スクリーンショット保存（横2列・超見やすい） =============
+// スクリーンショット保存（横4列・折り返しなし）
 document.querySelector(".share-btn.screenshot").onclick = async () => {
   try {
     const canvas = await captureResultForShare();
@@ -802,12 +826,12 @@ document.querySelector(".share-btn.screenshot").onclick = async () => {
       const a = document.createElement("a");
       a.href = url; a.download = filename; a.click();
       URL.revokeObjectURL(url);
-      showToast(`保存しました！ ${filename}`);
+      showToast(`保存完了！ ${filename}`);
     });
   } catch (e) { console.error(e); alert("保存失敗…"); }
 };
 
-// ============= Xシェア（画像付き・横2列・メンション付き） =============
+// Xシェア（横4列・折り返しなし・メンション付き）
 document.querySelector(".share-btn.xshare").onclick = async () => {
   try {
     const canvas = await captureResultForShare();
@@ -867,7 +891,7 @@ function showToast(message) {
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.18
+   <hr>©PureGreen │ テストv0.06.19
   </div>
 </body>
 </html>

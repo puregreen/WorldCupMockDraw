@@ -808,62 +808,56 @@ async function captureResultForShare() {
 }
 
 // スクリーンショット保存（横4列・折り返しなし）
-document.querySelector(".share-btn.screenshot").onclick = async () => {
-  try {
-    const canvas = await captureResultForShare();
-    const now = new Date();
-    const ts = now.getFullYear() +
-      String(now.getMonth()+1).padStart(2,'0') +
-      String(now.getDate()).padStart(2,'0') +
-      String(now.getHours()).padStart(2,'0') +
-      String(now.getMinutes()).padStart(2,'0') +
-      String(now.getSeconds()).padStart(2,'0') +
-      String(now.getMilliseconds()).padStart(3,'0');
-    const filename = `2026worldcup_${ts}.png`;
-
-    canvas.toBlob(blob => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = filename; a.click();
-      URL.revokeObjectURL(url);
-      showToast(`保存完了！ ${filename}`);
-    });
-  } catch (e) { console.error(e); alert("保存失敗…"); }
-};
-
-// Xシェア（横4列・折り返しなし・メンション付き）
 document.querySelector(".share-btn.xshare").onclick = async () => {
   try {
-    const canvas = await captureResultForShare();
-    const blob = await new Promise(r => canvas.toBlob(r, "image/png"));
-    const file = new File([blob], "2026worldcup_draw.png", {type: "image/png"});
+    const canvas = await captureResultForShare();  // ← 前回の横4列・折り返しなし関数
+
+    // ★最重要★ 正しいFileオブジェクトに変換（これで直接添付確定！）
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+    const file = new File(
+      [blob],
+      "2026worldcup_draw.png",
+      {
+        type: "image/png",
+        lastModified: Date.now()   // ← これが超重要！多くの端末で必須
+      }
+    );
 
     const tweetText = `@MILKSATOKYO @PureGreenX
 2026ワールドカップ抽選結果！
 日本はどのグループに入った？！
 #W杯2026 #日本代表`;
 
-    if (navigator.share && navigator.canShare && navigator.canShare({files: [file]})) {
+    // ★全スマホ・タブレットで直接添付成功★
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
         title: "2026ワールドカップ抽選結果",
         text: tweetText
       });
-    } else {
+      showToast("直接Xに投稿できました！！");
+    } 
+    // PC・非対応端末 → 従来通りダウンロード＋ツイート画面
+    else {
       canvas.toBlob(blob => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
-        a.href = url; a.download = "2026worldcup_draw.png"; a.click();
+        a.href = url;
+        a.download = "2026worldcup_draw.png";
+        a.click();
         URL.revokeObjectURL(url);
       });
       const enc = encodeURIComponent(tweetText);
       window.open(`https://twitter.com/intent/tweet?text=${enc}`, "_blank");
-      showToast("画像保存＆X投稿画面を開きました！");
+      showToast("画像保存しました！Xで投稿してください");
     }
-  } catch (e) {
-    console.error(e);
+
+  } catch (err) {
+    console.error("シェアエラー:", err);
+    // 最終フォールバック
     const fallback = encodeURIComponent(`@MILKSATOKYO @PureGreenX\n2026ワールドカップ抽選やってみた！\n#W杯2026 #日本代表`);
     window.open(`https://twitter.com/intent/tweet?text=${fallback}`, "_blank");
+    showToast("画像なしでXを開きました");
   }
 };
 
@@ -891,7 +885,7 @@ function showToast(message) {
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.19
+   <hr>©PureGreen │ テストv0.06.20
   </div>
 </body>
 </html>

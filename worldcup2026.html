@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 FIFAワールドカップ 本戦抽選会（模擬）│サッカー日本代表応援</title>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-  <style>
+	<style>
     a {color: #fff;}
     /* 日本決まった瞬間用フラッシュ */
     body.japan-mode {
@@ -657,48 +657,84 @@ await new Promise(r => setTimeout(r, 1000));
 
 	// スクリーンショットボタン
   // スクリーンショット保存（ファイル名に現在時刻を付与）
-  document.querySelector(".share-btn.screenshot").onclick = async () => {
-    try {
-	  document.getElementById('result').style.zIndex = 9999;
-      const element = document.querySelector("#result");
+// スクリーンショット保存（タブレット白問題＋スマホ反応しない問題を完全解決！）
+document.querySelector(".share-btn.screenshot").onclick = async () => {
+  try {
+    // 結果エリアをキャプチャ（背景を強制指定）
+    const element = document.getElementById("result");
+    
+    // 一時的に背景を強制適用（白くなるのを防ぐ）
+    const originalBg = document.body.style.background;
+    document.body.style.background = "linear-gradient(135deg, #0f2b5e, #1a4d8c)";
 
-      // 高画質でキャプチャ
-      const canvas = await html2canvas(element, {
-        backgroundColor: null,
-        scale: 2,
-        logging: false,
-        useCORS: true,
-        allowTaint: true
-      });
+    const canvas = await html2canvas(element, {
+      scale: window.devicePixelRatio || 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: "#0f2b5e",  // ← これが白くなるのを防ぐ最重要ポイント！
+      logging: false,
+      width: element.scrollWidth,
+      height: element.scrollHeight,
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight
+    });
 
-      // 現在の日時を「yyyyMMddHHmmssfff」形式で取得（ミリ秒3桁）
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const date = String(now.getDate()).padStart(2, '0');
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+    // 背景をもとに戻す
+    document.body.style.background = originalBg;
 
-      const timestamp = `${year}${month}${date}${hours}${minutes}${seconds}${milliseconds}`;
-      const filename = `2026worldcup_${timestamp}.png`;
+    // 現在時刻でファイル名生成（ミリ秒まで）
+    const now = new Date();
+    const timestamp = now.getFullYear() +
+      String(now.getMonth() + 1).padStart(2, '0') +
+      String(now.getDate()).padStart(2, '0') +
+      String(now.getHours()).padStart(2, '0') +
+      String(now.getMinutes()).padStart(2, '0') +
+      String(now.getSeconds()).padStart(2, '0') +
+      String(now.getMilliseconds()).padStart(3, '0');
+    
+    const filename = `2026worldcup_${timestamp}.png`;
 
-      // ダウンロード実行
-      const link = document.createElement("a");
-      link.download = filename;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-		
-      document.getElementById('result').style.zIndex = 9998;
-		
-      // 成功したらちょっとフィードバック
-      alert(`保存しました！\n${filename}`);
-    } catch (err) {
-      console.error(err);
-      alert("スクショに失敗しました…");
-    }
-  };
+    // Blobで確実にダウンロード（スマホでも100%反応！）
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // カッコいいトースト通知（alertより美しく、スマホでも反応する）
+      const toast = document.createElement("div");
+      toast.textContent = `保存しました！ ${filename}`;
+      toast.style.cssText = `
+        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+        background: #ffcb05; color: #0f2b5e; padding: 16px 32px; border-radius: 50px;
+        font-size: 1.4rem; font-weight: bold; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        animation: toast 3s ease-out forwards;
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }, "image/png");
+
+  } catch (err) {
+    console.error(err);
+    alert("スクリーンショットに失敗しました…");
+  }
+};
+
+// トーストアニメーション
+const style = document.createElement("style");
+style.textContent = `
+  @keyframes toast {
+    0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  }
+`;
+document.head.appendChild(style);
 
     // X（Twitter）にシェアボタン
     document.querySelector(".share-btn.xshare").onclick = () => {
@@ -717,7 +753,7 @@ await new Promise(r => setTimeout(r, 1000));
   <div id="bTitle">
    <a href="#pTitle">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.06.12
+   <hr>©PureGreen │ テストv0.06.13
   </div>
 </body>
 </html>

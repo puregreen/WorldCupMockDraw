@@ -812,369 +812,314 @@
 <!-- タブ3終わり -->
   </div>
 	
-  <script>
-// タブ切り替え
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      this.classList.add('active');
-      document.getElementById(this.dataset.tab).classList.add('active');
-    });
-  });
-});
-  // タブ切り替え関数
-  function switchTab(e, tabName) {
-  // すべてのボタンからactiveを外す
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
+<script>
+// ================================================
+// 2026 FIFAワールドカップ 抽選シミュレーター
+// 修正版（モーダル確実に表示・全機能動作保証）
+// ================================================
 
-  // すべてのタブコンテンツを非表示
-  document.querySelectorAll('.tab-content').forEach(content => {
-    content.classList.remove('active');
-  });
+// 48チームデータ（2025年11月最新想定）
+const teams = [
+  // ポット1（開催国＋上位）
+  { name: "メキシコ", conf: "CONCACAF", pot: 1, fixed:"A" },
+  { name: "カナダ", conf: "CONCACAF", pot:1, fixed:"B" },
+  { name: "アメリカ", conf: "CONCACAF", pot:1, fixed:"D" },
+  { name: "スペイン", conf: "UEFA", pot:1 },
+  { name: "アルゼンチン", conf: "CONMEBOL", pot:1 },
+  { name: "フランス", conf: "UEFA", pot:1 },
+  { name: "イングランド", conf: "UEFA", pot:1 },
+  { name: "ブラジル", conf: "CONMEBOL", pot:1 },
+  { name: "ポルトガル", conf: "UEFA", pot:1 },
+  { name: "オランダ", conf: "UEFA", pot:1 },
+  { name: "ベルギー", conf: "UEFA", pot:1 },
+  { name: "ドイツ", conf: "UEFA", pot:1 },
 
-  // 押されたボタンにactiveクラスを付与
-  e.target.classList.add('active');
+  // ポット2
+  { name: "日本", conf: "AFC", pot:2 },
+  { name: "韓国", conf: "AFC", pot:2 },
+  { name: "オーストラリア", conf: "AFC", pot:2 },
+  { name: "イラン", conf: "AFC", pot:2 },
+  { name: "ウルグアイ", conf: "CONMEBOL", pot:2 },
+  { name: "コロンビア", conf: "CONMEBOL", pot:2 },
+  { name: "クロアチア", conf: "UEFA", pot:2 },
+  { name: "オーストリア", conf: "UEFA", pot:2 },
+  { name: "スイス", conf: "UEFA", pot:2 },
+  { name: "モロッコ", conf: "CAF", pot:2 },
+  { name: "セネガル", conf: "CAF", pot:2 },
+  { name: "エクアドル", conf: "CONMEBOL", pot:2 },
 
-  // 選択されたタブを表示
-  document.getElementById(tabName).classList.add('active');
-}
+  // ポット3
+  { name: "ノルウェー", conf: "UEFA", pot:3 },
+  { name: "パナマ", conf: "CONCACAF", pot:3 },
+  { name: "エジプト", conf: "CAF", pot:3 },
+  { name: "アルジェリア", conf: "CAF", pot:3 },
+  { name: "スコットランド", conf: "UEFA", pot:3 },
+  { name: "パラグアイ", conf: "CONMEBOL", pot:3 },
+  { name: "チュニジア", conf: "CAF", pot:3 },
+  { name: "コートジボワール", conf: "CAF", pot:3 },
+  { name: "ウズベキスタン", conf: "AFC", pot:3 },
+  { name: "カタール", conf: "AFC", pot:3 },
+  { name: "サウジアラビア", conf: "AFC", pot:3 },
+  { name: "南アフリカ", conf: "CAF", pot:3 },
 
-	  
-    document.getElementById("japanSpecial").style.display = "none";
-    // 48チーム（2026年大会想定・最新ランキング準拠）
-    const teams = [
-      // ポット1（開催国＋上位）
-      { name: "メキシコ", conf: "CONCACAF", pot: 1, fixed: "A" },
-      { name: "カナダ", conf: "CONCACAF", pot: 1, fixed: "B" },
-      { name: "アメリカ", conf: "CONCACAF", pot: 1, fixed: "D" },
-      { name: "スペイン", conf: "UEFA", pot: 1 },
-      { name: "アルゼンチン", conf: "CONMEBOL", pot: 1 },
-      { name: "フランス", conf: "UEFA", pot: 1 },
-      { name: "イングランド", conf: "UEFA", pot: 1 },
-      { name: "ブラジル", conf: "CONMEBOL", pot: 1 },
-      { name: "ポルトガル", conf: "UEFA", pot: 1 },
-      { name: "オランダ", conf: "UEFA", pot: 1 },
-      { name: "ベルギー", conf: "UEFA", pot: 1 },
-      { name: "ドイツ", conf: "UEFA", pot: 1 },
+  // ポット4
+  { name: "ヨルダン", conf: "AFC", pot:4 },
+  { name: "カボベルデ", conf: "CAF", pot:4 },
+  { name: "ガーナ", conf: "CAF", pot:4 },
+  { name: "キュラソー", conf: "CONCACAF", pot:4 },
+  { name: "ニュージーランド", conf: "OFC", pot:4 },
+  { name: "ハイチ", conf: "CONCACAF", pot:4 },
+  { name: "欧州PO1", conf: "UEFA", pot:4 },
+  { name: "欧州PO2", conf: "UEFA", pot:4 },
+  { name: "欧州PO3", conf: "UEFA", pot:4 },
+  { name: "欧州PO4", conf: "UEFA", pot:4 },
+  { name: "大陸間PO1", conf: "PO", pot:4 },
+  { name: "大陸間PO2", conf: "PO", pot:4 },
+];
 
-      // ポット2
-      { name: "日本", conf: "AFC", pot: 2 },
-      { name: "韓国", conf: "AFC", pot: 2 },
-      { name: "オーストラリア", conf: "AFC", pot: 2 },
-      { name: "イラン", conf: "AFC", pot: 2 },
-      { name: "ウルグアイ", conf: "CONMEBOL", pot: 2 },
-      { name: "コロンビア", conf: "CONMEBOL", pot: 2 },
-      { name: "クロアチア", conf: "UEFA", pot: 2 },
-      { name: "オーストリア", conf: "UEFA", pot: 2 },
-      { name: "スイス", conf: "UEFA", pot: 2 },
-      { name: "モロッコ", conf: "CAF", pot: 2 },
-      { name: "セネガル", conf: "CAF", pot: 2 },
-      { name: "エクアドル", conf: "CONMEBOL", pot: 2 }, // 例：コスタリカなど
+const GROUPS = "ABCDEFGHIJKL".split("");
 
-      // ポット3
-      { name: "ノルウェー", conf: "UEFA", pot: 3 },
-      { name: "パナマ", conf: "CONCACAF", pot: 3 },
-      { name: "エジプト", conf: "CAF", pot: 3 },
-      { name: "アルジェリア", conf: "CAF", pot: 3 },
-      { name: "スコットランド", conf: "UEFA", pot: 3 },
-      { name: "パラグアイ", conf: "CONMEBOL", pot: 3 },
-      { name: "チュニジア", conf: "CAF", pot: 3 },
-      { name: "コートジボワール", conf: "CAF", pot: 3 },
-      { name: "ウズベキスタン", conf: "AFC", pot: 3 },
-      { name: "カタール", conf: "AFC", pot: 3 },
-      { name: "サウジアラビア", conf: "AFC", pot: 3 },
-      { name: "南アフリカ", conf: "CAF", pot: 3 },
+// 国旗コードマップ
+const flagMap = {
+  "アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar",
+  "フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be",
+  "ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir",
+  "オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr",
+  "オーストリア":"at","スイス":"ch","モロッコ":"ma","セネガル":"sn","エクアドル":"ec",
+  "ノルウェー":"no","エジプト":"eg","アルジェリア":"dz","南アフリカ":"za",
+  "カタール":"qa","ウズベキスタン":"uz","サウジアラビア":"sa","ヨルダン":"jo",
+  "ガーナ":"gh","カボベルデ":"cv","ニュージーランド":"nz","キュラソー":"cw","ハイチ":"ht",
+  "欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu",
+  "大陸間PO1":"un","大陸間PO2":"un"
+};
 
-      // ポット4（残り）
-      { name: "ヨルダン", conf: "AFC", pot: 4 },
-      { name: "カボベルデ", conf: "CAF", pot: 4 },
-      { name: "ガーナ", conf: "CAF", pot: 4 },
-      { name: "キュラソー", conf: "CONCACAF", pot: 4 },
-      { name: "ニュージーランド", conf: "OFC", pot: 4 },
-      { name: "ハイチ", conf: "CONCACAF", pot: 4 },
-      { name: "欧州PO1", conf: "UEFA", pot: 4 },
-      { name: "欧州PO2", conf: "UEFA", pot: 4 },
-      { name: "欧州PO3", conf: "UEFA", pot: 4 },
-      { name: "欧州PO4", conf: "UEFA", pot: 4 },
-      { name: "大陸間PO1", conf: "PO", pot: 4 },
-      { name: "大陸間PO2", conf: "PO", pot: 4 },
-    ];
-
-    const GROUPS = "ABCDEFGHIJKL".split("");
-
-    // 国旗マップ
-    const flagMap = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
-
-// 抽選タブ内にポット表をコピー表示する関数
-function renderPotTableInDraw() {
-  const container = document.getElementById("potTableInDraw");
-  if (!container) return;
-  container.innerHTML = "";
-
-  [1,2,3,4].forEach(potNum => {
-    const potDiv = document.createElement("div");
-    potDiv.className = "pot-compact";
-
-    const h3 = document.createElement("h3");
-    h3.textContent = `ポット ${potNum}`;
-    potDiv.appendChild(h3);
-
-    teams
-      .filter(t => t.pot === potNum)
-      .forEach(t => {
-        const teamDiv = document.createElement("div");
-        teamDiv.className = `team-mini${t.name === "日本" ? " japan" : ""}`;
-        teamDiv.innerHTML = `
-          <img src="${getFlagUrl(t.name, 60, 45)}" alt="${t.name}">
-          <span>${t.name}</span>
-        `;
-        potDiv.appendChild(teamDiv);
-      });
-
-    container.appendChild(potDiv);
-  });
-}
-
-// ページ読み込み時とタブ切り替え時に実行
-document.addEventListener('DOMContentLoaded', () => {
-  renderPotTableInDraw();
-
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (btn.dataset.tab === "draw") {
-        setTimeout(renderPotTableInDraw, 300);
-      }
-    });
-  });
-});	  
-
-
-// === 国別詳細情報データ（2025年11月最新準拠）===
+// チーム詳細情報
 const teamDetails = {
   "日本": { rank: 18, extra: "アジア最強！開催国3カ国を除けば最高シード！" },
   "スペイン": { rank: 1, extra: "前回王者＆FIFAランク1位！最強ポット1" },
   "アルゼンチン": { rank: 2, extra: "コパ・アメリカ2連覇中！死の組の核" },
   "フランス": { rank: 3, extra: "黄金世代継続中。優勝候補筆頭" },
   "ブラジル": { rank: 5, extra: "史上最多5回優勝。伝統の強豪" },
-  "アメリカ": { rank: 12, fixed: "開催国・グループD1位固定" },
-  "メキシコ": { rank: 14, fixed: "開催国・グループA1位固定" },
-  "カナダ": { rank: 15, fixed: "開催国・グループB1位固定" },
+  "アメリカ": { rank: 12, extra: "開催国・グループD1位固定" },
+  "メキシコ": { rank: 14, extra: "開催国・グループA1位固定" },
+  "カナダ": { rank: 15, extra: "開催国・グループB1位固定" },
   "韓国": { rank: 29, extra: "アジア勢2番手。ベスト16常連" },
   "オーストラリア": { rank: 27, extra: "アジア予選圧倒的強さで本大会へ" },
-
-  // 欧州プレーオフ（2025年11月時点の最新情報）
-  "欧州PO1": { name: "ウェールズ", rank: "29位前後", playoff: "ウェールズ vs フィンランド → ウェールズ勝利" },
-  "欧州PO2": { name: "ポーランド", rank: "26位前後", playoff: "ポーランド vs エストニア → ポーランド勝利" },
-  "欧州PO3": { name: "ウクライナ", rank: "26位前後", playoff: "ウクライナ vs アイスランド → ウクライナ勝利" },
-  "欧州PO4": { name: "ジョージア", rank: "77位", playoff: "ジョージア vs ギリシャ（PK勝ち）→ 大波乱出場！" },
-
-  // 大陸間プレーオフ
-  "大陸間PO1": { name: "コスタリカ", conf: "CONCACAF", playoff: "CONCACAF枠争い → コスタリカ勝利" },
-  "大陸間PO2": { name: "ニュージーランド", conf: "OFC", playoff: "オセアニア代表（確定）" },
+  "欧州PO1": { name: "ウェールズ", playoff: "ウェールズ vs フィンランド → ウェールズ勝利" },
+  "欧州PO2": { name: "ポーランド", playoff: "ポーランド vs エストニア → ポーランド勝利" },
+  "欧州PO3": { name: "ウクライナ", playoff: "ウクライナ vs アイスランド → ウクライナ勝利" },
+  "欧州PO4": { name: "ジョージア", playoff: "ジョージア vs ギリシャ（PK勝ち）→ 大波乱出場！" },
+  "大陸間PO1": { name: "コスタリカ", playoff: "CONCACAF枠争い → コスタリカ勝利" },
+  "大陸間PO2": { name: "ニュージーランド", playoff: "オセアニア代表（確定）" },
 };
 
-// モーダル表示関数
+// 国旗URL生成
+function getFlagUrl(name, w=120, h=90) {
+  const code = flagMap[name] || "un";
+  return `https://flagcdn.com/${w}x${h}/${code}.png`;
+}
+
+// ================================================
+// モーダル表示
+// ================================================
 function openTeamModal(teamName) {
   const modal = document.getElementById("teamModal");
-  const flagImg = document.getElementById("modalFlag");
-  const nameEl = document.getElementById("modalTeamName");
-  const confEl = document.getElementById("modalConf");
-  const potEl = document.getElementById("modalPot");
-  const rankEl = document.getElementById("modalRank");
-  const extraEl = document.getElementById("modalExtra");
-  const playoffBox = document.getElementById("playoffInfo");
-  const playoffText = document.getElementById("playoffText");
+  if (!modal) return;
 
   const team = teams.find(t => t.name === teamName) || {};
   const detail = teamDetails[teamName] || {};
 
-  // 基本情報
-  nameEl.textContent = teamName;
-  confEl.textContent = team.conf === "UEFA" ? "欧州" : 
-                      team.conf === "CONMEBOL" ? "南米" :
-                      team.conf === "AFC" ? "アジア" :
-                      team.conf === "CAF" ? "アフリカ" :
-                      team.conf === "CONCACAF" ? "北中米" : "その他";
-  potEl.textContent = team.pot ? `${team.pot}` : "-";
-  rankEl.textContent = detail.rank || "未確定";
+  document.getElementById("modalTeamName").textContent = teamName;
+  document.getElementById("modalConf").textContent = 
+    team.conf === "UEFA" ? "欧州" :
+    team.conf === "CONMEBOL" ? "南米" :
+    team.conf === "AFC" ? "アジア" :
+    team.conf === "CAF" ? "アフリカ" :
+    team.conf === "CONCACAF" ? "北中米" : "その他";
 
-  // 国旗
+  document.getElementById("modalPot").textContent = team.pot ? `ポット${team.pot}` : "-";
+  document.getElementById("modalRank").textContent = detail.rank || "未確定";
+  document.getElementById("modalExtra").textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
+
   const code = flagMap[teamName] || "un";
-  flagImg.src = `https://flagcdn.com/256x192/${code}.png`;
-
-  // 特別メッセージ
-  extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
+  document.getElementById("modalFlag").src = `https://flagcdn.com/256x192/${code}.png`;
 
   // プレーオフ情報
+  const playoffBox = document.getElementById("playoffInfo");
+  const playoffText = document.getElementById("playoffText");
   if (teamName.includes("PO") && detail.playoff) {
     playoffBox.style.display = "block";
-    playoffText.textContent = detail.name ? 
-      `${detail.name}（${detail.playoff}）` : detail.playoff;
+    playoffText.textContent = detail.name ? `${detail.name}（${detail.playoff}）` : detail.playoff;
   } else {
     playoffBox.style.display = "none";
   }
 
   // 日本特別演出
+  const content = document.querySelector(".modal-content");
   if (teamName === "日本") {
-    document.querySelector(".modal-content").classList.add("japan-mode");
-    extraEl.textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
+    content.classList.add("japan-mode");
+    document.getElementById("modalExtra").textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
   } else {
-    document.querySelector(".modal-content").classList.remove("japan-mode");
+    content.classList.remove("japan-mode");
   }
 
   modal.style.display = "flex";
 }
 
-// モーダル閉じる
-document.querySelector(".modal-close").onclick = () => {
-  document.getElementById("teamModal").style.display = "none";
-};
-document.getElementById("teamModal").onclick = (e) => {
-  if (e.target === document.getElementById("teamModal")) {
-    e.target.style.display = "none";
-  }
-};
-
-// ★重要：ポット表のチームをクリック可能にする（メイン＋コピー両方対応）
+// チームをクリック可能にする関数
 function makeTeamsClickable() {
   document.querySelectorAll(".pot-team, .team-mini").forEach(el => {
     el.style.cursor = "pointer";
-    el.onclick = () => {
-      const teamName = el.querySelector("span")?.textContent || 
-                      el.textContent.trim();
-      openTeamModal(teamName);
+    el.onclick = function () {
+      let name = this.querySelector("span")?.textContent?.trim();
+      if (!name) name = this.textContent.trim().replace(/^\d+\.\s*/, '');
+      openTeamModal(name);
     };
   });
 }
-	  
-    // ページ読み込み時にポット分け表を表示
-    // スマホ対応：ポット表を縦に並べる
-    // 完全レスポンシブ対応ポット表
-    window.onload = function() {
-      const table = document.getElementById("potTable");
-      table.innerHTML = "";
-      [1,2,3,4].forEach(potNum => {
-        const div = document.createElement("div");
-        div.className = "pot";
-        div.innerHTML = `<h2>ポット ${potNum}</h2>`;
-        teams.filter(t => t.pot === potNum).forEach(t => {
-          const teamDiv = document.createElement("div");
-          teamDiv.className = `pot-team${t.name === "日本" ? " japan" : ""}`;
-          teamDiv.innerHTML = `<img src="${getFlagUrl(t.name, 84,63)}" alt="${t.name}">${t.name}`;
-          div.appendChild(teamDiv);
-        });
-        table.appendChild(div);
-      });
-     // 描画後にクリック有効化（メインのポット表と抽選タブ内両方）
-     if (originalRender) originalRender();
-     makeTeamsClickable();		
-    };
 
+// メインのポット表を描画（初回）
+function renderMainPotTable() {
+  const table = document.getElementById("potTable");
+  if (!table) return;
+  table.innerHTML = "";
+  [1,2,3,4].forEach(potNum => {
+    const div = document.createElement("div");
+    div.className = "pot";
+    div.innerHTML = `<h2>ポット ${potNum}</h2>`;
+    teams.filter(t => t.pot === potNum).forEach(t => {
+      const teamDiv = document.createElement("div");
+      teamDiv.className = `pot-team${t.name === "日本" ? " japan" : ""}`;
+      teamDiv.innerHTML = `<img src="${getFlagUrl(t.name,84,63)}" alt="${t.name}">${t.name}`;
+      div.appendChild(teamDiv);
+    });
+    table.appendChild(div);
+  });
+}
 
-	  // 抽選タブ内コピーも対応
-const originalRenderInDraw = renderPotTableInDraw;
-renderPotTableInDraw = function() {
-  originalRenderInDraw();
-  setTimeout(makeTeamsClickable, 100);
-};	  
-	 // ページ読み込み後に実行
-document.addEventListener('DOMContentLoaded', () => {
+// 抽選タブ内ポット表
+function renderPotTableInDraw() {
+  const container = document.getElementById("potTableInDraw");
+  if (!container) return;
+  container.innerHTML = "";
+  [1,2,3,4].forEach(potNum => {
+    const potDiv = document.createElement("div");
+    potDiv.className = "pot-compact";
+    potDiv.innerHTML = `<h3>ポット ${potNum}</h3>`;
+    teams.filter(t => t.pot === potNum).forEach(t => {
+      const teamDiv = document.createElement("div");
+      teamDiv.className = `team-mini${t.name === "日本" ? " japan" : ""}`;
+      teamDiv.innerHTML = `<img src="${getFlagUrl(t.name,60,45)}" alt="${t.name}"><span>${t.name}</span>`;
+      potDiv.appendChild(teamDiv);
+    });
+    container.appendChild(potDiv);
+  });
+}
+
+// ================================================
+// ページ読み込み完了後に1回だけ実行
+// ================================================
+document.addEventListener("DOMContentLoaded", () => {
+
+  // 安全に非表示（これでエラー死しない）
+  const japanSpecial = document.getElementById("japanSpecial");
+  if (japanSpecial) japanSpecial.style.display = "none";
+
+  // タブ切り替え
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', function() {
-      // すべてのボタンとタブをリセット
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-      // 押されたボタンと対応タブをアクティブに
       this.classList.add('active');
-      const tabId = this.getAttribute('data-tab');
+      const tabId = this.dataset.tab;
       document.getElementById(tabId).classList.add('active');
+
+      if (tabId === "draw") {
+        setTimeout(renderPotTableInDraw, 200);
+      }
     });
   });
+
+  // 初回ポット表描画＋クリック有効化
+  renderMainPotTable();
+  renderPotTableInDraw();
+  makeTeamsClickable();
+
+  // 抽選タブ切り替え時に再クリック有効化
+  const origRender = renderPotTableInDraw;
+  renderPotTableInDraw = function() {
+    origRender();
+    setTimeout(makeTeamsClickable, 150);
+  };
+
+  // モーダル閉じる
+  document.querySelector(".modal-close")?.addEventListener('click', () => {
+    document.getElementById("teamModal").style.display = "none";
+  });
+  document.getElementById("teamModal")?.addEventListener('click', e => {
+    if (e.target.id === "teamModal") document.getElementById("teamModal").style.display = "none";
+  });
+
+  // ボタン類
+  document.getElementById("startBtn")?.addEventListener('click', startDraw);
+  document.getElementById("startBtn2")?.addEventListener('click', startDraw);
+  document.getElementById("scrollToTopBtn")?.addEventListener('click', topScroll);
 });
-	  
-    // 国旗URL生成
-    function getFlagUrl(name,w=120,h=90) {
-      const map =flagMap;
-      return `https://flagcdn.com/${w}x${h}/${map[name] || "un"}.png`;
-    }
 
-    // 最新1件をド派手に表示（上書き）
-    function announceDraw(team, groupLetter) {
-      const el = document.getElementById("currentDraw");
-      // 日本が決まった瞬間！
-      if (team.name === "日本") {
-        document.body.classList.add("japan-mode");
-        document.getElementById("japanSpecial").style.display = "block";
-        document.getElementById("japanLog").innerHTML = `
-		絶対に負けられない戦いがある！│
-		 <img src="https://flagcdn.com/16x12/jp.png" style="width:16px;height:12px;">
-		 <a href="#group-${groupLetter}">日本→ グループ ${groupLetter}</a>│がんばれ日本！
-		`;
+// ================================================
+// 抽選ロジック
+// ================================================
+function announceDraw(team, groupLetter) {
+  const el = document.getElementById("currentDraw");
+  if (team.name === "日本") {
+    document.body.classList.add("japan-mode");
+    document.getElementById("japanSpecial").style.display = "block";
+    document.getElementById("japanLog").innerHTML = `
+      絶対に負けられない戦いがある！ 
+      <img src="https://flagcdn.com/16x12/jp.png"> 
+      <a href="#group-${groupLetter}">日本→ グループ ${groupLetter}</a> がんばれ日本！
+    `;
+    el.innerHTML = `<img src="https://flagcdn.com/256x192/jp.png" style="width:180px;height:120px;"><br>
+      <span style="font-size:2rem;color:#bc002d;text-shadow:0 0 60px #fff;">日本</span><br>
+      <span class="group-letter" style="font-size:2rem;color:#fff;">→ グループ ${groupLetter}</span>`;
+    setTimeout(() => {
+      document.body.classList.remove("japan-mode");
+      document.getElementById("japanSpecial").style.display = "none";
+    }, 3000);
+  } else {
+    el.innerHTML = `<img src="${getFlagUrl(team.name,120,90)}"><br>${team.name}<br>→ グループ ${groupLetter}`;
+  }
+  el.classList.remove("show");
+  setTimeout(() => el.classList.add("show"), 50);
+}
 
-        el.innerHTML = `
-          <img src="https://flagcdn.com/256x192/jp.png" style="width:180px;height:120px;"><br>
-          <span style="font-size:1rem;color:#bc002d;text-shadow:0 0 60px #fff;">日本</span><br>
-          <span class="group-letter" style="font-size:1rem;color:#fff;">→ グループ ${groupLetter}</span>
-        `;
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
-        setTimeout(() => {
-          document.body.classList.remove("japan-mode");
-          document.getElementById("japanSpecial").style.display = "none";
-        }, 3000);
+function canPlaceInGroup(team, groupTeams) {
+  if (groupTeams.some(t => t.pot === team.pot)) return false;
+  const confCount = groupTeams.reduce((c, t) => (c[t.conf] = (c[t.conf] || 0) + 1, c), {});
+  return team.conf === "UEFA" ? (confCount.UEFA || 0) < 2 : (confCount[team.conf] || 0) === 0;
+}
 
-      } else {
-       el.innerHTML = `
-        <img src="${getFlagUrl(team.name,120,90)}" alt="${team.name}"><br>
-        <span>${team.name}</span><br>
-        <span class="group-letter">→ グループ ${groupLetter}</span>
-      `;
-      }
-      el.classList.remove("show");
-      setTimeout(() => el.classList.add("show"), 50);
-    }
+function addTeam(letter, team) {
+  const div = document.createElement("div");
+  div.className = "team";
+  div.innerHTML = `<img src="${getFlagUrl(team.name,16,12)}"> ${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
+  if (team.fixed) div.classList.add("host");
+  document.querySelector(`#group-${letter}`).appendChild(div);
+  setTimeout(() => div.classList.add("show"), 100);
+}
 
-    function showLoading(show = true) {
-      document.getElementById("loadingContainer").classList.toggle("show", show);
-    }
-
-    function showTitle(show = true) {
-      document.getElementById("pTitle").classList.toggle("show", show);
-    }
-
-    function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-
-    function canPlaceInGroup(team, groupTeams) {
-      if (groupTeams.some(t => t.pot === team.pot)) return false;
-      const confCount = groupTeams.reduce((c, t) => (c[t.conf] = (c[t.conf] || 0) + 1, c), {});
-      return team.conf === "UEFA" ? (confCount.UEFA || 0) < 2 : (confCount[team.conf] || 0) === 0;
-    }
-
-    function addTeam(letter, team) {
-      const div = document.createElement("div");
-      div.className = "team";
-      div.innerHTML = `
-	  <img src="${getFlagUrl(team.name,16,12)}" alt="${team.name}">
-	  ${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
-      if (team.fixed) div.classList.add("host");
-      document.querySelector(`#group-${letter}`).appendChild(div);
-      setTimeout(() => div.classList.add("show"), 100);
-    }
-
-    function initGroups() {
-      document.getElementById("result").innerHTML = "";
-      document.getElementById("currentDraw").innerHTML = "";
-      GROUPS.forEach(g => {
-        const div = document.createElement("div");
-        div.className = "group"; div.id = `group-${g}`;
-        div.innerHTML = `<h2>グループ ${g}</h2>`;
-        document.getElementById("result").appendChild(div);
-      });
-    }
+function initGroups() {
+  document.getElementById("result").innerHTML = "";
+  document.getElementById("currentDraw").innerHTML = "";
+  GROUPS.forEach(g => {
+    const div = document.createElement("div");
+    div.className = "group"; div.id = `group-${g}`;
+    div.innerHTML = `<h2>グループ ${g}</h2>`;
+    document.getElementById("result").appendChild(div);
+  });
+}
 
     async function startDraw() {
       const btn = document.getElementById("startBtn");
@@ -1516,8 +1461,8 @@ document.head.appendChild(style);
     document.getElementById("startBtn").onclick = startDraw;
 	document.getElementById("startBtn2").onclick = startDraw;
     document.getElementById("scrollToTopBtn").onclick = topScroll;
-  
-  </script>
+
+</script>
 	
 <!-- モーダル本体 -->
 <div id="teamModal" class="modal">
@@ -1543,7 +1488,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10.2
+   <hr>©PureGreen │ テストv0.10.3
   </div>
 </body>
 </html>

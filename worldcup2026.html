@@ -560,6 +560,82 @@
   height: 22px;
   border: 1.3px solid #fff;
 }
+
+/* モーダル全体 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 99999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* モーダルコンテンツ */
+.modal-content {
+  background: linear-gradient(135deg, #0f2b5e, #1a4d8c);
+  padding: 30px 25px;
+  border-radius: 24px;
+  max-width: 90%;
+  width: 380px;
+  text-align: center;
+  border: 2px solid #ffcb05;
+  box-shadow: 0 20px 60px rgba(255,203,5,0.4);
+  animation: modalPop 0.6s cubic-bezier(0.18, 1, 0.21, 1);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px; right: 18px;
+  font-size: 2.5rem;
+  color: #ffcb05;
+  cursor: pointer;
+  font-weight: bold;
+  text-shadow: 0 0 10px gold;
+}
+
+.modal-flag img {
+  width: 140px; height: 105px;
+  border-radius: 12px;
+  border: 3px solid #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+  margin-bottom: 15px;
+}
+
+#modalTeamName {
+  font-size: 2.2rem;
+  color: #ffcb05;
+  margin: 10px 0;
+  text-shadow: 0 0 20px gold;
+}
+
+.modal-info p {
+  margin: 8px 0;
+  font-size: 1.15rem;
+  color: white;
+}
+
+/* 日本特別演出 */
+.modal-content.japan-mode {
+  background: linear-gradient(135deg, #bc002d, #fff, #bc002d);
+  animation: japanPulse 2s infinite;
+}
+
+/* アニメーション */
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+@keyframes modalPop {
+  0% { transform: scale(0.3) translateY(100px); opacity:0; }
+  100% { transform: scale(1) translateY(0); opacity:1; }
+}
+@keyframes japanPulse {
+  0%,100% { box-shadow: 0 0 30px #fff; }
+  50% { box-shadow: 0 0 80px #ffcb05; }
+}
 		
   </style>
 </head>
@@ -875,6 +951,106 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });	  
+
+
+// === 国別詳細情報データ（2025年11月最新準拠）===
+const teamDetails = {
+  "日本": { rank: 18, extra: "アジア最強！開催国3カ国を除けば最高シード！" },
+  "スペイン": { rank: 1, extra: "前回王者＆FIFAランク1位！最強ポット1" },
+  "アルゼンチン": { rank: 2, extra: "コパ・アメリカ2連覇中！死の組の核" },
+  "フランス": { rank: 3, extra: "黄金世代継続中。優勝候補筆頭" },
+  "ブラジル": { rank: 5, extra: "史上最多5回優勝。伝統の強豪" },
+  "アメリカ": { rank: 12, fixed: "開催国・グループD1位固定" },
+  "メキシコ": { rank: 14, fixed: "開催国・グループA1位固定" },
+  "カナダ": { rank: 15, fixed: "開催国・グループB1位固定" },
+  "韓国": { rank: 29, extra: "アジア勢2番手。ベスト16常連" },
+  "オーストラリア": { rank: 27, extra: "アジア予選圧倒的強さで本大会へ" },
+
+  // 欧州プレーオフ（2025年11月時点の最新情報）
+  "欧州PO1": { name: "ウェールズ", rank: "29位前後", playoff: "ウェールズ vs フィンランド → ウェールズ勝利" },
+  "欧州PO2": { name: "ポーランド", rank: "26位前後", playoff: "ポーランド vs エストニア → ポーランド勝利" },
+  "欧州PO3": { name: "ウクライナ", rank: "26位前後", playoff: "ウクライナ vs アイスランド → ウクライナ勝利" },
+  "欧州PO4": { name: "ジョージア", rank: "77位", playoff: "ジョージア vs ギリシャ（PK勝ち）→ 大波乱出場！" },
+
+  // 大陸間プレーオフ
+  "大陸間PO1": { name: "コスタリカ", conf: "CONCACAF", playoff: "CONCACAF枠争い → コスタリカ勝利" },
+  "大陸間PO2": { name: "ニュージーランド", conf: "OFC", playoff: "オセアニア代表（確定）" },
+};
+
+// モーダル表示関数
+function openTeamModal(teamName) {
+  const modal = document.getElementById("teamModal");
+  const flagImg = document.getElementById("modalFlag");
+  const nameEl = document.getElementById("modalTeamName");
+  const confEl = document.getElementById("modalConf");
+  const potEl = document.getElementById("modalPot");
+  const rankEl = document.getElementById("modalRank");
+  const extraEl = document.getElementById("modalExtra");
+  const playoffBox = document.getElementById("playoffInfo");
+  const playoffText = document.getElementById("playoffText");
+
+  const team = teams.find(t => t.name === teamName) || {};
+  const detail = teamDetails[teamName] || {};
+
+  // 基本情報
+  nameEl.textContent = teamName;
+  confEl.textContent = team.conf === "UEFA" ? "欧州" : 
+                      team.conf === "CONMEBOL" ? "南米" :
+                      team.conf === "AFC" ? "アジア" :
+                      team.conf === "CAF" ? "アフリカ" :
+                      team.conf === "CONCACAF" ? "北中米" : "その他";
+  potEl.textContent = team.pot ? `${team.pot}` : "-";
+  rankEl.textContent = detail.rank || "未確定";
+
+  // 国旗
+  const code = flagMap[teamName] || "un";
+  flagImg.src = `https://flagcdn.com/256x192/${code}.png`;
+
+  // 特別メッセージ
+  extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
+
+  // プレーオフ情報
+  if (teamName.includes("PO") && detail.playoff) {
+    playoffBox.style.display = "block";
+    playoffText.textContent = detail.name ? 
+      `${detail.name}（${detail.playoff}）` : detail.playoff;
+  } else {
+    playoffBox.style.display = "none";
+  }
+
+  // 日本特別演出
+  if (teamName === "日本") {
+    document.querySelector(".modal-content").classList.add("japan-mode");
+    extraEl.textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
+  } else {
+    document.querySelector(".modal-content").classList.remove("japan-mode");
+  }
+
+  modal.style.display = "flex";
+}
+
+// モーダル閉じる
+document.querySelector(".modal-close").onclick = () => {
+  document.getElementById("teamModal").style.display = "none";
+};
+document.getElementById("teamModal").onclick = (e) => {
+  if (e.target === document.getElementById("teamModal")) {
+    e.target.style.display = "none";
+  }
+};
+
+// ★重要：ポット表のチームをクリック可能にする（メイン＋コピー両方対応）
+function makeTeamsClickable() {
+  document.querySelectorAll(".pot-team, .team-mini").forEach(el => {
+    el.style.cursor = "pointer";
+    el.onclick = () => {
+      const teamName = el.querySelector("span")?.textContent || 
+                      el.textContent.trim();
+      openTeamModal(teamName);
+    };
+  });
+}
+	  
     // ページ読み込み時にポット分け表を表示
     // スマホ対応：ポット表を縦に並べる
     // 完全レスポンシブ対応ポット表
@@ -893,9 +1069,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         table.appendChild(div);
       });
+     // 描画後にクリック有効化（メインのポット表と抽選タブ内両方）
+     if (originalRender) originalRender();
+     makeTeamsClickable();		
     };
 
-	  // ページ読み込み後に実行
+
+	  // 抽選タブ内コピーも対応
+const originalRenderInDraw = renderPotTableInDraw;
+renderPotTableInDraw = function() {
+  originalRenderInDraw();
+  setTimeout(makeTeamsClickable, 100);
+};	  
+	 // ページ読み込み後に実行
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -1333,11 +1519,31 @@ document.head.appendChild(style);
   
   </script>
 	
+<!-- モーダル本体 -->
+<div id="teamModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close">&times;</span>
+    <div class="modal-flag">
+      <img id="modalFlag" src="" alt="">
+    </div>
+    <h2 id="modalTeamName"></h2>
+    <div class="modal-info">
+      <p><strong>大陸連盟：</strong><span id="modalConf"></span></p>
+      <p><strong>ポット：</strong><span id="modalPot"></span></p>
+      <p><strong>FIFAランキング：</strong><span id="modalRank"></span>位</p>
+      <p id="modalExtra" style="margin-top:12px; color:#ffcb05; font-weight:bold;"></p>
+    </div>
+    <div id="playoffInfo" style="display:none; margin-top:15px; padding:15px; background:rgba(255,203,5,0.15); border-radius:12px; border:1px solid #ffcb05;">
+      <p style="margin:0; font-size:1rem; color:#ffcb05;"><strong>プレーオフ情報</strong></p>
+      <p id="playoffText"></p>
+    </div>
+  </div>
+</div>
 	
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10.1
+   <hr>©PureGreen │ テストv0.10.2
   </div>
 </body>
 </html>

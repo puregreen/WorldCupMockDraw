@@ -616,6 +616,24 @@
   border: 2px solid #bc002d !important;
 }
 
+/* 抽選タブ内の小さい国旗が絶対に出るように強制 */
+#potTableInDraw .team-mini img {
+  width: 60px !important;
+  height: 45px !important;
+  border-radius: 4px !important;
+}
+
+/* ポット表が縦1列にならないように（元のCSSが効くように） */
+#potTable .pot,
+#potTableInDraw .pot {
+  width: 100% !important;
+}
+
+/* 必要ならこれも */
+.pot {
+  margin-bottom: 30px;
+}
+
 /* モーダル全体 */
 .modal {
   display: none;
@@ -881,6 +899,7 @@
 <!-- タブ3終わり -->
   </div>
 	
+修正2
 <script>
 window.addEventListener('DOMContentLoaded', () => {
   // ==================== データ（そのまま）===================
@@ -1026,7 +1045,7 @@ const teamDetails = {
     return `https://flagcdn.com/${w}x${h}/${flagMap[name] || "un"}.png`;
   }
 
-  // ==================== モーダル（完璧）===================
+  // ==================== モーダル===================
   let modal = null;
   window.openTeamModal = function(teamName) {
     modal = modal || document.getElementById("teamModal");
@@ -1036,7 +1055,7 @@ const teamDetails = {
     const detail = teamDetails[teamName] || {};
 
     document.getElementById("modalTeamName").textContent = teamName;
-    document.getElementById("modalConf").textContent =
+    document.getElementById("modalConf").textContent = 
       {UEFA:"欧州",CONMEBOL:"南米",AFC:"アジア",CAF:"アフリカ",CONCACAF:"北中米"}[team.conf] || "その他";
     document.getElementById("modalPot").textContent = team.pot ? `ポット${team.pot}` : "-";
     document.getElementById("modalRank").textContent = detail.rank ?? "未確定";
@@ -1068,86 +1087,81 @@ const teamDetails = {
     }
   });
 
-  // ==================== ポット表描画（完全復活・CSS崩れゼロ）===================
+  // ==================== ポット表描画===================
   function renderPotTable(containerId, flagW = 84, flagH = 63, itemClass = "pot-team") {
     const container = document.getElementById(containerId);
     if (!container) return;
 
     container.innerHTML = "";  // 完全クリア
 
-    const wrapper = document.createElement("div");
-    wrapper.className = "pots-wrapper";  // ← これでCSSが100%効く！
-
+    // 元のHTML構造を100%再現（クラス名もそのまま！）
     [1,2,3,4].forEach(p => {
-      const pot = document.createElement("div");
-      pot.className = "pot";
-
-      const title = document.createElement("h2");
-      title.textContent = `ポット ${p}`;
-      pot.appendChild(title);
-
-      const list = document.createElement("div");
-      list.className = "pot-list";
+      const potDiv = document.createElement("div");
+      potDiv.className = "pot";
+      potDiv.innerHTML = `<h2>ポット ${p}</h2>`;
 
       teams.filter(t => t.pot === p).forEach(t => {
-        const item = document.createElement("div");
-        item.className = `${itemClass}${t.name==="日本" ? " japan" : ""}`;
-        item.innerHTML = `
+        const teamDiv = document.createElement("div");
+        teamDiv.className = `${itemClass}${t.name === "日本" ? " japan" : ""}`;
+        teamDiv.innerHTML = `
           <img src="${getFlagUrl(t.name, flagW, flagH)}" alt="${t.name}">
           <span>${t.name}</span>
         `;
-        item.onclick = () => openTeamModal(t.name);
-        list.appendChild(item);
+        teamDiv.style.cursor = "pointer";
+        teamDiv.onclick = () => openTeamModal(t.name);
+        potDiv.appendChild(teamDiv);
       });
 
-      pot.appendChild(list);
-      wrapper.appendChild(pot);
+      container.appendChild(potDiv);
     });
-
-    container.appendChild(wrapper);
   }
 
-  // 抽選タブ用（小さいサイズ）
-  window.renderPotTableInDraw = () => renderPotTable("potTableInDraw", 50, 38, "team-mini");
+  // 抽選タブ用（サイズ指定を厳格に）
+  window.renderPotTableInDraw = () => renderPotTable("potTableInDraw", 60, 45, "team-mini");
 
-  // ==================== 初期化（抽選タブを強制的に最初に表示）===================
+  // ==================== 初期化（ポットタブを一切触らず、抽選タブのみactive）===================
   const init = () => {
     modal = document.getElementById("teamModal");
 
-    // 1. 初回は「抽選シミュ」タブを強制選択
-    const drawTabBtn = document.querySelector('[data-tab="draw"]');
-    const drawTabContent = document.getElementById("draw");
+    // 重要：active を一切消さない！（消すと一瞬ポットタブが光る）
+    const drawBtn = document.querySelector('[data-tab="draw"]');
+    const drawContent = document.getElementById("draw");
 
-    if (drawTabBtn && drawTabContent) {
-      document.querySelectorAll('.tab-btn, .tab-content').forEach(el => el.classList.remove('active'));
-      drawTabBtn.classList.add('active');
-      drawTabContent.classList.add('active');
+    if (drawBtn && drawContent && !drawContent.classList.contains("active")) {
+      // すでにactiveなら何もしない（初回だけ実行）
+      drawBtn.classList.add("active");
+      drawContent.classList.add("active");
     }
 
-    // 2. 両方のポット表を確実に描画
-    renderPotTable("potTable", 84, 63, "pot-team");           // ポットタブ用（標準サイズ）
-    renderPotTable("potTableInDraw", 50, 38, "team-mini");    // 抽選タブ用（小さい）
+    // 両方のポット表を確実に描画（元のCSSが100%効くように構造を完全再現）
+    renderPotTable("potTable", 84, 63, "pot-team");
+    renderPotTable("potTableInDraw", 60, 45, "team-mini");  // ← ここで60x45に修正！
   };
 
-  // ==================== タブ切り替え（クリック時も完璧に再描画）===================
+  // ==================== タブ切り替え（active消さない版）===================
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn, .tab-content').forEach(el => el.classList.remove('active'));
+      // active を全部消すとチラつくので、対象だけ切り替え
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
       btn.classList.add('active');
-      document.getElementById(btn.dataset.tab)?.classList.add('active');
+      const content = document.getElementById(btn.dataset.tab);
+      if (content) content.classList.add('active');
 
       setTimeout(() => {
         if (btn.dataset.tab === "pots") renderPotTable("potTable", 84, 63, "pot-team");
         if (btn.dataset.tab === "draw") window.renderPotTableInDraw();
-      }, 150);
+      }, 100);
     });
   });
 
   // ==================== 実行 ====================
   init();
-  setTimeout(init, 800);  // 保険
+  setTimeout(init, 600);
+  setTimeout(init, 1200);
 
-  // ==================== 抽選ロジック===================
+  // ==================== 抽選ロジック全部===================
 
   function shuffle(a) { for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
   function canPlaceInGroup(team, groupTeams) {
@@ -1608,7 +1622,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10_マージ.4
+   <hr>©PureGreen │ テストv0.10_mo.マージ.5
   </div>
 <!-- 強制初回描画 -->
 <script>

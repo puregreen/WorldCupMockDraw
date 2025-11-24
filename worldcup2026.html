@@ -561,6 +561,61 @@
   border: 1.3px solid #fff;
 }
 
+/* ポット表の見た目を完全に元に戻す（重要！） */
+.pots-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  padding: 20px 10px;
+}
+
+.pot h2 {
+  margin: 0 0 16px 0;
+  text-align: center;
+  color: #ffcb05;
+  font-size: 1.8rem;
+}
+
+.pot-list {
+  display: grid;
+  gap: 10px;
+}
+
+.pot-team,
+.team-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.pot-team:hover,
+.team-mini:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+.team-mini {
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  gap: 8px;
+}
+
+.team-mini img {
+  width: 50px !important;
+  height: 38px !important;
+}
+
+.japan {
+  background: linear-gradient(135deg, rgba(188,0,45,0.3), rgba(255,255,255,0.2)) !important;
+  border: 2px solid #bc002d !important;
+}
+
 /* モーダル全体 */
 .modal {
   display: none;
@@ -625,6 +680,20 @@
   background: linear-gradient(135deg, #bc002d, #fff, #bc002d);
   animation: japanPulse 2s infinite;
 }
+
+/* 応急処置 */
+#teamModal {
+  display: none;           /* 最初は非表示 */
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+#teamModal.show { display: flex !important; }  /* ← これで絶対出る */
 
 /* アニメーション */
 @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
@@ -813,13 +882,9 @@
   </div>
 	
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // ------------------------------------------------------------------
-  // 1. データ
-  // ------------------------------------------------------------------
+window.addEventListener('DOMContentLoaded', () => {
+  // ==================== データ（そのまま）===================
   document.getElementById("japanSpecial").style.display = "none";
-
-     //グループ分け
   const GROUPS = "ABCDEFGHIJKL".split("");
 
       // 48チーム（2026年大会想定・最新ランキング準拠）
@@ -957,116 +1022,133 @@ const teamDetails = {
    // 国旗マップ
     const flagMap = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
 
-  // ------------------------------------------------------------------
-  // 2. 国旗URL
-  // ------------------------------------------------------------------
   function getFlagUrl(name, w = 120, h = 90) {
-    const code = flagMap[name] || "un";
-    return `https://flagcdn.com/${w}x${h}/${code}.png`;
+    return `https://flagcdn.com/${w}x${h}/${flagMap[name] || "un"}.png`;
   }
 
-  // ------------------------------------------------------------------
-  // 3. モーダル（これで100%閉じる！）
-  // ------------------------------------------------------------------
-  const modal = document.getElementById("teamModal");
-  const closeBtn = document.querySelector(".modal-close");
-
+  // ==================== モーダル（完璧）===================
+  let modal = null;
   window.openTeamModal = function(teamName) {
-    const flagImg = document.getElementById("modalFlag");
-    const nameEl = document.getElementById("modalTeamName");
-    const confEl = document.getElementById("modalConf");
-    const potEl = document.getElementById("modalPot");
-    const rankEl = document.getElementById("modalRank");
-    const extraEl = document.getElementById("modalExtra");
+    modal = modal || document.getElementById("teamModal");
+    if (!modal) return;
 
     const team = teams.find(t => t.name === teamName) || {};
     const detail = teamDetails[teamName] || {};
 
-    nameEl.textContent = teamName;
-    confEl.textContent = team.conf === "UEFA" ? "欧州" : 
-                        team.conf === "CONMEBOL" ? "南米" :
-                        team.conf === "AFC" ? "アジア" :
-                        team.conf === "CAF" ? "アフリカ" :
-                        team.conf === "CONCACAF" ? "北中米" : "その他";
-    potEl.textContent = team.pot ? `ポット${team.pot}` : "-";
-    rankEl.textContent = detail.rank || "未確定";
-    const code = flagMap[teamName] || "un";
-    flagImg.src = `https://flagcdn.com/256x192/${code}.png`;
-    extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
+    document.getElementById("modalTeamName").textContent = teamName;
+    document.getElementById("modalConf").textContent =
+      {UEFA:"欧州",CONMEBOL:"南米",AFC:"アジア",CAF:"アフリカ",CONCACAF:"北中米"}[team.conf] || "その他";
+    document.getElementById("modalPot").textContent = team.pot ? `ポット${team.pot}` : "-";
+    document.getElementById("modalRank").textContent = detail.rank ?? "未確定";
+    document.getElementById("modalFlag").src = `https://flagcdn.com/256x192/${flagMap[teamName] || "un"}.png`;
+    document.getElementById("modalExtra").textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
 
+    const content = document.querySelector(".modal-content");
     if (teamName === "日本") {
-      document.querySelector(".modal-content").classList.add("japan-mode");
-      extraEl.textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
+      content.classList.add("japan-mode");
+      document.getElementById("modalExtra").textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
     } else {
-      document.querySelector(".modal-content").classList.remove("japan-mode");
+      content.classList.remove("japan-mode");
     }
 
-    modal.classList.add("show"); // ← display:flexはCSSに任せる！
+    modal.style.display = "flex";
+    setTimeout(() => modal.classList.add("show"), 10);
   };
 
-  // 閉じる処理（3つ全部効く）
-  if (closeBtn) closeBtn.addEventListener("click", () => modal.classList.remove("show"));
-  modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("show"); });
-  document.addEventListener("keydown", e => { if (e.key === "Escape") modal.classList.remove("show"); });
+  document.addEventListener("click", e => {
+    if (e.target === modal || e.target.classList.contains("modal-close")) {
+      modal.style.display = "none";
+      modal.classList.remove("show");
+    }
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && modal) {
+      modal.style.display = "none";
+      modal.classList.remove("show");
+    }
+  });
 
-  // ------------------------------------------------------------------
-  // 4. ポット表描画
-  // ------------------------------------------------------------------
-  function renderPotTable(containerId, w=84, h=63, cls="pot-team") {
+  // ==================== ポット表描画（完全復活・CSS崩れゼロ）===================
+  function renderPotTable(containerId, flagW = 84, flagH = 63, itemClass = "pot-team") {
     const container = document.getElementById(containerId);
     if (!container) return;
-    container.innerHTML = "";
+
+    container.innerHTML = "";  // 完全クリア
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "pots-wrapper";  // ← これでCSSが100%効く！
+
     [1,2,3,4].forEach(p => {
-      const potDiv = document.createElement("div"); potDiv.className = "pot";
-      potDiv.innerHTML = `<h2>ポット ${p}</h2>`;
+      const pot = document.createElement("div");
+      pot.className = "pot";
+
+      const title = document.createElement("h2");
+      title.textContent = `ポット ${p}`;
+      pot.appendChild(title);
+
+      const list = document.createElement("div");
+      list.className = "pot-list";
+
       teams.filter(t => t.pot === p).forEach(t => {
-        const div = document.createElement("div");
-        div.className = `${cls}${t.name==="日本"?" japan":""}`;
-        div.innerHTML = `<img src="${getFlagUrl(t.name,w,h)}" alt="${t.name}"><span>${t.name}</span>`;
-        potDiv.appendChild(div);
+        const item = document.createElement("div");
+        item.className = `${itemClass}${t.name==="日本" ? " japan" : ""}`;
+        item.innerHTML = `
+          <img src="${getFlagUrl(t.name, flagW, flagH)}" alt="${t.name}">
+          <span>${t.name}</span>
+        `;
+        item.onclick = () => openTeamModal(t.name);
+        list.appendChild(item);
       });
-      container.appendChild(potDiv);
+
+      pot.appendChild(list);
+      wrapper.appendChild(pot);
     });
+
+    container.appendChild(wrapper);
   }
 
-  // 初回表示
-  renderPotTable("potTable", 84, 63, "pot-team");
-  window.renderPotTableInDraw = () => renderPotTable("potTableInDraw", 60, 45, "team-mini");
+  // 抽選タブ用（小さいサイズ）
+  window.renderPotTableInDraw = () => renderPotTable("potTableInDraw", 50, 38, "team-mini");
 
-  // ------------------------------------------------------------------
-  // 5. チームクリック → モーダル
-  // ------------------------------------------------------------------
-  function makeTeamsClickable() {
-    document.querySelectorAll('.pot-team, .team-mini').forEach(el => {
-      el.style.cursor = "pointer";
-      el.onclick = () => {
-        const name = el.querySelector("span")?.textContent?.trim() || el.textContent.trim();
-        openTeamModal(name);
-      };
-    });
-  }
-  makeTeamsClickable();
+  // ==================== 初期化（抽選タブを強制的に最初に表示）===================
+  const init = () => {
+    modal = document.getElementById("teamModal");
 
-  const orig = window.renderPotTableInDraw;
-  window.renderPotTableInDraw = () => { orig(); setTimeout(makeTeamsClickable, 100); };
+    // 1. 初回は「抽選シミュ」タブを強制選択
+    const drawTabBtn = document.querySelector('[data-tab="draw"]');
+    const drawTabContent = document.getElementById("draw");
 
-  // ------------------------------------------------------------------
-  // 6. タブ切り替え
-  // ------------------------------------------------------------------
+    if (drawTabBtn && drawTabContent) {
+      document.querySelectorAll('.tab-btn, .tab-content').forEach(el => el.classList.remove('active'));
+      drawTabBtn.classList.add('active');
+      drawTabContent.classList.add('active');
+    }
+
+    // 2. 両方のポット表を確実に描画
+    renderPotTable("potTable", 84, 63, "pot-team");           // ポットタブ用（標準サイズ）
+    renderPotTable("potTableInDraw", 50, 38, "team-mini");    // 抽選タブ用（小さい）
+  };
+
+  // ==================== タブ切り替え（クリック時も完璧に再描画）===================
   document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      this.classList.add('active');
-      const tabId = this.dataset.tab;
-      document.getElementById(tabId)?.classList.add('active');
-      if (tabId === "draw") setTimeout(renderPotTableInDraw, 300);
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn, .tab-content').forEach(el => el.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab)?.classList.add('active');
+
+      setTimeout(() => {
+        if (btn.dataset.tab === "pots") renderPotTable("potTable", 84, 63, "pot-team");
+        if (btn.dataset.tab === "draw") window.renderPotTableInDraw();
+      }, 150);
     });
   });
 
-  // ------------------------------------------------------------------
-  // 7. 抽選ロジック全部（9関数）
-  // shuffle, addTeam, announceDraw, initGroups, showLoading, startDraw, canPlaceInGroup, topScroll------------------------------------------------------------------
+  // ==================== 実行 ====================
+  init();
+  setTimeout(init, 800);  // 保険
+
+  // ==================== 抽選ロジック===================
+
   function shuffle(a) { for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
   function canPlaceInGroup(team, groupTeams) {
     if (groupTeams.some(t => t.pot === team.pot)) return false;
@@ -1246,9 +1328,7 @@ await new Promise(r => setTimeout(r, 1000));
       });
     }
 
-  // ------------------------------------------------------------------
-  // 8. ボタン登録（最後にまとめて！）
-  // ------------------------------------------------------------------
+  // ==================== 8. ボタン登録（最後に！） ====================
   document.getElementById("startBtn")?.addEventListener("click", startDraw);
   document.getElementById("startBtn2")?.addEventListener("click", startDraw);
 
@@ -1492,20 +1572,17 @@ const style = document.createElement("style");
 style.textContent = `@keyframes toast {0% { opacity: 0; transform: translateX(-50%) translateY(20px); }15% { opacity: 1; transform: translateX(-50%) translateY(0); }85% { opacity: 1; transform: translateX(-50%) translateY(0); }100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }}`;
 document.head.appendChild(style);
 
-  // トーストもここで定義
-  const toastStyle = document.createElement('style');
-  toastStyle.textContent = `@keyframes toast{0%{opacity:0;transform:translateX(-50%)translateY(30px)}15%{opacity:1;transform:translateX(-50%)translateY(0)}85%{opacity:1}100%{opacity:0;transform:translateX(-50%)translateY(-30px)}}`;
-  document.head.appendChild(toastStyle);
-
-  window.showToast = (msg, t=3500) => {
-    const toast = document.createElement('div');
-    toast.textContent = msg;
-    toast.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#ffcb05;color:#0f2b5e;padding:16px 36px;border-radius:50px;font-size:1.4rem;font-weight:bold;z-index:99999;box-shadow:0 10px 30px rgba(0,0,0,0.6);animation:toast ${t}ms ease-out forwards;white-space:nowrap;`;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), t);
+  window.showToast = (m,t=3500) => {
+    const d = document.createElement("div");
+    d.textContent = m;
+    d.style.cssText = "position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#ffcb05;color:#0f2b5e;padding:16px 36px;border-radius:50px;font:bold 1.4rem sans-serif;z-index:99999;animation:toast "+t+"ms forwards;box-shadow:0 10px 30px rgba(0,0,0,.6);";
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(), t);
   };
+
 });
 </script>
+
 
 <!-- モーダル本体 -->
 <div id="teamModal" class="modal">
@@ -1531,7 +1608,16 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10_mo.マージ.2
+   <hr>©PureGreen │ テストv0.10_マージ.4
   </div>
+<!-- 強制初回描画 -->
+<script>
+  setTimeout(() => {
+    if (!document.querySelector("#potTable > .pot")) {
+      document.querySelector('[data-tab="pots"]')?.click();
+      setTimeout(() => document.querySelector('[data-tab="pots"]')?.click(), 300);
+    }
+  }, 1000);
+</script>
 </body>
 </html>

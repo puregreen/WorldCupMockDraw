@@ -733,6 +733,20 @@
   0%,100% { box-shadow: 0 0 30px #fff; }
   50% { box-shadow: 0 0 80px #ffcb05; }
 }
+
+/* 1.修正：抽選タブの国名折り返し禁止 */
+.team-mini span {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+
+/* 3.修正：日本の背景を赤と白のグラデーションに戻す */
+.pot-team.japan, .team-mini.japan {
+  background: linear-gradient(135deg, #bc002d, #fff) !important;  /* ← 赤と白のグラデ */
+  color: #0f2b5e !important;  /* 文字は紺色で読みやすく */
+}
 		
   </style>
 </head>
@@ -909,9 +923,10 @@
 <!-- タブ3終わり -->
   </div>
 	
+
 <script>
 window.addEventListener('DOMContentLoaded', () => {
-  // ==================== データ（そのまま）===================
+  // ==================== データ====================
   document.getElementById("japanSpecial").style.display = "none";
   const GROUPS = "ABCDEFGHIJKL".split("");
 
@@ -1054,7 +1069,7 @@ const teamDetails = {
     return `https://flagcdn.com/${w}x${h}/${flagMap[name] || "un"}.png`;
   }
 
-  // ==================== モーダル===================
+  // ==================== モーダル====================
   let modal = null;
   window.openTeamModal = function(teamName) {
     modal = modal || document.getElementById("teamModal");
@@ -1069,14 +1084,17 @@ const teamDetails = {
     document.getElementById("modalPot").textContent = team.pot ? `ポット${team.pot}` : "-";
     document.getElementById("modalRank").textContent = detail.rank ?? "未確定";
     document.getElementById("modalFlag").src = `https://flagcdn.com/256x192/${flagMap[teamName] || "un"}.png`;
-    document.getElementById("modalExtra").textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
 
+    const extraEl = document.getElementById("modalExtra");
     const content = document.querySelector(".modal-content");
     if (teamName === "日本") {
       content.classList.add("japan-mode");
-      document.getElementById("modalExtra").textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
+      extraEl.textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
+      extraEl.style.color = "#0f2b5e";  // ← 2.修正：紺色で読みやすく
     } else {
       content.classList.remove("japan-mode");
+      extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
+      extraEl.style.color = "#fff";  // 他の国は白
     }
 
     modal.style.display = "flex";
@@ -1096,14 +1114,13 @@ const teamDetails = {
     }
   });
 
-  // ==================== ポット表描画===================
+  // ==================== ポット表描画====================
   function renderPotTable(containerId, flagW = 84, flagH = 63, itemClass = "pot-team") {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    container.innerHTML = "";  // 完全クリア
+    container.innerHTML = "";
 
-    // 元のHTML構造を100%再現（クラス名もそのまま！）
     [1,2,3,4].forEach(p => {
       const potDiv = document.createElement("div");
       potDiv.className = "pot";
@@ -1125,39 +1142,29 @@ const teamDetails = {
     });
   }
 
-  // 抽選タブ用（サイズ指定を厳格に）
-  window.renderPotTableInDraw = () => renderPotTable("potTableInDraw", 48, 36, "team-mini");
+  window.renderPotTableInDraw = () => renderPotTable("potTableInDraw", 60, 45, "team-mini");
 
-  // ==================== 初期化（ポットタブを一切触らず、抽選タブのみactive）===================
+  // ==================== 初期化 ====================
   const init = () => {
     modal = document.getElementById("teamModal");
-
-    // 重要：active を一切消さない！（消すと一瞬ポットタブが光る）
     const drawBtn = document.querySelector('[data-tab="draw"]');
     const drawContent = document.getElementById("draw");
-
     if (drawBtn && drawContent && !drawContent.classList.contains("active")) {
-      // すでにactiveなら何もしない（初回だけ実行）
       drawBtn.classList.add("active");
       drawContent.classList.add("active");
     }
-
-    // 両方のポット表を確実に描画（元のCSSが100%効くように構造を完全再現）
     renderPotTable("potTable", 84, 63, "pot-team");
-    renderPotTable("potTableInDraw", 60, 45, "team-mini");  // ← ここで60x45に修正！
+    renderPotTable("potTableInDraw", 60, 45, "team-mini");
   };
 
-  // ==================== タブ切り替え（active消さない版）===================
+  // ==================== タブ切り替え ====================
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      // active を全部消すとチラつくので、対象だけ切り替え
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
       btn.classList.add('active');
       const content = document.getElementById(btn.dataset.tab);
       if (content) content.classList.add('active');
-
       setTimeout(() => {
         if (btn.dataset.tab === "pots") renderPotTable("potTable", 84, 63, "pot-team");
         if (btn.dataset.tab === "draw") window.renderPotTableInDraw();
@@ -1165,12 +1172,10 @@ const teamDetails = {
     });
   });
 
-  // ==================== 実行 ====================
   init();
   setTimeout(init, 600);
-  setTimeout(init, 1200);
 
-  // ==================== 抽選ロジック全部===================
+  // ==================== 抽選ロジック ====================
 
   function shuffle(a) { for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
   function canPlaceInGroup(team, groupTeams) {
@@ -1360,76 +1365,76 @@ document.getElementById("topBtn")?.addEventListener("click", () => {
     document.getElementById("pTitle").scrollIntoView({behavior: 'smooth'});
   });
 
-  // スクショ・シェア（onclickではなくaddEventListenerで！）
+  // ==================== スクショボタン（4.の修正入り） ====================
   document.querySelector(".fixed-btn.screenshot")?.addEventListener("click", async () => {
+    try {
+      const element = document.getElementById("result");
+      
+      // 完全保存/復元（結果が消えないように）
+      const originalResultHTML = element.innerHTML;  // ← 4.修正：HTML全部保存
+      const originalBodyBg = document.body.style.background;
+      const originalResultStyle = element.style.cssText;
 
- // スクリーンショットボタン
-document.querySelector(".fixed-btn.screenshot").onclick = async () => {
-  try {
-    // 結果エリアをキャプチャ（背景を強制指定）
-    const element = document.getElementById("result");
-    
-    // 一時的に背景を強制適用（白くなるのを防ぐ）
-    const originalBg = document.body.style.background;
-    document.body.style.background = "linear-gradient(135deg, #0f2b5e, #1a4d8c)";
+      document.body.style.background = "linear-gradient(135deg, #0f2b5e, #1a4d8c)";
 
-    const canvas = await html2canvas(element, {
-      scale: window.devicePixelRatio || 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: "#0f2b5e",  // ← これが白くなるのを防ぐ最重要ポイント！
-      logging: false,
-      width: element.scrollWidth,
-      height: element.scrollHeight,
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight
-    });
+      const canvas = await html2canvas(element, {
+        scale: window.devicePixelRatio || 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#0f2b5e",
+        logging: false,
+        width: element.scrollWidth,
+        height: element.scrollHeight,
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight
+      });
 
-    // 背景をもとに戻す
-    document.body.style.background = originalBg;
+      // 完全復元（結果が消えない！）
+      document.body.style.background = originalBodyBg;
+      element.style.cssText = originalResultStyle;
+      element.innerHTML = originalResultHTML;  // ← 4.修正：HTMLを戻す
 
-    // 現在時刻でファイル名生成（ミリ秒まで）
-    const now = new Date();
-    const timestamp = now.getFullYear() +
+      // ファイル名生成＆ダウンロード（そのまま）
+      const now = new Date();
+      const timestamp = now.getFullYear() +
       String(now.getMonth() + 1).padStart(2, '0') +
       String(now.getDate()).padStart(2, '0') +
       String(now.getHours()).padStart(2, '0') +
       String(now.getMinutes()).padStart(2, '0') +
       String(now.getSeconds()).padStart(2, '0') +
       String(now.getMilliseconds()).padStart(3, '0');
-    
-    const filename = `2026worldcup_${timestamp}.png`;
+      const filename = `2026worldcup_${timestamp}.png`;
 
-    // Blobで確実にダウンロード（スマホでも100%反応！）
-    canvas.toBlob((blob) => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
 
-      // カッコいいトースト通知（alertより美しく、スマホでも反応する）
-      const toast = document.createElement("div");
-      toast.textContent = `保存しました！ ${filename}`;
-      toast.style.cssText = `
+        // トースト（そのまま）
+        const toast = document.createElement("div");
+        toast.textContent = `保存しました！ ${filename}`;
+        toast.style.cssText = `
         position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
         background: #ffcb05; color: #0f2b5e; padding: 16px 32px; border-radius: 50px;
         font-size: 1.4rem; font-weight: bold; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         animation: toast 3s ease-out forwards;
       `;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
-    }, "image/png");
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }, "image/png");
 
-  } catch (err) {
-    console.error(err);
-    alert("スクリーンショットに失敗しました…");
-  }
-};
+    } catch (err) {
+      console.error(err);
+      alert("スクリーンショットに失敗しました…");
+    }
   });
+
+  // ==================== Xシェアボタン ====================
 
   document.querySelector(".fixed-btn.xshare")?.addEventListener("click", async () => {
 
@@ -1631,10 +1636,10 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10_mo.マージ.6
+   <hr>©PureGreen │ テストv0.10_mo.マージ.7
   </div>
 <!-- 強制初回描画 -->
-<script>
+<script> 
   setTimeout(() => {
     if (!document.querySelector("#potTable > .pot")) {
       document.querySelector('[data-tab="pots"]')?.click();
@@ -1644,3 +1649,4 @@ document.head.appendChild(style);
 </script>
 </body>
 </html>
+な

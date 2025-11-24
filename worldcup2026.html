@@ -737,8 +737,9 @@
   </div>
 	
   <script>
-// タブ切り替え
+// ページ読み込み時とタブ切り替え時に実行
 document.addEventListener('DOMContentLoaded', () => {
+  // タブ切り替え
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -747,7 +748,32 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById(this.dataset.tab).classList.add('active');
     });
   });
+	
+  // ポット表
+  renderPotTableInDraw();
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.tab === "draw") {
+        setTimeout(renderPotTableInDraw, 300);
+      }
+    });
+  });
+
+	document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      // すべてのボタンとタブをリセット
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      // 押されたボタンと対応タブをアクティブに
+      this.classList.add('active');
+      const tabId = this.getAttribute('data-tab');
+      document.getElementById(tabId).classList.add('active');
+    });
+  });
+	
 });
+
   // タブ切り替え関数
   function switchTab(e, tabName) {
   // すべてのボタンからactiveを外す
@@ -863,18 +889,7 @@ function renderPotTableInDraw() {
   });
 }
 
-// ページ読み込み時とタブ切り替え時に実行
-document.addEventListener('DOMContentLoaded', () => {
-  renderPotTableInDraw();
 
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (btn.dataset.tab === "draw") {
-        setTimeout(renderPotTableInDraw, 300);
-      }
-    });
-  });
-});	  
     // ページ読み込み時にポット分け表を表示
     // スマホ対応：ポット表を縦に並べる
     // 完全レスポンシブ対応ポット表
@@ -895,21 +910,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
 
-	  // ページ読み込み後に実行
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      // すべてのボタンとタブをリセット
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-      // 押されたボタンと対応タブをアクティブに
-      this.classList.add('active');
-      const tabId = this.getAttribute('data-tab');
-      document.getElementById(tabId).classList.add('active');
-    });
-  });
-});
 	  
     // 国旗URL生成
     function getFlagUrl(name,w=120,h=90) {
@@ -1337,7 +1338,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10
+   <hr>©PureGreen │ テストv0.10_m
   </div>
 </body>
 </html>

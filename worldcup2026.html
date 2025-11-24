@@ -560,82 +560,6 @@
   height: 22px;
   border: 1.3px solid #fff;
 }
-
-/* モーダル全体 */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 99999;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.9);
-  backdrop-filter: blur(10px);
-  align-items: center;
-  justify-content: center;
-  animation: fadeIn 0.4s ease-out;
-}
-
-/* モーダルコンテンツ */
-.modal-content {
-  background: linear-gradient(135deg, #0f2b5e, #1a4d8c);
-  padding: 30px 25px;
-  border-radius: 24px;
-  max-width: 90%;
-  width: 380px;
-  text-align: center;
-  border: 2px solid #ffcb05;
-  box-shadow: 0 20px 60px rgba(255,203,5,0.4);
-  animation: modalPop 0.6s cubic-bezier(0.18, 1, 0.21, 1);
-  position: relative;
-}
-
-.modal-close {
-  position: absolute;
-  top: 12px; right: 18px;
-  font-size: 2.5rem;
-  color: #ffcb05;
-  cursor: pointer;
-  font-weight: bold;
-  text-shadow: 0 0 10px gold;
-}
-
-.modal-flag img {
-  width: 140px; height: 105px;
-  border-radius: 12px;
-  border: 3px solid #fff;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-  margin-bottom: 15px;
-}
-
-#modalTeamName {
-  font-size: 2.2rem;
-  color: #ffcb05;
-  margin: 10px 0;
-  text-shadow: 0 0 20px gold;
-}
-
-.modal-info p {
-  margin: 8px 0;
-  font-size: 1.15rem;
-  color: white;
-}
-
-/* 日本特別演出 */
-.modal-content.japan-mode {
-  background: linear-gradient(135deg, #bc002d, #fff, #bc002d);
-  animation: japanPulse 2s infinite;
-}
-
-/* アニメーション */
-@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
-@keyframes modalPop {
-  0% { transform: scale(0.3) translateY(100px); opacity:0; }
-  100% { transform: scale(1) translateY(0); opacity:1; }
-}
-@keyframes japanPulse {
-  0%,100% { box-shadow: 0 0 30px #fff; }
-  50% { box-shadow: 0 0 80px #ffcb05; }
-}		
 		
   </style>
 </head>
@@ -844,7 +768,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 	  
-    // document.getElementById("japanSpecial").style.display = "none";
+    document.getElementById("japanSpecial").style.display = "none";
     // 48チーム（2026年大会想定・最新ランキング準拠）
     const teams = [
       // ポット1（開催国＋上位）
@@ -909,79 +833,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 国旗マップ
     const flagMap = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
 
-// ★ 48チーム全て対応・完全版 国別詳細データ（2025年11月23日更新）★
-const teamDetails = {
-  // === ポット1 ===
-  "メキシコ":     { rank: 14,  conf: "北中米", extra: "開催国（グループA・1位固定）" },
-  "カナダ":       { rank: 15,  conf: "北中米", extra: "開催国（グループB・1位固定）" },
-  "アメリカ":     { rank: 12,  conf: "北中米", extra: "開催国（グループD・1位固定）" },
-  "スペイン":     { rank: 1,   conf: "欧州",   extra: "FIFAランキング1位・前回王者" },
-  "アルゼンチン": { rank: 2,   conf: "南米",   extra: "コパ・アメリカ2連覇中" },
-  "フランス":     { rank: 3,   conf: "欧州",   extra: "2022準優勝・優勝候補筆頭" },
-  "イングランド": { rank: 4,   conf: "欧州",   extra: "ユーロ2024準優勝" },
-  "ブラジル":     { rank: 5,   conf: "南米",   extra: "史上最多5回優勝の伝統強豪" },
-  "ポルトガル":   { rank: 6,   conf: "欧州",   extra: "Cロナウド最後のW杯か" },
-  "オランダ":     { rank: 7,   conf: "欧州",   extra: "攻撃サッカー復活" },
-  "ベルギー":     { rank: 11,  conf: "欧州",   extra: "黄金世代ラストチャンス" },
-  "ドイツ":       { rank: 9,   conf: "欧州",   extra: "開催国失敗から復活なるか" },
-
-  // === ポット2 ===
-  "日本":         { rank: 18,  conf: "アジア", extra: "アジア最高ランキング！ポット2確定" },
-  "韓国":         { rank: 29,  conf: "アジア", extra: "アジア予選2位・ベスト16常連" },
-  "オーストラリア":{ rank: 27, conf: "アジア", extra: "アジア最終予選無敗で圧勝" },
-  "イラン":       { rank: 28,  conf: "アジア", extra: "中東の雄・鉄壁守備" },
-  "ウルグアイ":   { rank: 13,  conf: "南米",   extra: "コパ3位・新ビエルサ体制" },
-  "コロンビア":   { rank: 16,  conf: "南米",   extra: "南米予選3位・攻撃陣爆発" },
-  "クロアチア":   { rank: 10,  conf: "欧州",   extra: "2022年3位・モドリッチ最後のW杯" },
-  "オーストリア": { rank: 25,  conf: "欧州",   extra: "予選無敗突破・ダークホース" },
-  "スイス":       { rank: 22,  conf: "欧州",   extra: "安定のベスト16候補" },
-  "モロッコ":     { rank: 19,  conf: "アフリカ", extra: "2022年4位・アフリカ史上最高" },
-  "セネガル":     { rank: 20,  conf: "アフリカ", extra: "アフリカ王者・マネ復帰" },
-  "エクアドル":   { rank: 17,  conf: "南米",   extra: "南米予選4位・高地組" },
-
-  // === ポット3 ===
-  "ノルウェー":   { rank: 42,  conf: "欧州",   extra: "ハーランド＆ウーデゴー最強コンビ" },
-  "パナマ":       { rank: 37,  conf: "北中米", extra: "北中米予選大躍進" },
-  "エジプト":     { rank: 30,  conf: "アフリカ", extra: "サラー最後のW杯チャンス" },
-  "アルジェリア": { rank: 33,  conf: "アフリカ", extra: "アフリカ予選無敗" },
-  "スコットランド":{ rank: 44, conf: "欧州",   extra: "ユーロ連続出場・初のW杯" },
-  "パラグアイ":   { rank: 34,  conf: "南米",   extra: "南米予選5位で復活" },
-  "チュニジア":   { rank: 32,  conf: "アフリカ", extra: "アフリカ予選首位通過" },
-  "コートジボワール":{ rank: 41, conf: "アフリカ", extra: "アフリカネーションズ杯王者" },
-  "ウズベキスタン":{ rank: 50, conf: "アジア", extra: "中央アジア史上初出場" },
-  "カタール":     { rank: 55,  conf: "アジア", extra: "開催国枠で2大会連続" },
-  "サウジアラビア":{ rank: 48, conf: "アジア", extra: "アジア予選3位" },
-  "南アフリカ":   { rank: 60,  conf: "アフリカ", extra: "12年ぶりW杯復帰" },
-
-  // === ポット4（確定＋プレーオフ結果）===
-  "ヨルダン":     { rank: 68,  conf: "アジア", extra: "アジア杯準優勝で初出場" },
-  "カボベルデ":   { rank: 65,  conf: "アフリカ", extra: "アフリカ予選大躍進" },
-  "ガーナ":       { rank: 40,  conf: "アフリカ", extra: "アフリカ予選ギリギリ突破" },
-  "キュラソー":   { rank: 85,  conf: "北中米", extra: "カリブ海の新星" },
-  "ニュージーランド":{ rank: 49, conf: "オセアニア", extra: "ニューカレドニアを3-0で下しW杯出場権を獲得" },
-  "ハイチ":       { rank: 88,  conf: "北中米", extra: "北中米予選大健闘" },
-
- // ★ 欧州プレーオフ（未確定）★
-  "欧州PO1": { rank: "未定", conf: "欧州", extra: "欧州プレーオフ Path A 勝者（2026年3月26-31日決定）" },
-  "欧州PO2": { rank: "未定", conf: "欧州", extra: "欧州プレーオフ Path B 勝者（2026年3月26-31日決定）" },
-  "欧州PO3": { rank: "未定", conf: "欧州", extra: "欧州プレーオフ Path C 勝者（2026年3月26-31日決定）" },
-  "欧州PO4": { rank: "未定", conf: "欧州", extra: "欧州プレーオフ Path D 勝者（2026年3月26-31日決定）" },
-
-  // ★ 大陸間プレーオフ（未確定）★
-  "大陸間PO1": { rank: "未定", conf: "複数大陸", extra: "大陸間プレーオフ Pathway 1 勝者（2026年3月26-31日決定）" },
-  "大陸間PO2": { rank: "未定", conf: "複数大陸", extra: "大陸間プレーオフ Pathway 2 勝者（2026年3月26-31日決定）" },
-
-  //欧州予備
- // "ウェールズ":   { rank: 29,  conf: "欧州", playoff: "欧州PO Path A 優勝（vsフィンランド）" },
- // "ポーランド":   { rank: 26,  conf: "欧州", playoff: "欧州PO Path B 優勝（vsエストニア）" },
- // "ウクライナ":   { rank: 26,  conf: "欧州", playoff: "欧州PO Path C 優勝（vsアイスランド）" },
- // "ジョージア":   { rank: 77,  conf: "欧州", playoff: "欧州PO Path D 優勝（vsギリシャ・PK勝ち）← 大波乱！" },
-
-  // 大陸間予備
-  //"コスタリカ":   { rank: 47,  conf: "北中米", playoff: "大陸間PO（CONCACAF vs OFC）勝利" },
- // "ニュージーランド": { rank: 49, conf: "オセアニア", playoff: "大陸間PO出場（コスタリカに惜敗）→ ポット4確定" },
-};
-	  
 // 抽選タブ内にポット表をコピー表示する関数
 function renderPotTableInDraw() {
   const container = document.getElementById("potTableInDraw");
@@ -1012,86 +863,9 @@ function renderPotTableInDraw() {
   });
 }
 
-// モーダル表示関数
-function openTeamModal(teamName) {
-  const modal = document.getElementById("teamModal");
-  const flagImg = document.getElementById("modalFlag");
-  const nameEl = document.getElementById("modalTeamName");
-  const confEl = document.getElementById("modalConf");
-  const potEl = document.getElementById("modalPot");
-  const rankEl = document.getElementById("modalRank");
-  const extraEl = document.getElementById("modalExtra");
-  const playoffBox = document.getElementById("playoffInfo");
-  const playoffText = document.getElementById("playoffText");
-
-  const team = teams.find(t => t.name === teamName) || {};
-  const detail = teamDetails[teamName] || {};
-
-  // 基本情報
-  nameEl.textContent = teamName;
-  confEl.textContent = team.conf === "UEFA" ? "欧州" : 
-                      team.conf === "CONMEBOL" ? "南米" :
-                      team.conf === "AFC" ? "アジア" :
-                      team.conf === "CAF" ? "アフリカ" :
-                      team.conf === "CONCACAF" ? "北中米" : "その他";
-  potEl.textContent = team.pot ? `${team.pot}` : "-";
-  rankEl.textContent = detail.rank || "未確定";
-
-  // 国旗
-  const code = flagMap[teamName] || "un";
-  flagImg.src = `https://flagcdn.com/256x192/${code}.png`;
-
-  // 特別メッセージ
-  extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
-
-  // プレーオフ情報
-  if (teamName.includes("PO") && detail.playoff) {
-    playoffBox.style.display = "block";
-    playoffText.textContent = detail.name ? 
-      `${detail.name}（${detail.playoff}）` : detail.playoff;
-  } else {
-    playoffBox.style.display = "none";
-  }
-
-  // 日本特別演出
-  if (teamName === "日本") {
-    document.querySelector(".modal-content").classList.add("japan-mode");
-    extraEl.textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
-  } else {
-    document.querySelector(".modal-content").classList.remove("japan-mode");
-  }
-
-  modal.style.display = "flex";
-}
-
-// モーダル閉じる
-document.querySelector(".modal-close").onclick = () => {
-  document.getElementById("teamModal").style.display = "none";
-};
-document.getElementById("teamModal").onclick = (e) => {
-  if (e.target === document.getElementById("teamModal")) {
-    e.target.style.display = "none";
-  }
-};
-
-// ★重要：ポット表のチームをクリック可能にする（メイン＋コピー両方対応）
-function makeTeamsClickable() {
-  document.querySelectorAll(".pot-team, .team-mini").forEach(el => {
-    el.style.cursor = "pointer";
-    el.onclick = () => {
-      const teamName = el.querySelector("span")?.textContent || 
-                      el.textContent.trim();
-      openTeamModal(teamName);
-    };
-  });
-}
-
 // ページ読み込み時とタブ切り替え時に実行
 document.addEventListener('DOMContentLoaded', () => {
   renderPotTableInDraw();
-
-  const japanSpecial = document.getElementById("japanSpecial");
-  if (japanSpecial) japanSpecial.style.display = "none";
 
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1119,19 +893,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         table.appendChild(div);
       });
-		
-     // 描画後にクリック有効化（メインのポット表と抽選タブ内両方）
-	  if (originalRender) originalRender();
-      makeTeamsClickable();
     };
 
-// 抽選タブ内コピーも対応
-const originalRenderInDraw = renderPotTableInDraw;
-renderPotTableInDraw = function() {
-  originalRenderInDraw();
-  setTimeout(makeTeamsClickable, 100);
-};	  
-	  
 	  // ページ読み込み後に実行
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1240,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', () => {
         block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
       });
       btn.disabled = true; btn.textContent = "抽選中…";
-		
+//ここ
       const cur = document.getElementById("currentDraw");
       // スムーズなアニメーションでスクロールする場合
       cur.scrollIntoView({
@@ -1570,31 +1333,11 @@ document.head.appendChild(style);
   
   </script>
 	
-<!-- モーダル本体 -->
-<div id="teamModal" class="modal">
-  <div class="modal-content">
-    <span class="modal-close">&times;</span>
-    <div class="modal-flag">
-      <img id="modalFlag" src="" alt="">
-    </div>
-    <h2 id="modalTeamName"></h2>
-    <div class="modal-info">
-      <p><strong>大陸連盟：</strong><span id="modalConf"></span></p>
-      <p><strong>ポット：</strong><span id="modalPot"></span></p>
-      <p><strong>FIFAランキング：</strong><span id="modalRank"></span>位</p>
-      <p id="modalExtra" style="margin-top:12px; color:#ffcb05; font-weight:bold;"></p>
-    </div>
-    <div id="playoffInfo" style="display:none; margin-top:15px; padding:15px; background:rgba(255,203,5,0.15); border-radius:12px; border:1px solid #ffcb05;">
-      <p style="margin:0; font-size:1rem; color:#ffcb05;"><strong>プレーオフ情報</strong></p>
-      <p id="playoffText"></p>
-    </div>
-  </div>
-</div>
 	
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10.15
+   <hr>©PureGreen │ テストv0.10
   </div>
 </body>
 </html>

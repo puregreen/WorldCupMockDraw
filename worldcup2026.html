@@ -6,6 +6,87 @@
   <title>2026 FIFAワールドカップ 本戦抽選会（模擬）│サッカー日本代表応援</title>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 	<style>
+/* 調整 */
+/* ポット表の見た目を完全に元に戻す（重要！） */
+.pots-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  padding: 20px 10px;
+}
+.pot h2 {
+  margin: 0 0 16px 0;
+  text-align: center;
+  color: #ffcb05;
+  font-size: 1.8rem;
+}
+.pot-list {
+  display: grid;
+  gap: 10px;
+}
+.pot-team,
+.team-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.8rem;
+}
+.pot-team:hover,
+.team-mini:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+.team-mini {
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  gap: 6px;
+}
+.team-mini img {
+  width: 32px !important;
+  height: 21px !important;
+}
+.japan {
+  background: linear-gradient(135deg, rgba(188,0,45,0.3), rgba(255,255,255,0.2)) !important;
+  border: 2px solid #bc002d !important;
+}
+/* 抽選タブ内の小さい国旗が絶対に出るように強制 */
+#potTableInDraw .team-mini img {
+  width: 32px !important;
+  height: 21px !important;
+  border-radius: 4px !important;
+}
+/* 崩れるのでコメントアウト */
+#potTable .pot {
+  width: 80% !important;
+}
+
+/* 必要ならこれも */
+.pot {
+  margin-bottom: 30px;
+}
+/* 抽選タブ内のポット表を完璧に小さく・美しく */
+#potTableInDraw .team-mini {
+  padding: 6px 10px !important;
+  font-size: 0.85rem !important;
+  gap: 8px !important;
+}
+#potTableInDraw .team-mini img {
+  width: 32px !important;
+  height: 21px !important;
+  border-radius: 4px !important;
+  flex-shrink: 0;
+}
+/* 日本はちょっと目立たせる */
+#potTableInDraw .team-mini.japan {
+  background: linear-gradient(135deg, rgba(188,0,45,0.25), rgba(255,255,255,0.15)) !important;
+  border: 1.5px solid #bc002d !important;
+}
+/* 調整ここまで */
     a {color: #fff;}
     /* 日本決まった瞬間用フラッシュ */
     body.japan-mode {
@@ -179,7 +260,7 @@
       margin: 3px 0;
       padding: 5px 8px;
       border-radius: 10px;
-      font-size: 1rem;              /* 超小さく */
+      font-size: 0.8rem;              /* 超小さく */
       font-weight: 500;
       display: flex;
       align-items: center;
@@ -527,7 +608,7 @@
   background: rgba(255,255,255,0.12);
   border-radius: 8px;
   margin: 3px 0;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
   line-height: 1.2;
 }
@@ -561,78 +642,7 @@
   border: 1.3px solid #fff;
 }
 
-/* ポット表の見た目を完全に元に戻す（重要！） */
-.pots-wrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  padding: 20px 10px;
-}
 
-.pot h2 {
-  margin: 0 0 16px 0;
-  text-align: center;
-  color: #ffcb05;
-  font-size: 1.8rem;
-}
-
-.pot-list {
-  display: grid;
-  gap: 10px;
-}
-
-.pot-team,
-.team-mini {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-size: 1rem;
-}
-
-.pot-team:hover,
-.team-mini:hover {
-  background: rgba(255,255,255,0.2);
-  transform: translateY(-2px);
-}
-
-.team-mini {
-  padding: 8px 10px;
-  font-size: 0.9rem;
-  gap: 8px;
-}
-
-.team-mini img {
-  width: 50px !important;
-  height: 38px !important;
-}
-
-.japan {
-  background: linear-gradient(135deg, rgba(188,0,45,0.3), rgba(255,255,255,0.2)) !important;
-  border: 2px solid #bc002d !important;
-}
-
-/* 抽選タブ内の小さい国旗が絶対に出るように強制 */
-#potTableInDraw .team-mini img {
-  width: 60px !important;
-  height: 45px !important;
-  border-radius: 4px !important;
-}
-
-/* ポット表が縦1列にならないように（元のCSSが効くように） */
-#potTable .pot,
-#potTableInDraw .pot {
-  width: 100% !important;
-}
-
-/* 必要ならこれも */
-.pot {
-  margin-bottom: 30px;
-}
 
 /* モーダル全体 */
 .modal {
@@ -1117,7 +1127,7 @@ const teamDetails = {
   }
 
   // 抽選タブ用（サイズ指定を厳格に）
-  window.renderPotTableInDraw = () => renderPotTable("potTableInDraw", 60, 45, "team-mini");
+  window.renderPotTableInDraw = () => renderPotTable("potTableInDraw", 48, 36, "team-mini");
 
   // ==================== 初期化（ポットタブを一切触らず、抽選タブのみactive）===================
   const init = () => {
@@ -1622,7 +1632,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10_mo.マージ.5
+   <hr>©PureGreen │ テストv0.10_mo.マージ.6
   </div>
 <!-- 強制初回描画 -->
 <script>

@@ -813,10 +813,9 @@
   </div>
 	
 <script>
-// ==================== マージ（2025年11月24日対応） ====================
 document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------
-  // 1. 変数・定数・データ
+  // 1. データ
   // ------------------------------------------------------------------
   document.getElementById("japanSpecial").style.display = "none";
 
@@ -959,168 +958,7 @@ const teamDetails = {
     const flagMap = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
 
   // ------------------------------------------------------------------
-  // 2. モーダル関連
-  // ------------------------------------------------------------------
-  const modal = document.getElementById("teamModal");
-  const closeBtn = document.querySelector(".modal-close");
-
-  window.openTeamModal = function(teamName) {
-    // openTeamModal
-
-  const modal = document.getElementById("teamModal");
-  const flagImg = document.getElementById("modalFlag");
-  const nameEl = document.getElementById("modalTeamName");
-  const confEl = document.getElementById("modalConf");
-  const potEl = document.getElementById("modalPot");
-  const rankEl = document.getElementById("modalRank");
-  const extraEl = document.getElementById("modalExtra");
-  const playoffBox = document.getElementById("playoffInfo");
-  const playoffText = document.getElementById("playoffText");
-
-  const team = teams.find(t => t.name === teamName) || {};
-  const detail = teamDetails[teamName] || {};
-
-  // 基本情報
-  nameEl.textContent = teamName;
-  confEl.textContent = team.conf === "UEFA" ? "欧州" : 
-                      team.conf === "CONMEBOL" ? "南米" :
-                      team.conf === "AFC" ? "アジア" :
-                      team.conf === "CAF" ? "アフリカ" :
-                      team.conf === "CONCACAF" ? "北中米" : "その他";
-  potEl.textContent = team.pot ? `${team.pot}` : "-";
-  rankEl.textContent = detail.rank || "未確定";
-
-  // 国旗
-  const code = flagMap[teamName] || "un";
-  flagImg.src = `https://flagcdn.com/256x192/${code}.png`;
-
-  // 特別メッセージ
-  extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
-
-  // プレーオフ情報
-  if (teamName.includes("PO") && detail.playoff) {
-    playoffBox.style.display = "block";
-    playoffText.textContent = detail.name ? 
-      `${detail.name}（${detail.playoff}）` : detail.playoff;
-  } else {
-    playoffBox.style.display = "none";
-  }
-
-  // 日本特別演出
-  if (teamName === "日本") {
-    document.querySelector(".modal-content").classList.add("japan-mode");
-    extraEl.textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
-  } else {
-    document.querySelector(".modal-content").classList.remove("japan-mode");
-  }
-
-  modal.style.display = "flex";
-
-    modal.classList.add("show");  // display: flexになる
-  };
-
-  // ×ボタン
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => modal.classList.remove("show"));
-  }
-
-  // モーダル外クリック
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) modal.classList.remove("show");
-  });
-
-  // ESCキー
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("show")) {
-      modal.classList.remove("show");
-    }
-  });
-
-  // ------------------------------------------------------------------
-  // 3. タブ切り替え
-  // ------------------------------------------------------------------
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      // 全部アクティブ解除
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-      // 選択されたものだけアクティブ
-      this.classList.add('active');
-      const tabId = this.dataset.tab || this.getAttribute('data-tab');
-      document.getElementById(tabId)?.classList.add('active');
-
-      // 抽選タブが開かれたらポット表を再描画
-      if (tabId === "draw") {
-        setTimeout(renderPotTableInDraw, 300);
-      }
-    });
-  });
-
-  // ------------------------------------------------------------------
-  // 4. ポット表描画（メイン＋抽選タブ内コピー）
-  // ------------------------------------------------------------------
-  function renderPotTable(containerId, imgWidth = 84, imgHeight = 63, teamClass = "pot-team") {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = "";
-
-    [1,2,3,4].forEach(potNum => {
-      const potDiv = document.createElement("div");
-      potDiv.className = "pot";
-
-      const h = document.createElement("h2");
-      h.textContent = `ポット ${potNum}`;
-      potDiv.appendChild(h);
-
-      teams.filter(t => t.pot === potNum).forEach(t => {
-        const teamDiv = document.createElement("div");
-        teamDiv.className = `${teamClass}${t.name === "日本" ? " japan" : ""}`;
-        teamDiv.innerHTML = `
-          <img src="${getFlagUrl(t.name, imgWidth, imgHeight)}" alt="${t.name}">
-          <span>${t.name}</span>
-        `;
-        potDiv.appendChild(teamDiv);
-      });
-
-      container.appendChild(potDiv);
-    });
-  }
-
-  // メインのポット表（トップ画面）
-  renderPotTable("potTable", 84, 63, "pot-team");
-
-  // 抽選タブ内の小型ポット表
-  window.renderPotTableInDraw = function() {
-    renderPotTable("potTableInDraw", 60, 45, "team-mini");
-  };
-
-  // ------------------------------------------------------------------
-  // 5. チームクリックでモーダル開く（メイン＋抽選タブ両方対応）
-  // ------------------------------------------------------------------
-  function makeTeamsClickable() {
-    document.querySelectorAll('.pot-team, .team-mini').forEach(el => {
-      el.style.cursor = "pointer";
-      el.onclick = () => {
-        const teamName = el.querySelector("span")?.textContent?.trim() || 
-                         el.textContent.trim();
-        openTeamModal(teamName);
-      };
-    });
-  }
-
-  // 初回読み込み時
-  makeTeamsClickable();
-
-  // 抽選タブにコピーしたときも対応
-  const originalRenderInDraw = window.renderPotTableInDraw;
-  window.renderPotTableInDraw = function() {
-    originalRenderInDraw();
-    setTimeout(makeTeamsClickable, 100);
-  };
-
-  // ------------------------------------------------------------------
-  // 6. 国旗URL生成関数
+  // 2. 国旗URL
   // ------------------------------------------------------------------
   function getFlagUrl(name, w = 120, h = 90) {
     const code = flagMap[name] || "un";
@@ -1128,15 +966,173 @@ const teamDetails = {
   }
 
   // ------------------------------------------------------------------
-  // 7. 抽選ボタンに関数を割り当て
+  // 3. モーダル（これで100%閉じる！）
   // ------------------------------------------------------------------
-  document.getElementById("startBtn")?.addEventListener("click", startDraw);
-  document.getElementById("startBtn2")?.addEventListener("click", startDraw);
+  const modal = document.getElementById("teamModal");
+  const closeBtn = document.querySelector(".modal-close");
+
+  window.openTeamModal = function(teamName) {
+    const flagImg = document.getElementById("modalFlag");
+    const nameEl = document.getElementById("modalTeamName");
+    const confEl = document.getElementById("modalConf");
+    const potEl = document.getElementById("modalPot");
+    const rankEl = document.getElementById("modalRank");
+    const extraEl = document.getElementById("modalExtra");
+
+    const team = teams.find(t => t.name === teamName) || {};
+    const detail = teamDetails[teamName] || {};
+
+    nameEl.textContent = teamName;
+    confEl.textContent = team.conf === "UEFA" ? "欧州" : 
+                        team.conf === "CONMEBOL" ? "南米" :
+                        team.conf === "AFC" ? "アジア" :
+                        team.conf === "CAF" ? "アフリカ" :
+                        team.conf === "CONCACAF" ? "北中米" : "その他";
+    potEl.textContent = team.pot ? `ポット${team.pot}` : "-";
+    rankEl.textContent = detail.rank || "未確定";
+    const code = flagMap[teamName] || "un";
+    flagImg.src = `https://flagcdn.com/256x192/${code}.png`;
+    extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
+
+    if (teamName === "日本") {
+      document.querySelector(".modal-content").classList.add("japan-mode");
+      extraEl.textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
+    } else {
+      document.querySelector(".modal-content").classList.remove("japan-mode");
+    }
+
+    modal.classList.add("show"); // ← display:flexはCSSに任せる！
+  };
+
+  // 閉じる処理（3つ全部効く）
+  if (closeBtn) closeBtn.addEventListener("click", () => modal.classList.remove("show"));
+  modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("show"); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") modal.classList.remove("show"); });
 
   // ------------------------------------------------------------------
-  // 8. startDraw, announceDraw, addTeam, shuffle, canPlaceInGroup, initGroups, showLoading, topScroll など
-  //     抽選ロジック
+  // 4. ポット表描画
   // ------------------------------------------------------------------
+  function renderPotTable(containerId, w=84, h=63, cls="pot-team") {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = "";
+    [1,2,3,4].forEach(p => {
+      const potDiv = document.createElement("div"); potDiv.className = "pot";
+      potDiv.innerHTML = `<h2>ポット ${p}</h2>`;
+      teams.filter(t => t.pot === p).forEach(t => {
+        const div = document.createElement("div");
+        div.className = `${cls}${t.name==="日本"?" japan":""}`;
+        div.innerHTML = `<img src="${getFlagUrl(t.name,w,h)}" alt="${t.name}"><span>${t.name}</span>`;
+        potDiv.appendChild(div);
+      });
+      container.appendChild(potDiv);
+    });
+  }
+
+  // 初回表示
+  renderPotTable("potTable", 84, 63, "pot-team");
+  window.renderPotTableInDraw = () => renderPotTable("potTableInDraw", 60, 45, "team-mini");
+
+  // ------------------------------------------------------------------
+  // 5. チームクリック → モーダル
+  // ------------------------------------------------------------------
+  function makeTeamsClickable() {
+    document.querySelectorAll('.pot-team, .team-mini').forEach(el => {
+      el.style.cursor = "pointer";
+      el.onclick = () => {
+        const name = el.querySelector("span")?.textContent?.trim() || el.textContent.trim();
+        openTeamModal(name);
+      };
+    });
+  }
+  makeTeamsClickable();
+
+  const orig = window.renderPotTableInDraw;
+  window.renderPotTableInDraw = () => { orig(); setTimeout(makeTeamsClickable, 100); };
+
+  // ------------------------------------------------------------------
+  // 6. タブ切り替え
+  // ------------------------------------------------------------------
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      const tabId = this.dataset.tab;
+      document.getElementById(tabId)?.classList.add('active');
+      if (tabId === "draw") setTimeout(renderPotTableInDraw, 300);
+    });
+  });
+
+  // ------------------------------------------------------------------
+  // 7. 抽選ロジック全部（9関数）
+  // shuffle, addTeam, announceDraw, initGroups, showLoading, startDraw, canPlaceInGroup, topScroll------------------------------------------------------------------
+  function shuffle(a) { for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  function canPlaceInGroup(team, groupTeams) {
+    if (groupTeams.some(t => t.pot === team.pot)) return false;
+    const c = groupTeams.reduce((a,t)=>(a[t.conf]=(a[t.conf]||0)+1,a),{});
+    return team.conf==="UEFA" ? (c.UEFA||0)<2 : (c[team.conf]||0)===0;
+  }
+
+    function addTeam(letter, team) {
+      const div = document.createElement("div");
+      div.className = "team";
+      div.innerHTML = `
+	  <img src="${getFlagUrl(team.name,16,12)}" alt="${team.name}">
+	  ${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
+      if (team.fixed) div.classList.add("host");
+      document.querySelector(`#group-${letter}`).appendChild(div);
+      setTimeout(() => div.classList.add("show"), 100);
+    }
+
+    // 最新1件をド派手に表示（上書き）
+    function announceDraw(team, groupLetter) {
+      const el = document.getElementById("currentDraw");
+      // 日本が決まった瞬間！
+      if (team.name === "日本") {
+        document.body.classList.add("japan-mode");
+        document.getElementById("japanSpecial").style.display = "block";
+        document.getElementById("japanLog").innerHTML = `
+		絶対に負けられない戦いがある！│
+		 <img src="https://flagcdn.com/16x12/jp.png" style="width:16px;height:12px;">
+		 <a href="#group-${groupLetter}">日本→ グループ ${groupLetter}</a>│がんばれ日本！
+		`;
+
+        el.innerHTML = `
+          <img src="https://flagcdn.com/256x192/jp.png" style="width:180px;height:120px;"><br>
+          <span style="font-size:1rem;color:#bc002d;text-shadow:0 0 60px #fff;">日本</span><br>
+          <span class="group-letter" style="font-size:1rem;color:#fff;">→ グループ ${groupLetter}</span>
+        `;
+
+        setTimeout(() => {
+          document.body.classList.remove("japan-mode");
+          document.getElementById("japanSpecial").style.display = "none";
+        }, 3000);
+
+      } else {
+       el.innerHTML = `
+        <img src="${getFlagUrl(team.name,120,90)}" alt="${team.name}"><br>
+        <span>${team.name}</span><br>
+        <span class="group-letter">→ グループ ${groupLetter}</span>
+      `;
+      }
+      el.classList.remove("show");
+      setTimeout(() => el.classList.add("show"), 50);
+    }
+
+    function initGroups() {
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("currentDraw").innerHTML = "";
+      GROUPS.forEach(g => {
+        const div = document.createElement("div");
+        div.className = "group"; div.id = `group-${g}`;
+        div.innerHTML = `<h2>グループ ${g}</h2>`;
+        document.getElementById("result").appendChild(div);
+      });
+    }
+
+  function showLoading(s=true) { document.getElementById("loadingContainer")?.classList.toggle("show", s); }
+
       async function startDraw() {
       const btn = document.getElementById("startBtn");
       document.getElementById("japanLog").textContent = "";
@@ -1234,73 +1230,11 @@ await new Promise(r => setTimeout(r, 1000));
       });
     }
 
-    // 最新1件をド派手に表示（上書き）
-    function announceDraw(team, groupLetter) {
-      const el = document.getElementById("currentDraw");
-      // 日本が決まった瞬間！
-      if (team.name === "日本") {
-        document.body.classList.add("japan-mode");
-        document.getElementById("japanSpecial").style.display = "block";
-        document.getElementById("japanLog").innerHTML = `
-		絶対に負けられない戦いがある！│
-		 <img src="https://flagcdn.com/16x12/jp.png" style="width:16px;height:12px;">
-		 <a href="#group-${groupLetter}">日本→ グループ ${groupLetter}</a>│がんばれ日本！
-		`;
-
-        el.innerHTML = `
-          <img src="https://flagcdn.com/256x192/jp.png" style="width:180px;height:120px;"><br>
-          <span style="font-size:1rem;color:#bc002d;text-shadow:0 0 60px #fff;">日本</span><br>
-          <span class="group-letter" style="font-size:1rem;color:#fff;">→ グループ ${groupLetter}</span>
-        `;
-
-        setTimeout(() => {
-          document.body.classList.remove("japan-mode");
-          document.getElementById("japanSpecial").style.display = "none";
-        }, 3000);
-
-      } else {
-       el.innerHTML = `
-        <img src="${getFlagUrl(team.name,120,90)}" alt="${team.name}"><br>
-        <span>${team.name}</span><br>
-        <span class="group-letter">→ グループ ${groupLetter}</span>
-      `;
-      }
-      el.classList.remove("show");
-      setTimeout(() => el.classList.add("show"), 50);
-    }
-
-    function addTeam(letter, team) {
-      const div = document.createElement("div");
-      div.className = "team";
-      div.innerHTML = `
-	  <img src="${getFlagUrl(team.name,16,12)}" alt="${team.name}">
-	  ${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
-      if (team.fixed) div.classList.add("host");
-      document.querySelector(`#group-${letter}`).appendChild(div);
-      setTimeout(() => div.classList.add("show"), 100);
-    }
-
-    function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
     function canPlaceInGroup(team, groupTeams) {
       if (groupTeams.some(t => t.pot === team.pot)) return false;
       const confCount = groupTeams.reduce((c, t) => (c[t.conf] = (c[t.conf] || 0) + 1, c), {});
       return team.conf === "UEFA" ? (confCount.UEFA || 0) < 2 : (confCount[team.conf] || 0) === 0;
-    }
-
-    function initGroups() {
-      document.getElementById("result").innerHTML = "";
-      document.getElementById("currentDraw").innerHTML = "";
-      GROUPS.forEach(g => {
-        const div = document.createElement("div");
-        div.className = "group"; div.id = `group-${g}`;
-        div.innerHTML = `<h2>グループ ${g}</h2>`;
-        document.getElementById("result").appendChild(div);
-      });
-    }
-
-    function showLoading(show = true) {
-      document.getElementById("loadingContainer").classList.toggle("show", show);
     }
 
     async function topScroll() {
@@ -1312,16 +1246,21 @@ await new Promise(r => setTimeout(r, 1000));
       });
     }
 
-
   // ------------------------------------------------------------------
-  // 9. スクリーンショット・シェアボタン
+  // 8. ボタン登録（最後にまとめて！）
   // ------------------------------------------------------------------
+  document.getElementById("startBtn")?.addEventListener("click", startDraw);
+  document.getElementById("startBtn2")?.addEventListener("click", startDraw);
 
-  // スクリーンショット保存ボタン
+  // トップへ戻るボタン
+document.getElementById("topBtn")?.addEventListener("click", () => {
+    document.getElementById("pTitle").scrollIntoView({behavior: 'smooth'});
+  });
+
+  // スクショ・シェア（onclickではなくaddEventListenerで！）
   document.querySelector(".fixed-btn.screenshot")?.addEventListener("click", async () => {
-      // スクリーンショットボタン
-  // スクリーンショット保存（ファイル名に現在時刻を付与）
-// スクリーンショット保存（タブレット白問題＋スマホ反応しない問題を完全解決！）
+
+ // スクリーンショットボタン
 document.querySelector(".fixed-btn.screenshot").onclick = async () => {
   try {
     // 結果エリアをキャプチャ（背景を強制指定）
@@ -1389,7 +1328,6 @@ document.querySelector(".fixed-btn.screenshot").onclick = async () => {
 };
   });
 
-  // X（Twitter）シェアボタン
   document.querySelector(".fixed-btn.xshare")?.addEventListener("click", async () => {
 
 // X（Twitter）にシェアボタン
@@ -1554,21 +1492,19 @@ const style = document.createElement("style");
 style.textContent = `@keyframes toast {0% { opacity: 0; transform: translateX(-50%) translateY(20px); }15% { opacity: 1; transform: translateX(-50%) translateY(0); }85% { opacity: 1; transform: translateX(-50%) translateY(0); }100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }}`;
 document.head.appendChild(style);
 
-  // トップへ戻るボタン
-  document.getElementById("topBtn")?.addEventListener("click", () => {
-    document.getElementById("pTitle").scrollIntoView({behavior: 'smooth'});
-  });
+  // トーストもここで定義
+  const toastStyle = document.createElement('style');
+  toastStyle.textContent = `@keyframes toast{0%{opacity:0;transform:translateX(-50%)translateY(30px)}15%{opacity:1;transform:translateX(-50%)translateY(0)}85%{opacity:1}100%{opacity:0;transform:translateX(-50%)translateY(-30px)}}`;
+  document.head.appendChild(toastStyle);
 
-
-  // ------------------------------------------------------------------
-  // 10. 抽選ボタンに割り当て
-  // ------------------------------------------------------------------
-  document.getElementById("startBtn")?.addEventListener("click", startDraw);
-  document.getElementById("startBtn2")?.addEventListener("click", startDraw);
-
+  window.showToast = (msg, t=3500) => {
+    const toast = document.createElement('div');
+    toast.textContent = msg;
+    toast.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#ffcb05;color:#0f2b5e;padding:16px 36px;border-radius:50px;font-size:1.4rem;font-weight:bold;z-index:99999;box-shadow:0 10px 30px rgba(0,0,0,0.6);animation:toast ${t}ms ease-out forwards;white-space:nowrap;`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), t);
+  };
 });
-
-// ==================== ここまで====================
 </script>
 
 <!-- モーダル本体 -->
@@ -1595,7 +1531,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10_mo.マージ
+   <hr>©PureGreen │ テストv0.10_mo.マージ.2
   </div>
 </body>
 </html>

@@ -1257,7 +1257,8 @@ const defeatedTeams = [
     { name: "ペルー", conf: "CONMEBOL", pot: 10 },
     { name: "コスタリカ", conf: "CONCACAF", pot: 10 },
     { name: "ホンジュラス", conf: "CONCACAF", pot: 10 },
-    { name: "カメルーン", conf: "CAF", pot: 10 }
+    { name: "カメルーン", conf: "CAF", pot: 10 },
+    { name: "ハンガリー", conf: "UEFA", pot: 10 }
 ];
 
 
@@ -1272,23 +1273,23 @@ const teamDetails = {
   "カナダ":       { rank: 15,  conf: "北中米", extra: "開催国（グループB・固定）" },
   "アメリカ":     { rank: 12,  conf: "北中米", extra: "開催国（グループD・固定）" },
   "スペイン":     { rank: 1,   conf: "欧州",   extra: "FIFAランキングトップの華麗なる優勝候補 " },
-  "アルゼンチン": { rank: 2,   conf: "南米",   extra: "コパ・アメリカ2連覇中" },
+  "アルゼンチン": { rank: 2,   conf: "南米",   extra: "全大会覇者。メッシの出場なるか。" },
   "フランス":     { rank: 3,   conf: "欧州",   extra: "2022準優勝・優勝候補筆頭" },
   "イングランド": { rank: 4,   conf: "欧州",   extra: "ユーロ2024準優勝" },
   "ブラジル":     { rank: 5,   conf: "南米",   extra: "史上最多5回優勝の伝統強豪" },
   "ポルトガル":   { rank: 6,   conf: "欧州",   extra: "Cロナウド最後のW杯か" },
   "オランダ":     { rank: 7,   conf: "欧州",   extra: "攻撃サッカー復活" },
-  "ベルギー":     { rank: 11,  conf: "欧州",   extra: "黄金世代ラストチャンス" },
-  "ドイツ":       { rank: 9,   conf: "欧州",   extra: "開催国失敗から復活なるか" },
+  "ベルギー":     { rank: 11,  conf: "欧州",   extra: "世代交代進まず。黄金世代の奮起なるか" },
+  "ドイツ":       { rank: 9,   conf: "欧州",   extra: "ランキング10位返り咲き。強豪復活なるか" },
 
   // === ポット2 ===
   "日本":         { rank: 18,  conf: "アジア", extra: "アジア最高ランキング！ポット2確定" },
-  "韓国":         { rank: 29,  conf: "アジア", extra: "アジア予選2位・ベスト16常連" },
+  "韓国":         { rank: 29,  conf: "アジア", extra: "ソンフンミン健在・ベスト16常連" },
   "オーストラリア":{ rank: 27, conf: "アジア", extra: "アジア最終予選無敗で圧勝" },
   "イラン":       { rank: 28,  conf: "アジア", extra: "中東の雄・鉄壁守備" },
-  "ウルグアイ":   { rank: 13,  conf: "南米",   extra: "コパ3位・新ビエルサ体制" },
+  "ウルグアイ":   { rank: 13,  conf: "南米",   extra: "南米にウルグアイあり。古豪の実力" },
   "コロンビア":   { rank: 16,  conf: "南米",   extra: "南米予選3位・攻撃陣爆発" },
-  "クロアチア":   { rank: 10,  conf: "欧州",   extra: "2022年3位・モドリッチ最後のW杯" },
+  "クロアチア":   { rank: 10,  conf: "欧州",   extra: "2022年3位・モドリッチの意志を継ぐもの達" },
   "オーストリア": { rank: 25,  conf: "欧州",   extra: "予選無敗突破・ダークホース" },
   "スイス":       { rank: 22,  conf: "欧州",   extra: "安定のベスト16候補" },
   "モロッコ":     { rank: 19,  conf: "アフリカ", extra: "2022年4位・アフリカ史上最高" },
@@ -1296,7 +1297,7 @@ const teamDetails = {
   "エクアドル":   { rank: 17,  conf: "南米",   extra: "南米予選4位・高地組" },
 
   // === ポット3 ===
-  "ノルウェー":   { rank: 42,  conf: "欧州",   extra: "ハーランド＆ウーデゴー最強コンビ" },
+  "ノルウェー":   { rank: 42,  conf: "欧州",   extra: "ハーランド＆ウーデゴー最強コンビ。今大会注目の圧倒的攻撃力でポット3の脅威" },
   "パナマ":       { rank: 37,  conf: "北中米", extra: "北中米予選大躍進" },
   "エジプト":     { rank: 30,  conf: "アフリカ", extra: "サラー最後のW杯チャンス" },
   "アルジェリア": { rank: 33,  conf: "アフリカ", extra: "アフリカ予選無敗" },
@@ -1343,15 +1344,15 @@ const teamDetails = {
 "北アイルランド": { rank: 80, conf: "欧州", playoff: "Path A", extra: "北アイルランドのダークホース。" },
 "ウェールズ": { rank: 32, conf: "欧州", playoff: "Path A", extra: "ベイル後継者の若いチーム。" },
 "ボスニア・ヘルツェゴビナ": { rank: 75, conf: "欧州", playoff: "Path A", extra: "ジェコのようなスター輩出国。" },
-"ウクライナ": { rank: 22, conf: "欧州", playoff: "Path B", extra: "戦争下で健闘する精神力。" },
-"スウェーデン": { rank: 24, conf: "欧州", playoff: "Path B", extra: "イブラ後継の攻撃サッカー。" },
-"ポーランド": { rank: 31, conf: "欧州", playoff: "Path B", extra: "レヴァンドフスキの得点力。" },
+"ウクライナ": { rank: 26, conf: "欧州", playoff: "Path B", extra: "健闘する精神力。" },
+"スウェーデン": { rank: 23, conf: "欧州", playoff: "Path B", extra: "イブラ後継の攻撃サッカー。" },
+"ポーランド": { rank: 24, conf: "欧州", playoff: "Path B", extra: "レヴァンドフスキの得点力。" },
 "アルバニア": { rank: 68, conf: "欧州", playoff: "Path B", extra: "バルカンの新興勢力。" },
-"トルコ": { rank: 26, conf: "欧州", playoff: "Path C", extra: "ユーロ2024準々決勝の勢い。" },
+"トルコ": { rank: 43, conf: "欧州", playoff: "Path C", extra: "ユーロ2024準々決勝。" },
 "ルーマニア": { rank: 45, conf: "欧州", playoff: "Path C", extra: "予選無敗の堅守。" },
 "スロバキア": { rank: 48, conf: "欧州", playoff: "Path C", extra: "堅守速攻の戦術。" },
 "コソボ": { rank: 110, conf: "欧州", playoff: "Path C", extra: "独立後の成長株。" },
-"デンマーク": { rank: 9, conf: "欧州", playoff: "Path D", extra: "ユーロ2020準優勝の黄金世代。" },
+"デンマーク": { rank: 21, conf: "欧州", playoff: "Path D", extra: "ユーロ2020準優勝の黄金世代。" },
 "北マケドニア": { rank: 67, conf: "欧州", playoff: "Path D", extra: "2020ユーロのサプライズ再現か。" },
 "チェコ": { rank: 35, conf: "欧州", playoff: "Path D", extra: "伝統のカウンター攻撃。" },
 "アイルランド共和国": { rank: 55, conf: "欧州", playoff: "Path D", extra: "アイリッシュの闘志。" },
@@ -1359,18 +1360,19 @@ const teamDetails = {
   "ボリビア": { rank: 82, conf: "南米", playoff: "大陸間PO", extra: "高地ホームのアドバンテージ。" },
   "コンゴ民主共和国": { rank: 56, conf: "アフリカ", playoff: "大陸間PO", extra: "豊富なタレント保有。" },
   "イラク": { rank: 58, conf: "アジア", playoff: "大陸間PO", extra: "2007アジアカップ優勝国。" },
-  "ジャマイカ": { rank: 59, conf: "北中米", playoff: "大陸間PO", extra: "スプリント速さの攻撃力。" },
+  "ジャマイカ": { rank: 36, conf: "北中米", playoff: "大陸間PO", extra: "スプリント速さの攻撃力。" },
   "ニューカレドニア": { rank: 159, conf: "オセアニア", playoff: "大陸間PO", extra: "オセアニアの新星。" },
   "スリナム": { rank: 139, conf: "北中米", playoff: "大陸間PO", extra: "オランダ系選手の活躍。" },
 
 // 予選敗退国
-    "セルビア": { rank: 37, conf: "欧州", extra: "ミハイロビッチの攻撃力が光るが予選で惜敗。" },
-    "ナイジェリア": { rank: 38, conf: "アフリカ", extra: "オシムヘン率いるスーパーイーグルス、予選でつまずく。" },
-    "ベネズエラ": { rank: 49, conf: "南米", extra: "南米予選で善戦も惜しくも敗退の新興国。" },
-    "ペルー": { rank: 30, conf: "南米", extra: "ガレカのカウンターが魅力も予選突破ならず。" },
+    "セルビア": { rank: 25, conf: "欧州", extra: "ミハイロビッチの攻撃力も予選で惜敗" },
+    "ナイジェリア": { rank: 31, conf: "アフリカ", extra: "オシムヘン率いるスーパーイーグルス、予選でつまずく。" },
+    "ベネズエラ": { rank: 35, conf: "南米", extra: "南米予選で善戦も惜しくも敗退の新興国。" },
+    "ペルー": { rank: 46, conf: "南米", extra: "ガレカのカウンターが魅力も予選突破ならず。" },
     "コスタリカ": { rank: 47, conf: "北中米", extra: "2014 W杯ベスト8の記憶、予選で再び壁に。" },
-    "ホンジュラス": { rank: 80, conf: "北中米", extra: "中米の堅守もトップ50圏外で予選敗退。" },
-    "カメルーン": { rank: 36, conf: "アフリカ", extra: "アフリカのライオン、予選でオンジャメの魔法が及ばず。" },
+    "ホンジュラス": { rank: 38, conf: "北中米", extra: "中米の堅守も予選敗退。" },
+    "カメルーン": { rank: 39, conf: "アフリカ", extra: "アフリカのライオン、予選でオンジャメの魔法が及ばず。" },
+    "ハンガリー": { rank: 45, conf: "欧州", extra: "惜しくも予選敗退。" },
 };
 
    // 国旗マップ
@@ -2127,7 +2129,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.10_mo.マージ.7
+   <hr>©PureGreen │ テストv0.11_mo.マージ.1
   </div>
 <!-- 強制初回描画 -->
 <script> 

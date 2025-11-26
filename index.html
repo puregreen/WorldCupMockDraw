@@ -1248,12 +1248,29 @@ const playoffteams = [
   { name: "スリナム", conf: "CONCACAF", pot: 9 }
 ];
 
+
+//予選敗退国
+const defeatedTeams = [
+    { name: "セルビア", conf: "UEFA", pot: 10 },
+    { name: "ナイジェリア", conf: "CAF", pot: 10 },
+    { name: "ベネズエラ", conf: "CONMEBOL", pot: 10 },
+    { name: "ペルー", conf: "CONMEBOL", pot: 10 },
+    { name: "コスタリカ", conf: "CONCACAF", pot: 10 },
+    { name: "ホンジュラス", conf: "CONCACAF", pot: 10 },
+    { name: "カメルーン", conf: "CAF", pot: 10 }
+];
+
+
+// 統合検索用
+const allTeams = teams.concat(playoffteams).concat(defeatedTeams || []);
+
+
   // ★ 48チーム全て対応・完全版 国別詳細データ（2025年11月23日更新）★
 const teamDetails = {
   // === ポット1 ===
-  "メキシコ":     { rank: 14,  conf: "北中米", extra: "開催国（グループA・1位固定）" },
-  "カナダ":       { rank: 15,  conf: "北中米", extra: "開催国（グループB・1位固定）" },
-  "アメリカ":     { rank: 12,  conf: "北中米", extra: "開催国（グループD・1位固定）" },
+  "メキシコ":     { rank: 14,  conf: "北中米", extra: "開催国（グループA・固定）" },
+  "カナダ":       { rank: 15,  conf: "北中米", extra: "開催国（グループB・固定）" },
+  "アメリカ":     { rank: 12,  conf: "北中米", extra: "開催国（グループD・固定）" },
   "スペイン":     { rank: 1,   conf: "欧州",   extra: "FIFAランキングトップの華麗なる優勝候補 " },
   "アルゼンチン": { rank: 2,   conf: "南米",   extra: "コパ・アメリカ2連覇中" },
   "フランス":     { rank: 3,   conf: "欧州",   extra: "2022準優勝・優勝候補筆頭" },
@@ -1345,6 +1362,15 @@ const teamDetails = {
   "ジャマイカ": { rank: 59, conf: "北中米", playoff: "大陸間PO", extra: "スプリント速さの攻撃力。" },
   "ニューカレドニア": { rank: 159, conf: "オセアニア", playoff: "大陸間PO", extra: "オセアニアの新星。" },
   "スリナム": { rank: 139, conf: "北中米", playoff: "大陸間PO", extra: "オランダ系選手の活躍。" },
+
+// 予選敗退国
+    "セルビア": { rank: 37, conf: "欧州", extra: "ミハイロビッチの攻撃力が光るが予選で惜敗。" },
+    "ナイジェリア": { rank: 38, conf: "アフリカ", extra: "オシムヘン率いるスーパーイーグルス、予選でつまずく。" },
+    "ベネズエラ": { rank: 49, conf: "南米", extra: "南米予選で善戦も惜しくも敗退の新興国。" },
+    "ペルー": { rank: 30, conf: "南米", extra: "ガレカのカウンターが魅力も予選突破ならず。" },
+    "コスタリカ": { rank: 47, conf: "北中米", extra: "2014 W杯ベスト8の記憶、予選で再び壁に。" },
+    "ホンジュラス": { rank: 80, conf: "北中米", extra: "中米の堅守もトップ50圏外で予選敗退。" },
+    "カメルーン": { rank: 36, conf: "アフリカ", extra: "アフリカのライオン、予選でオンジャメの魔法が及ばず。" },
 };
 
    // 国旗マップ
@@ -1380,6 +1406,15 @@ const flagMap = {
 "チェコ": "cz",
 "アイルランド共和国": "ie",
 
+// 予選敗退国
+    "セルビア": "rs",
+    "ナイジェリア": "ng",
+    "ベネズエラ": "ve",
+    "ペルー": "pe",
+    "コスタリカ": "cr",
+    "ホンジュラス": "hn",
+    "カメルーン": "cm",
+
   // POプレースホルダー
   "欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu",
   "大陸間PO1":"un","大陸間PO2":"un"
@@ -1396,11 +1431,7 @@ window.openTeamModal = function(teamName) {
   modal = modal || document.getElementById("teamModal");
   if (!modal) return;
 
-  // const team = teams.find(t => t.name === teamName) || {};
-  // const detail = teamDetails[teamName] || {};
-
-
-  const allTeams = teams.concat(playoffteams);  // ← teamsとplayoffteamsを統合して検索
+// 統合検索
   const team = allTeams.find(t => t.name === teamName) || {};
   const detail = teamDetails[teamName] || {};
   document.getElementById("modalTeamName").textContent = teamName;

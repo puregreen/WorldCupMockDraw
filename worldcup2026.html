@@ -5,24 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 FIFAワールドカップ 本戦抽選会（模擬）│サッカー日本代表応援</title>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-	<style>
-/* 調整 */
-/* ポット表の見た目を完全に元に戻す（重要！） */
-.pots-wrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  padding: 20px 10px;
-}
+
+<style>
 .pot h2 {
   margin: 0 0 16px 0;
   text-align: center;
   color: #ffcb05;
-  font-size: 1.8rem;
+  font-size: 1.8rem
 }
 .pot-list {
   display: grid;
-  gap: 10px;
+  gap: 10px
 }
 .pot-team,
 .team-mini {
@@ -30,725 +23,957 @@
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,.08);
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s;
-  font-size: 0.8rem;
+  transition: all .3s;
+  font-size: .8rem
 }
 .pot-team:hover,
 .team-mini:hover {
-  background: rgba(255,255,255,0.2);
-  transform: translateY(-2px);
+  background: rgba(255,255,255,.2);
+  transform: translateY(-2px)
 }
 .team-mini {
   padding: 6px 8px;
-  font-size: 0.8rem;
-  gap: 6px;
+  font-size: .8rem;
+  gap: 6px
 }
 .team-mini img {
-  width: 32px !important;
-  height: 21px !important;
+  width: 32px!important;
+  height: 21px!important
 }
 .japan {
-  background: linear-gradient(135deg, rgba(188,0,45,0.3), rgba(255,255,255,0.2)) !important;
-  border: 2px solid #bc002d !important;
+  background: linear-gradient(135deg,rgba(188,0,45,.3),rgba(255,255,255,.2))!important;
+  border: 2px solid #bc002d!important
 }
-/* 抽選タブ内の小さい国旗が絶対に出るように強制 */
 #potTableInDraw .team-mini img {
-  width: 32px !important;
-  height: 21px !important;
-  border-radius: 4px !important;
+  width: 32px!important;
+  height: 21px!important;
+  border-radius: 4px!important
 }
-/* 崩れるのでコメントアウト */
 #potTable .pot {
-  width: 80% !important;
+  width: 90%!important
 }
-
-/* 必要ならこれも */
+#potTableInDraw .pot {
+  min-width: 220px!important;
+  max-width: 90%!important;
+  box-sizing: border-box!important
+}
+#potTableInDraw .pot {
+  width: auto!important;
+  max-width: calc(100% - 20px)!important;
+  margin: 0 auto!important
+}
 .pot {
-  margin-bottom: 30px;
+  margin-bottom: 30px
 }
-/* 抽選タブ内のポット表を完璧に小さく・美しく */
 #potTableInDraw .team-mini {
-  padding: 6px 10px !important;
-  font-size: 0.85rem !important;
-  gap: 8px !important;
+  padding: 6px 10px!important;
+  font-size: .85rem!important;
+  gap: 8px!important
 }
 #potTableInDraw .team-mini img {
-  width: 32px !important;
-  height: 21px !important;
-  border-radius: 4px !important;
-  flex-shrink: 0;
+  width: 32px!important;
+  height: 21px!important;
+  border-radius: 4px!important;
+  flex-shrink: 0
 }
-/* 日本はちょっと目立たせる */
 #potTableInDraw .team-mini.japan {
-  background: linear-gradient(135deg, rgba(188,0,45,0.25), rgba(255,255,255,0.15)) !important;
-  border: 1.5px solid #bc002d !important;
+  background: linear-gradient(135deg,rgba(188,0,45,.25),rgba(255,255,255,.15))!important;
+  border: 1.5px solid #bc002d!important
 }
-/* 調整ここまで */
-    a {color: #fff;}
-    /* 日本決まった瞬間用フラッシュ */
-    body.japan-mode {
-      background: radial-gradient(circle, #fff 10%, #bc002d 40%, #fff 70%);
-      animation: japanFlash 2s ease-out;
-    }
-    @keyframes japanFlash {
-      0% {background: radial-gradient(circle, #fff 0%, #bc002d 0%, #fff 0%);}
-      50% {background: radial-gradient(circle, #fff 60%, #bc002d 90%);}
-      100% {background: linear-gradient(135deg, #0f2b5e, #1a4d8c);}
-    }
-        body {
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      background: linear-gradient(135deg, #0f2b5e, #1a4d8c);
-      color: white;
-      text-align: center;
-      padding: 15px 6px;
-      min-height: 100vh;
-      margin: 0;
-      transition: background 1.5s;
-    }
-	  
-    h1 {
-      font-size: 1.8rem;
-      margin: 20px 0 15px;
-      text-shadow: 0 0 20px #ffcb05;
-    }
-	  
-    button#startBtn {
-      background: #ffcb05;
-      color: #0f2b5e;
-      font-size: 1.6rem;
-      font-weight: bold;
-      padding: 16px 60px;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-      margin: 30px auto;
-      display: block;
-    }
-    button#startBtn2 {
-      background: #ffcb05;
-      color: #0f2b5e;
-      font-size: 1.6rem;
-      font-weight: bold;
-      padding: 16px 60px;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-      margin: 30px auto;
-      display: block;
-    }
-    button:hover:not(:disabled) {transform: translateY(-8px) scale(1.05);}
-    button:disabled {background: #555;opacity: 0.7;}
-
-    /* タブ切り替え機能 */
-	/* タブ全体のコンテナ */
-    .tab-container {
-      max-width: 1400px;
-      margin: 20px auto;
-      padding: 0 10px;
-    }
-	/* 枠付きタブバー */
-    .tab-buttons-wrapper {
-     background: rgba(255, 255, 255, 0.08);
-     backdrop-filter: blur(10px);
-     border: 1.5px solid rgba(255, 203, 5, 0.7);    /* 細めの金枠 */
-     border-radius: 16px;                          /* 四角め（丸すぎない） */
-     padding: 7px 10px;                            /* 縦横ともにスリムに */
-     display: flex;
-     justify-content: center;
-     margin-bottom: 30px;
-     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4),
-    inset 0 1px 3px rgba(255, 255, 255, 0.1);
-   }
-	/* タブボタンたち（横一列・折り返し禁止） */
-    .tab-buttons {
-     display: flex;
-     gap: 0;                                       /* 隙間ゼロでシャープに */
-     flex-wrap: nowrap !important;
-     width: 100%;
-     max-width: 1000px;
-     border-radius: 12px;
-     overflow: hidden;                             /* 角がキレイに揃う */
-   }	
-		
-    /* 各タブボタン */
-    .tab-btn {
-     flex: 1;
-     background: transparent;
-     color: rgba(255, 255, 255, 0.8);
-     border: none;
-     padding: 14px 10px;                           /* 縦も細く */
-     font-size: 1.05rem;
-     font-weight: 700;
-     cursor: pointer;
-     transition: all 0.35s ease;
-     white-space: nowrap;
-     position: relative;
-    }
-    /* アクティブなタブ */
-    .tab-btn.active {
-     background: #ffcb05;
-     color: #0f2b5e;
-     font-weight: 900;
-     box-shadow: 0 4px 15px rgba(255, 203, 5, 0.5);
-     z-index: 1;
-    }
-    /* ホバー（アクティブ以外） */
-    .tab-btn:hover:not(.active) {
-     background: rgba(255, 255, 255, 0.15);
-     color: white;
-    }
-    
-    .tab-content {display: none;opacity: 0;transition: opacity 0.5s ease-in-out;}
-    .tab-content.active {display: block;opacity: 1;}
-
-    /* スマホ最適化（文字サイズ自動調整） */
-    @media (max-width: 480px) {
-     .tab-btn {
-       font-size: 0.95rem;
-       padding: 12px 8px;
-     }
-     .tab-buttons-wrapper {
-       padding: 6px 8px;
-       border-radius: 14px;
-     }
-   }
-		
-    /* ポット分け表（最初に表示） */
-    /* スマホ対応：ポット表を縦に並べる */
-    /* ポット表：PC・タブレットは横4列、スマホは縦1列 */
-    #potTable {
-      max-width: 1500px;
-      margin: 20px auto;
-      padding: 0 8px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);  /* デフォルト：横4列 */
-      gap: 12px;
-    }
-
-    @media (min-width: 400px) and (max-width: 799px) {
-      #potTable { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 399px) {
-      #potTable { grid-template-columns: 1fr; gap: 15px; }
-    }
-
-    .pot {
-      background: rgba(255,255,255,0.13);
-      border-radius: 16px;
-      padding: 12px 10px;
-      border: 1px solid rgba(255,203,5,0.35);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-	  
-    .pot h2 {
-      font-size: 1.5rem;
-      color: #ffcb05;
-      margin: 0 0 8px;
-      text-shadow: 0 0 12px gold;
-      border-bottom: 1.5px solid #ffcb05;
-      padding-bottom: 6px;
-    }
-	  
-    .pot-team {
-      background: rgba(255,255,255,0.18);
-      margin: 3px 0;
-      padding: 5px 8px;
-      border-radius: 10px;
-      font-size: 0.8rem;              /* 超小さく */
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 6px;                     /* 極小間隔 */
-      line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      transition: background 0.2s;
-    }
-	  
-    .pot-team:hover {
-      background: rgba(255,203,5,0.22);
-    }
-	  
-   .pot-team img {
-      width: 32px;                  /* 超ミニ旗 */
-      height: 21px;
-      border-radius: 4px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
-      flex-shrink: 0;
-    }
-
-    .pot-team span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-	  
-/* 日本は小さくても目立つ！ */
-   .pot-team.japan {
-      background: linear-gradient(135deg, #bc002d, #fff);
-      color: #bc002d;
-      font-weight: bold;
-      font-size: 1.18rem !important;
-      padding: 6px 8px;
-      border: 1px solid #fff;
-      box-shadow: 0 0 15px rgba(188,0,45,0.8);
-    }
-	  
-    .pot-team.japan img {
-      width: 38px;
-      height: 25px;
-      border: 1.5px solid #fff;
-    }
-
-    /* FIFAランキングテーブル */
-    #rankingTab {max-width: 1200px;margin: 20px auto;padding: 0 10px;}
-    .ranking-table {width: 100%;border-collapse: collapse;background: rgba(255,255,255,0.1);border-radius: 15px;overflow: hidden;box-shadow: 0 10px 30px rgba(0,0,0,0.4);}
-    .ranking-table th, .ranking-table td {padding: 12px;text-align: left;border-bottom: 1px solid rgba(255,255,255,0.2);}
-    .ranking-table th {background: #ffcb05;color: #0f2b5e;font-weight: bold;}
-    .ranking-table td {font-size: 0.95rem;}
-    .ranking-table img {width: 24px;height: 18px;border-radius: 3px;margin-right: 8px;}
-    .ranking-table tr:hover {background: rgba(255,203,5,0.1);}
-	  
-    #status {margin: 50px auto;min-height: 180px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 30px;}
-    #loadingContainer {opacity: 0;transition: opacity 0.7s;}
-    #loadingContainer.show {opacity: 1;}
-    #loadingImg {width: 120px;height: 120px;filter: drop-shadow(0 0 25px #ffcb05);}
-
-    .loading-text {font-size: 2.8rem;font-weight: bold;color: #ffcb05;text-shadow: 0 0 25px rgba(255,203,5,1);letter-spacing: 5px;}
-    .loading-dots span {opacity: 0;animation: dotPulse 1.8s infinite;}
-    .loading-dots span:nth-child(1) {animation-delay: 0s;}
-    .loading-dots span:nth-child(2) {animation-delay: 0.5s;}
-    .loading-dots span:nth-child(3) {animation-delay: 1s;}
-    @keyframes dotPulse {0%,100%{opacity:0} 50%{opacity:1}}
-
-    #bTitle {
-      font-size: 0.65rem;
-      color: white;
-      text-align: center;
-    }
-    /* 日本専用・超ド派手演出 */
-    #japanLog {
-      width: 100vw;
-      background: linear-gradient(135deg, #0f2b5e, #1a4d8c);
-      font-size: 0.65rem;
-      color: white;
-      text-align: center;
-      position: fixed; 
-      top: 0px;
-      right: 0px;
-      left: 0px;
-      margin: 0;
-      z-index: 9999;
-    }
-    #japanSpecial {
-      position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%) scale(0);
-      font-size: 2rem;font-weight: 900;color: #bc002d;text-shadow: 0 0 80px #fff, 0 0 120px #bc002d;
-      z-index: 9999;pointer-events: none;opacity: 0;
-      animation: japanBoom 3s ease-out forwards;
-      letter-spacing: 10px;
-    }
-    @keyframes japanBoom {
-      0%   {transform: translate(-50%, -50%) scale(0); opacity: 0;}
-      40%  {transform: translate(-50%, -50%) scale(1.3); opacity: 1;}
-      70%  {transform: translate(-50%, -50%) scale(1); opacity: 1;}
-      100% {transform: translate(-50%, -50%) scale(0.9); opacity: 0;}
-    }
-    
-    /* 最新1件をド派手に表示 */
-    #latestDraw {margin: 60px auto;padding: 30px;min-height: 200px;perspective: 1500px;}
-    #currentDraw {
-      background: linear-gradient(135deg, rgba(255,203,5,0.4), rgba(255,203,5,0.15));
-      border: 4px solid #ffcb05;
-      border-radius: 30px;
-      padding: 35px 60px;
-      max-width: 900px;
-      margin: 0 auto;
-      font-size: 1rem;
-      font-weight: bold;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-      opacity: 0;
-      transform: scale(0.8) translateY(100px) rotateX(-45deg);
-      transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
-      backdrop-filter: blur(15px);
-      text-shadow: 0 0 30px gold;
-    }
-    #currentDraw.show {opacity: 1;transform: scale(1) translateY(0) rotateX(0);}
-    #currentDraw img {width: 100px;height: 66px;margin-right: 35px;border-radius: 14px;box-shadow: 0 8px 30px rgba(0,0,0,0.6);vertical-align: middle;}
-    #currentDraw .group-letter {color: #ffff00;font-size: 1rem;text-shadow: 0 0 50px gold;margin: 0 30px;font-weight: 900;}
-
-    #result {max-width: 1600px;margin: 60px auto;display: grid;grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));gap: 35px;}
-    .group {background: rgba(255,255,255,0.15);border-radius: 28px;padding: 35px;backdrop-filter: blur(15px);border: 1px solid rgba(255,255,255,0.3);}
-    .group h2 {margin: 0 0 30px;font-size: 3.2rem;color: #ffcb05;}
-    .team {background: rgba(255,255,255,0.3);margin: 16px 0;padding: 20px;border-radius: 16px;font-size: 0.65rem;opacity: 0;transform: translateY(40px);transition: all 0.8s;text-align:left;}
-    .team.show {opacity: 1;transform: translateY(0);}
-    .team.host {background: rgba(255,203,5,0.7);font-weight: bold;color: #fff;text-align:left;
-				}
-    .pot-label {padding: 10px 20px;border-radius: 35px;background: #ffcb05;color: #0f2b5e;font-weight: bold;margin-left: 15px;font-size: 0.45rem; position: absolute;right: 0;}
-
-    @keyframes fireworks-animation {
-	  0% {
-		  transform: translate(-50%, 90vh);
-		  width: 4px;
-		  opacity: 1;
-   	}
-	  50% {
-	  	width: 4px;
-		  opacity: 1;
-	  }
-	  100% {
-		width: 400px;
-		opacity: 0;
-  	}
+#potTableInDraw {
+  max-width: 100%!important;
+  overflow-x: auto!important;
+  padding: 0 10px!important
+}
+a {
+  color: #fff
+}
+body.japan-mode {
+  background: radial-gradient(circle,#fff 10%,#bc002d 40%,#fff 70%);
+  animation: japanFlash 2s ease-out
+}
+@keyframes japanFlash {
+  0% {
+    background: radial-gradient(circle,#fff 0,#bc002d 0,#fff 0)
   }
-
-  .c-firework,
-  .c-firework::before,
-  .c-firework::after {
-  	content: "";
-	  position: absolute;
-  	top: 50%;
-  	left: 50%;
-  	aspect-ratio: 1;
-  	background: radial-gradient(circle, #ff0 10px, #000 0) 50% 00%,
-		radial-gradient(circle, #ff0 10px, #000 0) 00% 50%,
-		radial-gradient(circle, #ff0 10px, #000 0) 50% 99%,
-		radial-gradient(circle, #ff0 10px, #000 0) 99% 50%,
-		radial-gradient(circle, #ff0 10px, #000 0) 80% 90%,
-		radial-gradient(circle, #ff0 10px, #000 0) 95% 90%,
-		radial-gradient(circle, #ff0 10px, #000 0) 10% 60%,
-		radial-gradient(circle, #ff0 10px, #000 0) 31% 80%,
-		radial-gradient(circle, #ff0 10px, #000 0) 80% 10%,
-		radial-gradient(circle, #ff0 10px, #000 0) 90% 23%,
-		radial-gradient(circle, #ff0 10px, #000 0) 45% 20%,
-		radial-gradient(circle, #ff0 10px, #000 0) 13% 24%;
-  	background-size: 4px 4px;
-	  background-repeat: no-repeat;
-  	transform: translate(-50%, -50%);
-  	animation: fireworks-animation 4s infinite;
+  50% {
+    background: radial-gradient(circle,#fff 60%,#bc002d 90%)
   }
-  .c-firework::before {
-  	transform: translate(-50%, -50%) rotate(25deg) !important;
+  100% {
+    background: linear-gradient(135deg,#0f2b5e,#1a4d8c)
   }
-  .c-firework::after {
-  	transform: translate(-50%, -50%) rotate(-37deg) !important;
+}
+body {
+  font-family: "Helvetica Neue",Arial,sans-serif;
+  background: linear-gradient(135deg,#0f2b5e,#1a4d8c);
+  color: #fff;
+  text-align: center;
+  padding: 15px 6px;
+  min-height: 100vh;
+  margin: 0;
+  transition: background 1.5s
+}
+h1 {
+  font-size: 1.8rem;
+  margin: 20px 0 15px;
+  text-shadow: 0 0 20px #ffcb05
+}
+button#startBtn {
+  background: #ffcb05;
+  color: #0f2b5e;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 16px 60px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,.7);
+  margin: 30px auto;
+  display: block
+}
+button#startBtn2 {
+  background: #ffcb05;
+  color: #0f2b5e;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 16px 60px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,.7);
+  margin: 30px auto;
+  display: block
+}
+button:hover:not(:disabled) {
+  transform: translateY(-8px) scale(1.05)
+}
+button:disabled {
+  background: #555;
+  opacity: .7
+}
+.tab-container {
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 0 10px
+}
+.tab-buttons-wrapper {
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255,203,5,.7);
+  border-radius: 16px;
+  padding: 7px 10px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.4),inset 0 1px 3px rgba(255,255,255,.1)
+}
+.tab-buttons {
+  display: flex;
+  gap: 0;
+  flex-wrap: nowrap!important;
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 12px;
+  overflow: hidden
+}
+.tab-btn {
+  flex: 1;
+  background: 0 0;
+  color: rgba(255,255,255,.8);
+  border: none;
+  padding: 14px 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .35s ease;
+  white-space: nowrap;
+  position: relative
+}
+.tab-btn.active {
+  background: #ffcb05;
+  color: #0f2b5e;
+  font-weight: 900;
+  box-shadow: 0 4px 15px rgba(255,203,5,.5);
+  z-index: 1
+}
+.tab-btn:hover:not(.active) {
+  background: rgba(255,255,255,.15);
+  color: #fff
+}
+.tab-content {
+  display: none;
+  opacity: 0;
+  transition: opacity .5s ease-in-out
+}
+.tab-content.active {
+  display: block;
+  opacity: 1
+}
+@media (max-width:480px) {
+  .tab-btn {
+    font-size: .95rem;
+    padding: 12px 8px
   }
-	  
-/* 抽選中・結果表示もスマホ最適化 */
-    #status, #latestDraw, #result {max-width: 900px;margin: 30px auto;padding: 0 8px;}
-    #result {gap: 15px;}
-    .group {padding: 18px;border-radius: 18px;}
-    .group h2 {font-size: 2.1rem;margin-bottom: 15px;}
-    .team {padding: 10px;font-size: 1.1rem;margin: 5px 0;}
-/* ルール説明 */
-	.rule {
-	margin: 16px auto;
-	text-align: center;
-	display: block;
-	border: 1px solid #ffcb05;
-    }
-    .rule ul {
-	padding-left: 0;
-	list-style: none;
-	display: inline-block;
-	color: #ffcb05;
-	font-size: 0.6rem;
-    }
-    .rule li {
-	color: white;
-	font-size: 0.5rem;
-    }
-    .rule ul li {
-	text-align: left;
-    }
-	  
-/* === 抽選終了後のシェアボタンエリア === */
-    #shareButtons {
-      margin: 40px auto;
-      padding: 20px;
-      max-width: 800px;
-      display: none;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    #shareButtons.show {display: flex !important;}
-
-    .share-btn {
-      background: #ffcb05;
-      color: #0f2b5e;
-      font-size: 1.5rem;
-      font-weight: bold;
-      padding: 16px 40px;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      transition: all 0.4s;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .share-btn:hover {
-      transform: translateY(-8px) scale(1.08);
-      box-shadow: 0 20px 50px rgba(255,203,5,0.5);
-    }
-    .share-btn.screenshot {background: #1da1f2;} /* Twitterブルー */
-    .share-btn.xshare {background: #000000;}
-
-/* スクショ＆シェアボタンを右下・左下に常時固定！ */
+  .tab-buttons-wrapper {
+    padding: 6px 8px;
+    border-radius: 14px
+  }
+}
+#potTable {
+  max-width: 1500px;
+  margin: 20px auto;
+  padding: 0 8px;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 12px
+}
+@media (min-width:400px) and (max-width:799px) {
+  #potTable {
+    grid-template-columns: 1fr 1fr
+  }
+}
+@media (max-width:399px) {
+  #potTable {
+    grid-template-columns: 1fr;
+    gap: 15px
+  }
+}
+.pot {
+  background: rgba(255,255,255,.13);
+  border-radius: 16px;
+  padding: 12px 10px;
+  border: 1px solid rgba(255,203,5,.35);
+  box-shadow: 0 6px 20px rgba(0,0,0,.3)
+}
+.pot h2 {
+  font-size: 1.5rem;
+  color: #ffcb05;
+  margin: 0 0 8px;
+  text-shadow: 0 0 12px gold;
+  border-bottom: 1.5px solid #ffcb05;
+  padding-bottom: 6px
+}
+.pot-team {
+  background: rgba(255,255,255,.18);
+  margin: 3px 0;
+  padding: 5px 8px;
+  border-radius: 10px;
+  font-size: .8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background .2s
+}
+.pot-team:hover {
+  background: rgba(255,203,5,.22)
+}
+.pot-team img {
+  width: 32px;
+  height: 21px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.4);
+  flex-shrink: 0
+}
+.pot-team span {
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+.pot-team.japan {
+  background: linear-gradient(135deg,#bc002d,#fff);
+  color: #bc002d;
+  font-weight: 700;
+  font-size: 1.18rem!important;
+  padding: 6px 8px;
+  border: 1px solid #fff;
+  box-shadow: 0 0 15px rgba(188,0,45,.8)
+}
+.pot-team.japan img {
+  width: 38px;
+  height: 25px;
+  border: 1.5px solid #fff
+}
+#rankingTab {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 10px
+}
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255,255,255,.1);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,.4)
+}
+.ranking-table td,
+.ranking-table th {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,.2)
+}
+.ranking-table th {
+  background: #ffcb05;
+  color: #0f2b5e;
+  font-weight: 700
+}
+.ranking-table td {
+  font-size: .95rem
+}
+.ranking-table img {
+  width: 24px;
+  height: 18px;
+  border-radius: 3px;
+  margin-right: 8px
+}
+.ranking-table tr:hover {
+  background: rgba(255,203,5,.1)
+}
+#status {
+  margin: 50px auto;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px
+}
+#loadingContainer {
+  opacity: 0;
+  transition: opacity .7s
+}
+#loadingContainer.show {
+  opacity: 1
+}
+#loadingImg {
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 0 25px #ffcb05)
+}
+.loading-text {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #ffcb05;
+  text-shadow: 0 0 25px #ffcb05;
+  letter-spacing: 5px
+}
+.loading-dots span {
+  opacity: 0;
+  animation: dotPulse 1.8s infinite
+}
+.loading-dots span:first-child {
+  animation-delay: 0s
+}
+.loading-dots span:nth-child(2) {
+  animation-delay: .5s
+}
+.loading-dots span:nth-child(3) {
+  animation-delay: 1s
+}
+@keyframes dotPulse {
+  0%,
+  100% {
+    opacity: 0
+  }
+  50% {
+    opacity: 1
+  }
+}
+#bTitle {
+  font-size: .65rem;
+  color: #fff;
+  text-align: center
+}
+#japanLog {
+  width: 100vw;
+  background: linear-gradient(135deg,#0f2b5e,#1a4d8c);
+  font-size: .65rem;
+  color: #fff;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin: 0;
+  z-index: 9999
+}
+#japanSpecial {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) scale(0);
+  font-size: 2rem;
+  font-weight: 900;
+  color: #bc002d;
+  text-shadow: 0 0 80px #fff,0 0 120px #bc002d;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  animation: japanBoom 3s ease-out forwards;
+  letter-spacing: 10px
+}
+@keyframes japanBoom {
+  0% {
+    transform: translate(-50%,-50%) scale(0);
+    opacity: 0
+  }
+  40% {
+    transform: translate(-50%,-50%) scale(1.3);
+    opacity: 1
+  }
+  70% {
+    transform: translate(-50%,-50%) scale(1);
+    opacity: 1
+  }
+  100% {
+    transform: translate(-50%,-50%) scale(.9);
+    opacity: 0
+  }
+}
+#latestDraw {
+  margin: 60px auto;
+  padding: 30px;
+  min-height: 200px;
+  perspective: 1500px
+}
+#currentDraw {
+  background: linear-gradient(135deg,rgba(255,203,5,.4),rgba(255,203,5,.15));
+  border: 4px solid #ffcb05;
+  border-radius: 30px;
+  padding: 35px 60px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 20px 60px rgba(0,0,0,.7);
+  opacity: 0;
+  transform: scale(.8) translateY(100px) rotateX(-45deg);
+  transition: all 1s cubic-bezier(.22, 1, .36, 1);
+  backdrop-filter: blur(15px);
+  text-shadow: 0 0 30px gold
+}
+#currentDraw.show {
+  opacity: 1;
+  transform: scale(1) translateY(0) rotateX(0)
+}
+#currentDraw img {
+  width: 100px;
+  height: 66px;
+  margin-right: 35px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.6);
+  vertical-align: middle
+}
+#currentDraw .group-letter {
+  color: #ff0;
+  font-size: 1rem;
+  text-shadow: 0 0 50px gold;
+  margin: 0 30px;
+  font-weight: 900
+}
+#result {
+  max-width: 1600px;
+  margin: 60px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(340px,1fr));
+  gap: 35px
+}
+.group {
+  background: rgba(255,255,255,.15);
+  border-radius: 28px;
+  padding: 35px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,.3)
+}
+.group h2 {
+  margin: 0 0 30px;
+  font-size: 3.2rem;
+  color: #ffcb05
+}
+.team {
+  background: rgba(255,255,255,.3);
+  margin: 16px 0;
+  padding: 20px;
+  border-radius: 16px;
+  font-size: .65rem;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all .8s;
+  text-align: left
+}
+.team.show {
+  opacity: 1;
+  transform: translateY(0)
+}
+.team.host {
+  background: rgba(255,203,5,.7);
+  font-weight: 700;
+  color: #fff;
+  text-align: left
+}
+.pot-label {
+  padding: 10px 20px;
+  border-radius: 35px;
+  background: #ffcb05;
+  color: #0f2b5e;
+  font-weight: 700;
+  margin-left: 15px;
+  font-size: .45rem;
+  position: absolute;
+  right: 0
+}
+@keyframes fireworks-animation {
+  0% {
+    transform: translate(-50%,90vh);
+    width: 4px;
+    opacity: 1
+  }
+  50% {
+    width: 4px;
+    opacity: 1
+  }
+  100% {
+    width: 400px;
+    opacity: 0
+  }
+}
+.c-firework,
+.c-firework::after,
+.c-firework::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle,#ff0 10px,#000 0) 50% 00%,radial-gradient(circle,#ff0 10px,#000 0) 00% 50%,radial-gradient(circle,#ff0 10px,#000 0) 50% 99%,radial-gradient(circle,#ff0 10px,#000 0) 99% 50%,radial-gradient(circle,#ff0 10px,#000 0) 80% 90%,radial-gradient(circle,#ff0 10px,#000 0) 95% 90%,radial-gradient(circle,#ff0 10px,#000 0) 10% 60%,radial-gradient(circle,#ff0 10px,#000 0) 31% 80%,radial-gradient(circle,#ff0 10px,#000 0) 80% 10%,radial-gradient(circle,#ff0 10px,#000 0) 90% 23%,radial-gradient(circle,#ff0 10px,#000 0) 45% 20%,radial-gradient(circle,#ff0 10px,#000 0) 13% 24%;
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
+  transform: translate(-50%,-50%);
+  animation: fireworks-animation 4s infinite
+}
+.c-firework::before {
+  transform: translate(-50%,-50%) rotate(25deg)!important
+}
+.c-firework::after {
+  transform: translate(-50%,-50%) rotate(-37deg)!important
+}
+#latestDraw,
+#result,
+#status {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 8px
+}
+#result {
+  gap: 15px
+}
+.group {
+  padding: 18px;
+  border-radius: 18px
+}
+.group h2 {
+  font-size: 2.1rem;
+  margin-bottom: 15px
+}
+.team {
+  padding: 10px;
+  font-size: 1.1rem;
+  margin: 5px 0
+}
+.rule {
+  margin: 16px auto;
+  text-align: center;
+  display: block;
+  border: 1px solid #ffcb05
+}
+.rule ul {
+  padding-left: 0;
+  list-style: none;
+  display: inline-block;
+  color: #ffcb05;
+  font-size: .6rem
+}
+.rule li {
+  color: #fff;
+  font-size: .5rem
+}
+.rule ul li {
+  text-align: left
+}
+#shareButtons {
+  margin: 40px auto;
+  padding: 20px;
+  max-width: 800px;
+  display: none;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap
+}
+#shareButtons.show {
+  display: flex!important
+}
+.share-btn {
+  background: #ffcb05;
+  color: #0f2b5e;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 16px 40px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,.6);
+  transition: all .4s;
+  display: flex;
+  align-items: center;
+  gap: 12px
+}
+.share-btn:hover {
+  transform: translateY(-8px) scale(1.08);
+  box-shadow: 0 20px 50px rgba(255,203,5,.5)
+}
+.share-btn.screenshot {
+  background: #1da1f2
+}
+.share-btn.xshare {
+  background: #000
+}
+#fixedButtons {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 9998;
+  display: none;
+  justify-content: space-between;
+  pointer-events: none;
+  gap: 20px
+}
+#fixedButtons.show {
+  display: flex
+}
+.fixed-btn {
+  background: #ffcb05;
+  color: #0f2b5e;
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 16px 28px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 12px 40px rgba(0,0,0,.7);
+  transition: all .4s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+  backdrop-filter: blur(10px);
+  min-width: 140px;
+  justify-content: center
+}
+.fixed-btn:hover {
+  transform: translateY(-10px) scale(1.1);
+  box-shadow: 0 20px 60px rgba(255,203,5,.6)
+}
+.fixed-btn.screenshot {
+  background: #1da1f2;
+  color: #fff
+}
+.fixed-btn.xshare {
+  background: #000;
+  color: #fff
+}
+@media (max-width:480px) {
   #fixedButtons {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    z-index: 9998;
-    display: none;
-    justify-content: space-between;
-    pointer-events: none; /* 背景タップは無効にしない */
-    gap: 20px;
+    bottom: 15px;
+    left: 15px;
+    right: 15px
   }
-  #fixedButtons.show {
-    display: flex;
-  }
-
   .fixed-btn {
-    background: #ffcb05;
-    color: #0f2b5e;
-    font-size: 1.4rem;
-    font-weight: bold;
-    padding: 16px 28px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.7);
-    transition: all 0.4s;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    pointer-events: auto; /* ボタンだけはタップ可能 */
-    backdrop-filter: blur(10px);
-    min-width: 140px;
-    justify-content: center;
+    font-size: 1.2rem;
+    padding: 14px 20px
   }
-  .fixed-btn:hover {
-    transform: translateY(-10px) scale(1.1);
-    box-shadow: 0 20px 60px rgba(255,203,5,0.6);
-  }
-  .fixed-btn.screenshot {
-    background: #1da1f2; /* Twitterブルー */
-    color: white;
-  }
-  .fixed-btn.xshare {
-    background: #000000;
-    color: white;
-  }
-
-  /* スマホでも見やすい調整 */
-  @media (max-width: 480px) {
-    #fixedButtons { bottom: 15px; left: 15px; right: 15px; }
-    .fixed-btn { font-size: 1.2rem; padding: 14px 20px; }
-  }
-
-/* 抽選会タブ内・超コンパクト版ポット表 */
+}
 .pot-table-compact {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4,1fr);
   gap: 10px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,.06);
   padding: 16px;
   border-radius: 18px;
-  border: 1.5px solid rgba(255,203,5,0.4);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  border: 1.5px solid rgba(255,203,5,.4);
+  box-shadow: 0 8px 25px rgba(0,0,0,.3)
 }
-
-/* タブレット：2列 */
-@media (max-width: 899px) {
+@media (max-width:899px) {
   .pot-table-compact {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(2,1fr);
+    gap: 12px
   }
 }
-
-/* スマホ：1列（横スクロール完全防止！） */
-@media (max-width: 400px) {
+@media (max-width:400px) {
   .pot-table-compact {
     grid-template-columns: 1fr;
     gap: 14px;
-    padding: 14px;
+    padding: 14px
   }
 }
-
-/* 各ポットのスタイル（超コンパクト） */
 .pot-compact {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,.1);
   border-radius: 12px;
   padding: 10px 8px;
-  border: 1px solid rgba(255,203,5,0.25);
-  text-align: center;
+  border: 1px solid rgba(255,203,5,.25);
+  text-align: center
 }
-
 .pot-compact h3 {
   margin: 0 0 8px;
   font-size: 1.1rem;
   color: #ffcb05;
   text-shadow: 0 0 10px gold;
-  font-weight: bold;
+  font-weight: 700
 }
-
 .pot-compact .team-mini {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 4px 6px;
-  background: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,.12);
   border-radius: 8px;
   margin: 3px 0;
-  font-size: 0.8rem;
+  font-size: .8rem;
   font-weight: 500;
-  line-height: 1.2;
+  line-height: 1.2
 }
-
 .pot-compact .team-mini img {
   width: 26px;
   height: 19px;
   border-radius: 3px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,.5);
+  flex-shrink: 0
 }
-
 .pot-compact .team-mini span {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: nowrap
 }
-
-/* 日本は小さくてもド派手！ */
 .pot-compact .team-mini.japan {
-  background: linear-gradient(135deg, #fff 30%, #bc002d 70%);
+  background: linear-gradient(135deg,#fff 30%,#bc002d 70%);
   color: #bc002d;
   font-weight: 900;
-  font-size: 0.94rem !important;
+  font-size: .94rem!important;
   border: 1px solid #fff;
-  box-shadow: 0 0 10px rgba(188,0,45,0.7);
+  box-shadow: 0 0 10px rgba(188,0,45,.7)
 }
 .pot-compact .team-mini.japan img {
   width: 30px;
   height: 22px;
-  border: 1.3px solid #fff;
+  border: 1.3px solid #fff
 }
-
-
-
-/* モーダル全体 */
 .modal {
   display: none;
   position: fixed;
   z-index: 99999;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.9);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.9);
   backdrop-filter: blur(10px);
   align-items: center;
   justify-content: center;
-  animation: fadeIn 0.4s ease-out;
+  animation: fadeIn .4s ease-out
 }
-
-/* モーダルコンテンツ */
 .modal-content {
-  background: linear-gradient(135deg, #0f2b5e, #1a4d8c);
+  background: linear-gradient(135deg,#0f2b5e,#1a4d8c);
   padding: 30px 25px;
   border-radius: 24px;
   max-width: 90%;
   width: 380px;
   text-align: center;
   border: 2px solid #ffcb05;
-  box-shadow: 0 20px 60px rgba(255,203,5,0.4);
-  animation: modalPop 0.6s cubic-bezier(0.18, 1, 0.21, 1);
-  position: relative;
+  box-shadow: 0 20px 60px rgba(255,203,5,.4);
+  animation: modalPop .6s cubic-bezier(.18,1,.21,1);
+  position: relative
 }
-
 .modal-close {
   position: absolute;
-  top: 12px; right: 18px;
+  top: 12px;
+  right: 18px;
   font-size: 2.5rem;
   color: #ffcb05;
   cursor: pointer;
-  font-weight: bold;
-  text-shadow: 0 0 10px gold;
+  font-weight: 700;
+  text-shadow: 0 0 10px gold
 }
-
-.modal-flag img {
-  width: 140px; height: 105px;
+.modal-flag img ,.modalFlagImgSp {
+  width: 140px;
+  height: 105px;
   border-radius: 12px;
   border: 3px solid #fff;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-  margin-bottom: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.7);
+  margin-bottom: 15px
 }
 
 #modalTeamName {
   font-size: 2.2rem;
   color: #ffcb05;
   margin: 10px 0;
-  text-shadow: 0 0 20px gold;
+  text-shadow: 0 0 20px gold
 }
-
 .modal-info p {
   margin: 8px 0;
   font-size: 1.15rem;
-  color: white;
+  color: #fff
 }
-
-/* 日本特別演出 */
 .modal-content.japan-mode {
-  background: linear-gradient(135deg, #bc002d, #fff, #bc002d);
-  animation: japanPulse 2s infinite;
+  background: linear-gradient(135deg,#bc002d,#fff,#bc002d);
+  animation: japanPulse 2s infinite
 }
-
-/* 応急処置 */
 #teamModal {
-  display: none;           /* 最初は非表示 */
+  display: none;
   position: fixed;
   z-index: 9999;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.8);
   justify-content: center;
-  align-items: center;
+  align-items: center
 }
-
-#teamModal.show { display: flex !important; }  /* ← これで絶対出る */
-
-/* アニメーション */
-@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+#teamModal.show {
+  display: flex!important
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}
 @keyframes modalPop {
-  0% { transform: scale(0.3) translateY(100px); opacity:0; }
-  100% { transform: scale(1) translateY(0); opacity:1; }
+  0% {
+    transform: scale(.3) translateY(100px);
+    opacity: 0
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1
+  }
 }
 @keyframes japanPulse {
-  0%,100% { box-shadow: 0 0 30px #fff; }
-  50% { box-shadow: 0 0 80px #ffcb05; }
+  0%,
+  100% {
+    box-shadow: 0 0 30px #fff
+  }
+  50% {
+    box-shadow: 0 0 80px #ffcb05
+  }
 }
-
-/* 1.修正：抽選タブの国名折り返し禁止 */
 .team-mini span {
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  max-width: 100% !important;
+  white-space: nowrap!important;
+  overflow: hidden!important;
+  text-overflow: ellipsis!important;
+  max-width: 100%!important
+}
+.pot-team.japan,
+.team-mini.japan {
+  background: linear-gradient(135deg,#bc002d,#fff)!important;
+  color: #0f2b5e!important
+}
+.team-mini {
+  display: flex!important;
+  align-items: center!important;
+  gap: 8px!important;
+  padding: 8px 12px!important;
+  max-width: 100%!important;
+  overflow: hidden!important;
+  white-space: nowrap!important
+}
+.team-mini span {
+  white-space: nowrap!important;
+  overflow: hidden!important;
+  text-overflow: ellipsis!important;
+  flex: 1!important
+}
+.team-mini.japan {
+  background: linear-gradient(135deg,#bc002d,#fff)!important;
+  color: #0f2b5e!important
+}
+.pot-team span {
+  overflow: hidden!important;
+  text-overflow: ellipsis!important
+}
+#modalFlag {
+  object-fit: contain!important;
+  background: #ccc!important
+}
+#potTableInDraw {
+  max-width: 100vw!important;
+  overflow: hidden!important;
+  box-sizing: border-box!important
+}
+.team-mini.japan {
+  background: linear-gradient(135deg,#bc002d,#fff)!important;
+  color: #0f2b5e!important
 }
 
-/* 3.修正：日本の背景を赤と白のグラデーションに戻す */
-.pot-team.japan, .team-mini.japan {
-  background: linear-gradient(135deg, #bc002d, #fff) !important;  /* ← 赤と白のグラデ */
-  color: #0f2b5e !important;  /* 文字は紺色で読みやすく */
+/* 抽選用ポット表を小さく収める（チーム枠/ポット枠小さく） */
+#potTableInDraw {
+  max-width: 100% !important;  /* 外枠を画面幅以内に */
+  overflow-x: auto !important;  /* 横スクロール可能（はみ出し防止） */
+  padding: 5px !important;  /* 外枠パディング小さく */
+  box-sizing: border-box !important;
 }
-		
-  </style>
+
+#potTableInDraw .pot {
+  min-width: 180px !important;  /* ポット枠小さく */
+  max-width: 100% !important;
+  margin-bottom: 5px !important;  /* 間隔小さく */
+}
+
+#potTableInDraw .team-mini {
+  padding: 6px 8px !important;  /* チーム枠小さく */
+  font-size: 0.8rem !important;  /* 文字小さく */
+  gap: 6px !important;  /* 旗と文字の間隔小さく */
+  border-radius: 8px !important;
+}
+
+#potTableInDraw .team-mini img {
+  width: 15.5px !important;  /* 旗小さく（元々小さめなら調整） */
+  height: 10.5px !important;
+}
+
+#potTableInDraw .pot h2 {
+  font-size: 1.2rem !important;  /* ポットタイトル小さく */
+  margin-bottom: 8px !important;
+}
+
+.modal-label {
+  color: inherit;  /* 親から色継承 */
+}
+
+/* PO表のスタイル（ポット表と同じように） */
+.playoff-table {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  margin-bottom: 30px;
+}
+
+.playoff-table .pot-team {
+  /* ポット表と同じスタイルを継承（必要なら調整） */
+}
+
+</style>
+
 </head>
 <body>
   <!-- タブ切り替えヘッダー -->
@@ -926,7 +1151,8 @@
 
 <script>
 window.addEventListener('DOMContentLoaded', () => {
-  // ==================== データ====================
+
+    // ==================== データ====================
   document.getElementById("japanSpecial").style.display = "none";
   const GROUPS = "ABCDEFGHIJKL".split("");
 
@@ -987,7 +1213,35 @@ window.addEventListener('DOMContentLoaded', () => {
       { name: "欧州PO4", conf: "UEFA", pot: 4 },
       { name: "大陸間PO1", conf: "PO", pot: 4 },
       { name: "大陸間PO2", conf: "PO", pot: 4 },
+
     ];
+
+
+//プレイオフチーム
+const playoffteams = [
+  { name: "ウクライナ", conf: "UEFA", pot: 5 },
+  { name: "イスラエル", conf: "UEFA", pot: 5 },
+  { name: "ボスニア・ヘルツェゴビナ", conf: "UEFA", pot: 5 },
+  { name: "アイスランド", conf: "UEFA", pot: 5 },
+  { name: "ウェールズ", conf: "UEFA", pot: 6 },
+  { name: "フィンランド", conf: "UEFA", pot: 6 },
+  { name: "ポーランド", conf: "UEFA", pot: 6 },
+  { name: "エストニア", conf: "UEFA", pot: 6 },
+  { name: "ジョージア", conf: "UEFA", pot: 7 },
+  { name: "ルクセンブルク", conf: "UEFA", pot: 7 },
+  { name: "ギリシャ", conf: "UEFA", pot: 7 },
+  { name: "カザフスタン", conf: "UEFA", pot: 7 },
+  { name: "ハンガリー", conf: "UEFA", pot: 8 },
+  { name: "トルコ", conf: "UEFA", pot: 8 },  // ← 全角スペースを削除！
+  { name: "スロバキア", conf: "UEFA", pot: 8 },
+  { name: "モルドバ", conf: "UEFA", pot: 8 },
+  { name: "ボリビア", conf: "CONMEBOL", pot: 9 },
+  { name: "コンゴ民主共和国", conf: "CAF", pot: 9 },
+  { name: "イラク", conf: "AFC", pot: 9 },
+  { name: "ジャマイカ", conf: "CONCACAF", pot: 9 },
+  { name: "ニューカレドニア", conf: "OFC", pot: 9 },
+  { name: "スリナム", conf: "CONCACAF", pot: 9 }
+];
 
   // ★ 48チーム全て対応・完全版 国別詳細データ（2025年11月23日更新）★
 const teamDetails = {
@@ -995,7 +1249,7 @@ const teamDetails = {
   "メキシコ":     { rank: 14,  conf: "北中米", extra: "開催国（グループA・1位固定）" },
   "カナダ":       { rank: 15,  conf: "北中米", extra: "開催国（グループB・1位固定）" },
   "アメリカ":     { rank: 12,  conf: "北中米", extra: "開催国（グループD・1位固定）" },
-  "スペイン":     { rank: 1,   conf: "欧州",   extra: "FIFAランキング1位・前回王者" },
+  "スペイン":     { rank: 1,   conf: "欧州",   extra: "FIFAランキングトップの華麗なる優勝候補 " },
   "アルゼンチン": { rank: 2,   conf: "南米",   extra: "コパ・アメリカ2連覇中" },
   "フランス":     { rank: 3,   conf: "欧州",   extra: "2022準優勝・優勝候補筆頭" },
   "イングランド": { rank: 4,   conf: "欧州",   extra: "ユーロ2024準優勝" },
@@ -1060,46 +1314,134 @@ const teamDetails = {
   // 大陸間予備
   //"コスタリカ":   { rank: 47,  conf: "北中米", playoff: "大陸間PO（CONCACAF vs OFC）勝利" },
  // "ニュージーランド": { rank: 49, conf: "オセアニア", playoff: "大陸間PO出場（コスタリカに惜敗）→ ポット4確定" },
+
+   //プレイオフ
+  "ウクライナ": { rank: 22, conf: "欧州", playoff: "欧州PO Path A", extra: "戦争下で健闘する精神力。" },
+  "イスラエル": { rank: 76, conf: "欧州", playoff: "欧州PO Path A", extra: "攻撃的なスタイルで番狂わせ狙い。" },
+  "ボスニア・ヘルツェゴビナ": { rank: 75, conf: "欧州", playoff: "欧州PO Path A", extra: "ジェコのようなスター輩出国。" },
+  "アイスランド": { rank: 74, conf: "欧州", playoff: "欧州PO Path A", extra: "2016ユーロのサプライズ再現へ。" },
+  "ウェールズ": { rank: 32, conf: "欧州", playoff: "欧州PO Path B", extra: "ベイル後継者の若いチーム。" },
+  "フィンランド": { rank: 62, conf: "欧州", playoff: "欧州PO Path B", extra: "初のメジャートーナメント挑戦。" },
+  "ポーランド": { rank: 31, conf: "欧州", playoff: "欧州PO Path B", extra: "レヴァンドフスキの得点力。" },
+  "エストニア": { rank: 122, conf: "欧州", playoff: "欧州PO Path B", extra: "バルトの小国でアップセット狙い。" },
+  "ジョージア": { rank: 73, conf: "欧州", playoff: "欧州PO Path C", extra: "クヴァラツヘリアの才能爆発。" },
+  "ルクセンブルク": { rank: 85, conf: "欧州", playoff: "欧州PO Path C", extra: "最近の成長でダークホース。" },
+  "ギリシャ": { rank: 46, conf: "欧州", playoff: "欧州PO Path C", extra: "2004ユーロ優勝の伝統。" },
+  "カザフスタン": { rank: 107, conf: "欧州", playoff: "欧州PO Path C", extra: "アジアから欧州移籍後の進化。" },
+  "ハンガリー": { rank: 41, conf: "欧州", playoff: "欧州PO Path D", extra: "ソボスライのリーダーシップ。" },
+  "トルコ": { rank: 26, conf: "欧州", playoff: "欧州PO Path D", extra: "ユーロ2024準々決勝の勢い。" },
+  "スロバキア": { rank: 48, conf: "欧州", playoff: "欧州PO Path D", extra: "堅守速攻の戦術。" },
+  "モルドバ": { rank: 155, conf: "欧州", playoff: "欧州PO Path D", extra: "初出場を目指すダークホース。" },
+  "ボリビア": { rank: 82, conf: "南米", playoff: "大陸間PO", extra: "高地ホームのアドバンテージ。" },
+  "コンゴ民主共和国": { rank: 56, conf: "アフリカ", playoff: "大陸間PO", extra: "豊富なタレント保有。" },
+  "イラク": { rank: 58, conf: "アジア", playoff: "大陸間PO", extra: "2007アジアカップ優勝国。" },
+  "ジャマイカ": { rank: 59, conf: "北中米", playoff: "大陸間PO", extra: "スプリント速さの攻撃力。" },
+  "ニューカレドニア": { rank: 159, conf: "オセアニア", playoff: "大陸間PO", extra: "オセアニアの新星。" },
+  "スリナム": { rank: 139, conf: "北中米", playoff: "大陸間PO", extra: "オランダ系選手の活躍。" },
 };
 
    // 国旗マップ
-    const flagMap = {"アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar","フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be","ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir","オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr","デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr","サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn","セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec","ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua","カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no","トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py","ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz","南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz","オーストリア":"at","大陸間PO1":"un","大陸間PO2":"un","欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv"};
+const flagMap = {
+  "アメリカ":"us","メキシコ":"mx","カナダ":"ca","ブラジル":"br","アルゼンチン":"ar",
+  "フランス":"fr","イングランド":"gb-eng","スペイン":"es","ドイツ":"de","ベルギー":"be",
+  "ポルトガル":"pt","オランダ":"nl","日本":"jp","韓国":"kr","イラン":"ir",
+  "オーストラリア":"au","ウルグアイ":"uy","コロンビア":"co","クロアチア":"hr",
+  "デンマーク":"dk","スイス":"ch","モロッコ":"ma","セネガル":"sn","コスタリカ":"cr",
+  "サウジアラビア":"sa","エジプト":"eg","ナイジェリア":"ng","チュニジア":"tn",
+  "セルビア":"rs","ポーランド":"pl","スウェーデン":"se","エクアドル":"ec",
+  "ペルー":"pe","ジャマイカ":"jm","アルジェリア":"dz","ウクライナ":"ua",
+  "カメルーン":"cm","ガーナ":"gh","コートジボワール":"ci","ノルウェー":"no",
+  "トルコ":"tr","スコットランド":"gb-sct","ハンガリー":"hu","パラグアイ":"py",
+  "ベネズエラ":"ve","パナマ":"pa","ホンジュラス":"hn","ニュージーランド":"nz",
+  "南アフリカ":"za","ヨルダン":"jo","カタール":"qa","ウズベキスタン":"uz",
+  "オーストリア":"at","キュラソー":"cw","ハイチ":"ht","カボベルデ":"cv",
+
+  // プレイオフチーム（重複なしでここにまとめる！）
+  "ウクライナ":"ua","イスラエル":"il","ボスニア・ヘルツェゴビナ":"ba","アイスランド":"is",
+  "ウェールズ":"gb","フィンランド":"fi","ポーランド":"pl","エストニア":"ee",
+  "ジョージア":"ge","ルクセンブルク":"lu","ギリシャ":"gr","カザフスタン":"kz",
+  "ハンガリー":"hu","トルコ":"tr","スロバキア":"sk","モルドバ":"md",
+  "ボリビア":"bo","コンゴ民主共和国":"cd","イラク":"iq","ジャマイカ":"jm",
+  "ニューカレドニア":"nc","スリナム":"sr",
+
+  // POプレースホルダー
+  "欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu",
+  "大陸間PO1":"un","大陸間PO2":"un"
+};
 
   function getFlagUrl(name, w = 120, h = 90) {
-    return `https://flagcdn.com/${w}x${h}/${flagMap[name] || "un"}.png`;
+    const code = flagMap[name] || "un";  // ← 1.修正：unをデフォルト
+    return `https://flagcdn.com/${w}x${h}/${code}.png`;
   }
 
-  // ==================== モーダル====================
-  let modal = null;
-  window.openTeamModal = function(teamName) {
-    modal = modal || document.getElementById("teamModal");
-    if (!modal) return;
+  // ==================== モーダル（4.の修正入り） ====================
 
-    const team = teams.find(t => t.name === teamName) || {};
-    const detail = teamDetails[teamName] || {};
+window.openTeamModal = function(teamName) {
+  modal = modal || document.getElementById("teamModal");
+  if (!modal) return;
 
-    document.getElementById("modalTeamName").textContent = teamName;
-    document.getElementById("modalConf").textContent = 
-      {UEFA:"欧州",CONMEBOL:"南米",AFC:"アジア",CAF:"アフリカ",CONCACAF:"北中米"}[team.conf] || "その他";
-    document.getElementById("modalPot").textContent = team.pot ? `ポット${team.pot}` : "-";
-    document.getElementById("modalRank").textContent = detail.rank ?? "未確定";
-    document.getElementById("modalFlag").src = `https://flagcdn.com/256x192/${flagMap[teamName] || "un"}.png`;
+  // const team = teams.find(t => t.name === teamName) || {};
+  // const detail = teamDetails[teamName] || {};
 
-    const extraEl = document.getElementById("modalExtra");
-    const content = document.querySelector(".modal-content");
-    if (teamName === "日本") {
-      content.classList.add("japan-mode");
-      extraEl.textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
-      extraEl.style.color = "#0f2b5e";  // ← 2.修正：紺色で読みやすく
-    } else {
-      content.classList.remove("japan-mode");
-      extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
-      extraEl.style.color = "#fff";  // 他の国は白
-    }
 
-    modal.style.display = "flex";
-    setTimeout(() => modal.classList.add("show"), 10);
-  };
+  const allTeams = teams.concat(playoffteams);  // ← teamsとplayoffteamsを統合して検索
+  const team = allTeams.find(t => t.name === teamName) || {};
+  const detail = teamDetails[teamName] || {};
+  document.getElementById("modalTeamName").textContent = teamName;
+  const confEl = document.getElementById("modalConf");
+  confEl.textContent = {UEFA:"欧州",CONMEBOL:"南米",AFC:"アジア",CAF:"アフリカ",CONCACAF:"北中米"}[team.conf] || "その他";
+
+  // プレイオフチームなら「プレイオフ出場」も表示
+  const potEl = document.getElementById("modalPot");
+  if (team.pot && team.pot >= 5) {
+    potEl.textContent = "プレイオフ出場";
+    potEl.style.color = "#ffcb05";  // 金色で目立たせる（任意）
+    potEl.style.fontWeight = "bold";
+  } else {
+    potEl.textContent = team.pot ? `ポット${team.pot}` : "-";
+    potEl.style.color = "";  // 通常色に戻す
+    potEl.style.fontWeight = "";
+  }
+
+  const rankEl = document.getElementById("modalRank");
+  rankEl.textContent = detail.rank ?? "未確定";
+
+  document.getElementById("modalFlag").src = `https://flagcdn.com/256x192/${flagMap[teamName] || "un"}.png`;
+
+document.getElementById("modalFlagImgSp").style.display = "none";
+
+  const extraEl = document.getElementById("modalExtra");
+  const content = document.querySelector(".modal-content");
+  if (teamName === "日本") {
+    content.classList.add("japan-mode");
+    extraEl.textContent = "がんばれニッポン！！！絶対に勝つぞ！！";
+    // 修正: nullチェック追加＋ラベル/値分離（HTMLが<span id="modalConf"></span>ならこれでOK）
+    if (confEl) confEl.style.color = "#0f2b5e";
+    if (potEl) potEl.style.color = "#0f2b5e";
+    if (rankEl) rankEl.style.color = "#0f2b5e";
+    if (extraEl) extraEl.style.color = "#ffcb05";
+    document.getElementById("modalA") .style.color = "#0f2b5e";
+    document.getElementById("modalB") .style.color = "#0f2b5e";
+    document.getElementById("modalC") .style.color = "#0f2b5e";
+    document.getElementById("modalD") .style.color = "#0f2b5e";
+  } else {
+    content.classList.remove("japan-mode");
+    extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
+    if (confEl) confEl.style.color = "#fff";
+    if (potEl) potEl.style.color = "#fff";
+    if (rankEl) rankEl.style.color = "#fff";
+    if (extraEl) extraEl.style.color = "#fff";
+    document.getElementById("modalA") .style.color = "#fff";
+    document.getElementById("modalB") .style.color = "#fff";
+    document.getElementById("modalC") .style.color = "#fff";
+    document.getElementById("modalD") .style.color = "#fff";
+  }
+
+  modal.style.display = "flex";
+  setTimeout(() => modal.classList.add("show"), 10);
+};
+
+  // 閉じる（そのまま）
 
   document.addEventListener("click", e => {
     if (e.target === modal || e.target.classList.contains("modal-close")) {
@@ -1114,7 +1456,7 @@ const teamDetails = {
     }
   });
 
-  // ==================== ポット表描画====================
+  // ==================== ポット表描画（3.の修正入り） ====================
   function renderPotTable(containerId, flagW = 84, flagH = 63, itemClass = "pot-team") {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -1144,8 +1486,103 @@ const teamDetails = {
 
   window.renderPotTableInDraw = () => renderPotTable("potTableInDraw", 60, 45, "team-mini");
 
+  // ==================== 新追加: PO表描画関数 ====================
+function renderPlayoffTables() {
+  const container = document.getElementById("pots");  // ポットタブのコンテンツID（適宜変更）
+  if (!container) return;
+
+  // ポット表の下に追加するdivを作成（なければ新規作成）
+  let poSection = document.getElementById("playoffSection");
+  if (!poSection) {
+    poSection = document.createElement("div");
+    poSection.id = "playoffSection";
+    poSection.style.marginTop = "40px";  // ポット表の下に間隔
+    container.appendChild(poSection);  // #potTableの下に追加（ポット表の親要素にappend）
+  }
+  poSection.innerHTML = "";  // クリア
+
+  // 欧州PO表（Pathごとに分ける）
+  const euroPO = document.createElement("div");
+  euroPO.className = "playoff-table";
+  euroPO.innerHTML = `<h2 style="color:#ffcb05; text-align:center; margin-bottom:20px;">欧州プレイオフ <br>(未確定・2026年3月決定)</h2>`;
+
+  // Path A (pot 5)
+  const pathA = document.createElement("div");
+  pathA.innerHTML = `<h3 style="color:#ffd700; text-align:left; margin:10px 0;">Path A</h3>`;
+  const pathATeams = playoffteams.filter(t => t.pot === 5);
+  pathATeams.forEach(t => {
+    const item = document.createElement("div");
+    item.className = "pot-team";
+    item.innerHTML = `<img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}"><span>${t.name}: ${teamDetails[t.name]?.extra || "詳細未定"}</span>`;
+    item.style.cursor = "pointer";
+    item.onclick = () => openTeamModal(t.name);
+    pathA.appendChild(item);
+  });
+  euroPO.appendChild(pathA);
+
+  // Path B (pot 6)
+  const pathB = document.createElement("div");
+  pathB.innerHTML = `<h3 style="color:#ffd700; text-align:left; margin:10px 0;">Path B</h3>`;
+  const pathBTeams = playoffteams.filter(t => t.pot === 6);
+  pathBTeams.forEach(t => {
+    const item = document.createElement("div");
+    item.className = "pot-team";
+    item.innerHTML = `<img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}"><span>${t.name}: ${teamDetails[t.name]?.extra || "詳細未定"}</span>`;
+    item.style.cursor = "pointer";
+    item.onclick = () => openTeamModal(t.name);
+    pathB.appendChild(item);
+  });
+  euroPO.appendChild(pathB);
+
+  // Path C (pot 7)
+  const pathC = document.createElement("div");
+  pathC.innerHTML = `<h3 style="color:#ffd700; text-align:left; margin:10px 0;">Path C</h3>`;
+  const pathCTeams = playoffteams.filter(t => t.pot === 7);
+  pathCTeams.forEach(t => {
+    const item = document.createElement("div");
+    item.className = "pot-team";
+    item.innerHTML = `<img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}"><span>${t.name}: ${teamDetails[t.name]?.extra || "詳細未定"}</span>`;
+    item.style.cursor = "pointer";
+    item.onclick = () => openTeamModal(t.name);
+    pathC.appendChild(item);
+  });
+  euroPO.appendChild(pathC);
+
+  // Path D (pot 8)
+  const pathD = document.createElement("div");
+  pathD.innerHTML = `<h3 style="color:#ffd700; text-align:left; margin:10px 0;">Path D</h3>`;
+  const pathDTeams = playoffteams.filter(t => t.pot === 8);
+  pathDTeams.forEach(t => {
+    const item = document.createElement("div");
+    item.className = "pot-team";
+    item.innerHTML = `<img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}"><span>${t.name}: ${teamDetails[t.name]?.extra || "詳細未定"}</span>`;
+    item.style.cursor = "pointer";
+    item.onclick = () => openTeamModal(t.name);
+    pathD.appendChild(item);
+  });
+  euroPO.appendChild(pathD);
+
+  poSection.appendChild(euroPO);
+
+  // 大陸間PO表（変更なし）
+  const interPO = document.createElement("div");
+  interPO.className = "playoff-table";
+  interPO.innerHTML = `<h2 style="color:#ffcb05; text-align:center; margin:40px 0 20px;">大陸間プレイオフ <br>(未確定・2026年3月決定)</h2>`;
+  const interTeams = playoffteams.filter(t => t.pot === 9);
+  interTeams.forEach(t => {
+    const item = document.createElement("div");
+    item.className = "pot-team";
+    item.innerHTML = `<img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}"><span>${t.name}: ${teamDetails[t.name]?.extra || "詳細未定"}</span>`;
+    item.style.cursor = "pointer";
+    item.onclick = () => openTeamModal(t.name);
+    interPO.appendChild(item);
+  });
+  poSection.appendChild(interPO);
+}
+
   // ==================== 初期化 ====================
-  const init = () => {
+
+const init = () => {
     modal = document.getElementById("teamModal");
     const drawBtn = document.querySelector('[data-tab="draw"]');
     const drawContent = document.getElementById("draw");
@@ -1155,6 +1592,9 @@ const teamDetails = {
     }
     renderPotTable("potTable", 84, 63, "pot-team");
     renderPotTable("potTableInDraw", 60, 45, "team-mini");
+
+    renderPlayoffTables();  // ← 追加: 初回PO表描画
+
   };
 
   // ==================== タブ切り替え ====================
@@ -1167,6 +1607,7 @@ const teamDetails = {
       if (content) content.classList.add('active');
       setTimeout(() => {
         if (btn.dataset.tab === "pots") renderPotTable("potTable", 84, 63, "pot-team");
+          renderPlayoffTables();  // ← 追加: potsタブ時PO表再描画
         if (btn.dataset.tab === "draw") window.renderPotTableInDraw();
       }, 100);
     });
@@ -1295,7 +1736,7 @@ showLoading(true);
       });
       await new Promise(r => setTimeout(r, 3000));
 
-showLoading(false);  document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:3.5rem;">ポット1 完了！</span>`;
+showLoading(false);  document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:2rem;">ポット1 完了！</span>`;
 await new Promise(r => setTimeout(r, 1000));
       
       // ポット2〜4
@@ -1318,12 +1759,12 @@ await new Promise(r => setTimeout(r, 1000));
           await new Promise(r => setTimeout(r, 900));
         }
         showLoading(false);
-        document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:3.5rem;">ポット${p} 完了！</span>`;
+        document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:2rem;">ポット${p} 完了！</span>`;
         await new Promise(r => setTimeout(r, 2500));
       }
 
       document.getElementById("statusText").innerHTML = 
-        `<div style="font-size:4.5rem;color:#ffcb05;text-shadow:0 0 50px gold;">抽選終了！</div>`;
+        `<div style="font-size:2rem;color:#ffcb05;text-shadow:0 0 50px gold;">抽選終了！</div>`;
       btn.textContent = "もう一度抽選";
       btn.disabled = false;
 
@@ -1365,15 +1806,16 @@ document.getElementById("topBtn")?.addEventListener("click", () => {
     document.getElementById("pTitle").scrollIntoView({behavior: 'smooth'});
   });
 
-  // ==================== スクショボタン（4.の修正入り） ====================
+  // ==================== スクショボタン（4.の修正強化） ====================
   document.querySelector(".fixed-btn.screenshot")?.addEventListener("click", async () => {
     try {
       const element = document.getElementById("result");
       
-      // 完全保存/復元（結果が消えないように）
-      const originalResultHTML = element.innerHTML;  // ← 4.修正：HTML全部保存
-      const originalBodyBg = document.body.style.background;
+      // ← 4.修正強化：HTML, スタイル, 背景全部保存
+      const originalResultHTML = element.innerHTML;
       const originalResultStyle = element.style.cssText;
+      const originalBodyBg = document.body.style.background;
+      const originalBodyStyle = document.body.style.cssText;  // ボディ全体も保存
 
       document.body.style.background = "linear-gradient(135deg, #0f2b5e, #1a4d8c)";
 
@@ -1389,20 +1831,22 @@ document.getElementById("topBtn")?.addEventListener("click", () => {
         windowHeight: window.innerHeight
       });
 
-      // 完全復元（結果が消えない！）
+      // 完全復元（戻っても消えない！）
+      document.body.style.cssText = originalBodyStyle;
       document.body.style.background = originalBodyBg;
       element.style.cssText = originalResultStyle;
-      element.innerHTML = originalResultHTML;  // ← 4.修正：HTMLを戻す
+      element.innerHTML = originalResultHTML;
 
-      // ファイル名生成＆ダウンロード（そのまま）
+      // ファイル名＆ダウンロード（そのまま）
       const now = new Date();
       const timestamp = now.getFullYear() +
-      String(now.getMonth() + 1).padStart(2, '0') +
-      String(now.getDate()).padStart(2, '0') +
-      String(now.getHours()).padStart(2, '0') +
-      String(now.getMinutes()).padStart(2, '0') +
-      String(now.getSeconds()).padStart(2, '0') +
-      String(now.getMilliseconds()).padStart(3, '0');
+        String(now.getMonth() + 1).padStart(2, '0') +
+        String(now.getDate()).padStart(2, '0') +
+        String(now.getHours()).padStart(2, '0') +
+        String(now.getMinutes()).padStart(2, '0') +
+        String(now.getSeconds()).padStart(2, '0') +
+        String(now.getMilliseconds()).padStart(3, '0');
+      
       const filename = `2026worldcup_${timestamp}.png`;
 
       canvas.toBlob((blob) => {
@@ -1415,15 +1859,15 @@ document.getElementById("topBtn")?.addEventListener("click", () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
-        // トースト（そのまま）
+        // トースト
         const toast = document.createElement("div");
         toast.textContent = `保存しました！ ${filename}`;
         toast.style.cssText = `
-        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-        background: #ffcb05; color: #0f2b5e; padding: 16px 32px; border-radius: 50px;
-        font-size: 1.4rem; font-weight: bold; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-        animation: toast 3s ease-out forwards;
-      `;
+          position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+          background: #ffcb05; color: #0f2b5e; padding: 16px 32px; border-radius: 50px;
+          font-size: 1.4rem; font-weight: bold; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+          animation: toast 3s ease-out forwards;
+        `;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
       }, "image/png");
@@ -1611,19 +2055,19 @@ document.head.appendChild(style);
 });
 </script>
 
-
 <!-- モーダル本体 -->
 <div id="teamModal" class="modal">
   <div class="modal-content">
     <span class="modal-close">&times;</span>
     <div class="modal-flag">
       <img id="modalFlag" src="" alt="">
+      <span id="modalFlagImgSp"> </span>
     </div>
     <h2 id="modalTeamName"></h2>
     <div class="modal-info">
-      <p><strong>大陸連盟：</strong><span id="modalConf"></span></p>
-      <p><strong>ポット：</strong><span id="modalPot"></span></p>
-      <p><strong>FIFAランキング：</strong><span id="modalRank"></span>位</p>
+      <p><span class="modal-label" id="modalA"><strong>大陸連盟：</strong></span><span class="modal-value" id="modalConf"></span></p>
+      <p><span class="modal-label" id="modalB"><strong>ポット：</strong></span><span class="modal-value" id="modalPot"></span></p>
+      <p><span class="modal-label" id="modalC"><strong>FIFAランキング：</strong></span><span class="modal-value" id="modalRank"></span> <span class="modal-label" id="modalD">位</span> </p>
       <p id="modalExtra" style="margin-top:12px; color:#ffcb05; font-weight:bold;"></p>
     </div>
     <div id="playoffInfo" style="display:none; margin-top:15px; padding:15px; background:rgba(255,203,5,0.15); border-radius:12px; border:1px solid #ffcb05;">
@@ -1649,4 +2093,3 @@ document.head.appendChild(style);
 </script>
 </body>
 </html>
-な

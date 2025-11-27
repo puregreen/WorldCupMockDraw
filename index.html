@@ -1599,7 +1599,7 @@ window.openTeamModal = function(teamName) {
   const detail = teamDetails[teamName] || {};
   document.getElementById("modalTeamName").textContent = teamName;
   const confEl = document.getElementById("modalConf");
-  confEl.textContent = {UEFA:"欧州",CONMEBOL:"南米",AFC:"アジア",CAF:"アフリカ",CONCACAF:"北中米"}[team.conf] || "その他";
+  confEl.textContent = {UEFA:"欧州",CONMEBOL:"南米",AFC:"アジア",CAF:"アフリカ",CONCACAF:"北中米",OFC:"オセアニア"}[team.conf] || "その他";
 
   // プレイオフチームなら「プレイオフ出場」も表示
   const potEl = document.getElementById("modalPot");
@@ -2320,7 +2320,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ v0.13
+   <hr>©PureGreen │ v0.14
   </div>
 <!-- 強制初回描画 -->
 <script> 

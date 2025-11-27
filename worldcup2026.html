@@ -1,3 +1,5 @@
+全体ソース202112701
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -1416,12 +1418,13 @@ const playoffteams = [
   { name: "チェコ", conf: "UEFA", pot: 8 },
   { name: "アイルランド共和国", conf: "UEFA", pot: 8 },
  // 大陸間
-  { name: "ボリビア", conf: "CONMEBOL", pot: 9 },
-  { name: "コンゴ民主共和国", conf: "CAF", pot: 9 },
-  { name: "イラク", conf: "AFC", pot: 9 },
-  { name: "ジャマイカ", conf: "CONCACAF", pot: 9 },
   { name: "ニューカレドニア", conf: "OFC", pot: 9 },
-  { name: "スリナム", conf: "CONCACAF", pot: 9 }
+  { name: "ジャマイカ", conf: "CONCACAF", pot: 9 },
+  { name: "コンゴ民主共和国", conf: "CAF", pot: 9 },
+  { name: "ボリビア", conf: "CONMEBOL", pot: 9 },
+  { name: "スリナム", conf: "CONCACAF", pot: 9 },
+  { name: "イラク", conf: "AFC", pot: 9 },
+
 ];
 
 
@@ -1468,18 +1471,18 @@ const teamDetails = {
   "日本": { rank: 18, points: 1650.12, conf: "アジア", extra: "アジア最高ランキング！ポット2確定" },
   "セネガル": { rank: 19, points: 1648.07, conf: "アフリカ", extra: "アフリカ王者・マネ復帰" },
   "イラン": { rank: 20, points: 1617.02, conf: "アジア", extra: "中東の雄・鉄壁守備" },
-  "デンマーク": { rank: 21, points: 1616.75, conf: "欧州", playoff: "Path D", extra: "ユーロ2020準優勝の黄金世代。<br>PO準決勝: vs 北マケドニア" },
+  "デンマーク": { rank: 21, points: 1616.75, conf: "欧州", playoff: "Path D", extra: "ユーロ2020準優勝の黄金世代。<br> 欧州パスD. PO準決勝: vs 北マケドニア" },
   "韓国": { rank: 22, points: 1599.45, conf: "アジア", extra: "ソンフンミン健在・ベスト16常連" },
   "エクアドル": { rank: 23, points: 1591.73, conf: "南米", extra: "南米予選4位・高地組" },
   "オーストリア": { rank: 24, points: 1585.51, conf: "欧州", extra: "予選無敗突破・ダークホース" },
-  "トルコ": { rank: 25, points: 1582.69, conf: "欧州", playoff: "Path C", extra: "ユーロ2024準々決勝の勢い。<br>PO準決勝: vs ルーマニア" },
+  "トルコ": { rank: 25, points: 1582.69, conf: "欧州", playoff: "Path C", extra: "ユーロ2024準々決勝の勢い。<br>欧州パスC.PO準決勝: vs ルーマニア" },
   "オーストラリア": { rank: 26, points: 1574.01, conf: "アジア", extra: "アジア最終予選無事突破" },
   "カナダ": { rank: 27, points: 1559.15, conf: "北中米", extra: "開催国（グループB固定）" },
-  "ウクライナ": { rank: 28, points: 1557.47, conf: "欧州", playoff: "Path B", extra: "健闘する不屈の精神力<br>PO準決勝: vs スウェーデン" },
+  "ウクライナ": { rank: 28, points: 1557.47, conf: "欧州", playoff: "Path B", extra: "健闘する不屈の精神力<br>欧州パスB.PO準決勝: vs スウェーデン" },
   "ノルウェー": { rank: 29, points: 1553.14, conf: "欧州", extra: "ハーランド＆ウーデゴー最強コンビ<br>圧倒的攻撃力でポット3の注目国" },
   "パナマ": { rank: 30, points: 1540.43, conf: "北中米", extra: "北中米予選大躍進" },
-  "ポーランド": { rank: 31, points: 1532.04, conf: "欧州", playoff: "Path B", extra: "レヴァンドフスキの得点力。<br>PO準決勝: vs アルバニア" },
-  "ウェールズ": { rank: 32, points: 1529.71, conf: "欧州", playoff: "Path A", extra: "ベイル後継者の若いチーム。<br>PO準決勝: vs ボスニア・ヘルツェゴビナ" },
+  "ポーランド": { rank: 31, points: 1532.04, conf: "欧州", playoff: "Path B", extra: "レヴァンドフスキの得点力。<br>欧州パスB.PO準決勝: vs アルバニア" },
+  "ウェールズ": { rank: 32, points: 1529.71, conf: "欧州", playoff: "Path A", extra: "ベイル後継者の若いチーム。<br>欧州パスA.PO準決勝: vs ボスニア・ヘルツェゴビナ" },
   "エジプト": { rank: 34, points: 1520.68, conf: "アフリカ", extra: "サラー最後のW杯チャンス" },
   "アルジェリア": { rank: 35, points: 1516.37, conf: "アフリカ", extra: "アフリカ予選無敗" },
   "スコットランド": { rank: 36, points: 1506.77, conf: "欧州", extra: "ユーロ連続出場・初のW杯" },
@@ -1489,11 +1492,11 @@ const teamDetails = {
   "チュニジア": { rank: 40, points: 1497.13, conf: "アフリカ", extra: "アフリカ予選首位通過" },
   "ハンガリー": { rank: 41, points: 1496.29, conf: "欧州", extra: "ソボスライのリーダーシップ。" },
   "コートジボワール": { rank: 42, points: 1489.59, conf: "アフリカ", extra: "アフリカネーションズ杯王者" },
-  "スウェーデン": { rank: 43, points: 1487.13, conf: "欧州", playoff: "Path B", extra: "イブラ後継の攻撃サッカー。<br>PO準決勝: vs ウクライナ" },
-  "チェコ": { rank: 44, points: 1487, conf: "欧州", playoff: "Path D", extra: "伝統のカウンター攻撃。<br>PO準決勝: vs アイルランド共和国" },
-  "スロバキア": { rank: 45, points: 1485.65, conf: "欧州", playoff: "Path C", extra: "堅守速攻の戦術。<br>PO準決勝: vs コソボ" },
+  "スウェーデン": { rank: 43, points: 1487.13, conf: "欧州", playoff: "Path B", extra: "イブラ後継の攻撃サッカー。<br>欧州パスB.PO準決勝: vs ウクライナ" },
+  "チェコ": { rank: 44, points: 1487, conf: "欧州", playoff: "Path D", extra: "伝統のカウンター攻撃。<br>欧州パスD.PO準決勝: vs アイルランド共和国" },
+  "スロバキア": { rank: 45, points: 1485.65, conf: "欧州", playoff: "Path C", extra: "堅守速攻の戦術。<br>欧州パスC.PO準決勝: vs コソボ" },
   "ギリシャ": { rank: 46, points: 1480.38, conf: "欧州", extra: "2004ユーロ優勝の伝統。" },
-  "ルーマニア": { rank: 47, points: 1465.78, conf: "欧州", playoff: "Path C", extra: "予選無敗の堅守。<br>PO準決勝: vs トルコ" },
+  "ルーマニア": { rank: 47, points: 1465.78, conf: "欧州", playoff: "Path C", extra: "予選無敗の堅守。<br>欧州パスC.PO準決勝: vs トルコ" },
   "ベネズエラ": { rank: 48, points: 1465.22, conf: "南米", extra: "南米予選で善戦も惜しくも敗退の新興国。" },
   "コスタリカ": { rank: 49, points: 1464.24, conf: "北中米", extra: "2014 W杯ベスト8の記憶、予選で再び壁に。" },
   "ウズベキスタン": { rank: 50, points: 1462.03, conf: "アジア", extra: "中央アジア史上初出場" },
@@ -1504,21 +1507,21 @@ const teamDetails = {
   "キュラソー": { rank: 85, points: 1350.12, conf: "北中米", extra: "カリブ海の新星" },
   "ニュージーランド": { rank: 49, points: 1464.24, conf: "オセアニア", extra: "ニューカレドニアを3-0で下しW杯出場権を獲得" },
   "ハイチ": { rank: 88, points: 1342.67, conf: "北中米", extra: "北中米予選大健闘" },
-  "イタリア": { rank: 12, points: 1702.06, conf: "欧州", playoff: "Path A", extra: "4度のW杯王者、復活なるか。<br>PO準決勝: vs 北アイルランド" },
-  "北アイルランド": { rank: 80, points: 1365.45, conf: "欧州", playoff: "Path A", extra: "北アイルランドのダークホース。<br>PO準決勝: vs イタリア" },
-  "ボスニア・ヘルツェゴビナ": { rank: 75, points: 1378.23, conf: "欧州", playoff: "Path A", extra: "ジェコのようなスター輩出国。<br>PO準決勝: vs ウェールズ" },
-  "スウェーデン": { rank: 43, points: 1487.13, conf: "欧州", playoff: "Path B", extra: "イブラ後継の攻撃サッカー。<br>PO準決勝: vs ウクライナ" },
-  "アルバニア": { rank: 68, points: 1395.78, conf: "欧州", playoff: "Path B", extra: "バルカンの新興勢力。<br>PO準決勝: vs ポーランド" },
-  "ルーマニア": { rank: 47, points: 1465.78, conf: "欧州", playoff: "Path C", extra: "予選無敗の堅守。<br>PO準決勝: vs トルコ" },
-  "コソボ": { rank: 110, points: 1300.45, conf: "欧州", playoff: "Path C", extra: "独立後の成長株。<br>PO準決勝: vs スロバキア" },
-  "北マケドニア": { rank: 67, points: 1398.12, conf: "欧州", playoff: "Path D", extra: "2020ユーロのサプライズ再現か。<br>PO準決勝: vs デンマーク" },
-  "アイルランド共和国": { rank: 55, points: 1435.67, conf: "欧州", playoff: "Path D", extra: "アイリッシュの闘志。<br>PO準決勝: vs チェコ" },
-  "ボリビア": { rank: 82, points: 1360.78, conf: "南米", playoff: "Pathway 2", extra: "高地ホームのアドバンテージ。<br>PO準決勝: vs スリナム" },
-  "コンゴ民主共和国": { rank: 56, points: 1432.34, conf: "アフリカ", playoff: "Pathway 1", extra: "豊富なタレント保有。<br>PO決勝直行" },
-  "イラク": { rank: 58, points: 1428.67, conf: "アジア", playoff: "Pathway 2", extra: "2007アジアカップ優勝国。<br>PO決勝直行" },
-  "ジャマイカ": { rank: 59, points: 1425.12, conf: "北中米", playoff: "Pathway 1", extra: "スプリント速さの攻撃力。<br>PO準決勝: vs ニューカレドニア" },
-  "ニューカレドニア": { rank: 159, points: 1200.45, conf: "オセアニア", playoff: "Pathway 1", extra: "オセアニアの新星。<br>PO準決勝: vs ジャマイカ" },
-  "スリナム": { rank: 139, points: 1250.78, conf: "北中米", playoff: "Pathway 2", extra: "オランダ系選手の活躍。<br>PO準決勝: vs ボリビア" },
+  "イタリア": { rank: 12, points: 1702.06, conf: "欧州", playoff: "Path A", extra: "4度のW杯王者、復活なるか。<br>欧州パスA.PO準決勝: vs 北アイルランド" },
+  "北アイルランド": { rank: 80, points: 1365.45, conf: "欧州", playoff: "Path A", extra: "北アイルランドのダークホース。<br> 欧州パスA. PO準決勝: vs イタリア" },
+  "ボスニア・ヘルツェゴビナ": { rank: 75, points: 1378.23, conf: "欧州", playoff: "Path A", extra: "ジェコのようなスター輩出国。<br> 欧州パスA. PO準決勝: vs ウェールズ" },
+  "スウェーデン": { rank: 43, points: 1487.13, conf: "欧州", playoff: "Path B", extra: "イブラ後継の攻撃サッカー。<br>欧州パスB.PO準決勝: vs ウクライナ" },
+  "アルバニア": { rank: 68, points: 1395.78, conf: "欧州", playoff: "Path B", extra: "バルカンの新興勢力。<br> 欧州パスB. PO準決勝: vs ポーランド" },
+  "ルーマニア":  { rank: 47, points: 1465.78, conf: "欧州", playoff: "Path C", extra: "予選無敗の堅守。<br> 欧州パスC. PO準決勝: vs トルコ" },
+  "コソボ": { rank: 110, points: 1300.45, conf: "欧州", playoff: "Path C", extra: "独立後の成長株。<br> 欧州パスC. PO準決勝: vs スロバキア" },
+  "北マケドニア": { rank: 67, points: 1398.12, conf: "欧州", playoff: "Path D", extra: "2020ユーロのサプライズ再現か。<br>欧州パスD.PO準決勝: vs デンマーク" },
+  "アイルランド共和国": { rank: 55, points: 1435.67, conf: "欧州", playoff: "Path D", extra: "アイリッシュの闘志。<br> 欧州パスD. PO準決勝: vs チェコ" },
+  "ボリビア": { rank: 82, points: 1360.78, conf: "南米", playoff: "Pathway 2", extra: "高地ホームのアドバンテージ。<br> 大陸間パス2. PO準決勝: vs スリナム" },
+  "コンゴ民主共和国": { rank: 56, points: 1432.34, conf: "アフリカ", playoff: "Pathway 1", extra: "豊富なタレント保有。<br> 大陸間パス1. PO決勝直行" },
+  "イラク": { rank: 58, points: 1428.67, conf: "アジア", playoff: "Pathway 2", extra: "2007アジアカップ優勝国。<br> 大陸間パス2. PO決勝直行" },
+  "ジャマイカ": { rank: 59, points: 1425.12, conf: "北中米", playoff: "Pathway 1", extra: "スプリント速さの攻撃力。<br> 大陸間パス1. PO準決勝: vs ニューカレドニア" },
+  "ニューカレドニア": { rank: 159, points: 1200.45, conf: "オセアニア", playoff: "Pathway 1", extra: "オセアニアの新星。<br>大陸間パス1.PO準決勝: vs ジャマイカ" },
+  "スリナム": { rank: 139, points: 1250.78, conf: "北中米", playoff: "Pathway 2", extra: "オランダ系選手の活躍。<br> 大陸間パス2. PO準決勝: vs ボリビア" },
   "カタール":     { rank: 51,  conf: "アジア", extra: "10月14日のUAE戦で2–1の勝利を収め、北米行きの切符をつかんだ" },
   "ロシア":     { rank: 33,  conf: "アジア", extra: "裏W杯開催か？" },
   "サウジアラビア":     { rank: 60,  conf: "アジア", extra: "3大会連続出場。2022大会でアルゼンチンを破ったグリーン・ファルコンズ" },
@@ -2319,7 +2322,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.11_3
+   <hr>©PureGreen │ テストv0.13_1
   </div>
 <!-- 強制初回描画 -->
 <script> 

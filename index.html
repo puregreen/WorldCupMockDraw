@@ -248,7 +248,7 @@ button:disabled {
   border: 1px solid rgba(255,203,5,.35);
   box-shadow: 0 6px 20px rgba(0,0,0,.3)
 }
-.pot h2 {
+.pot h2 ,.playoff-table h2{
   font-size: 1.5rem;
   color: #ffcb05;
   margin: 0 0 8px;
@@ -972,6 +972,182 @@ button:disabled {
   /* ポット表と同じスタイルを継承（必要なら調整） */
 }
 
+
+/* プレイオフチームの表示を完全に統一＆崩れ防止 */
+.playoff-table .pot-team {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  margin: 6px 0;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 60px;                    /* 高さを統一 */
+  font-size: 15px !important;          /* フォントサイズ強制統一 */
+  line-height: 1.4 !important;         /* 行間固定 */
+  white-space: normal !important;      /* 改行許可 */
+}
+
+.playoff-table .pot-team:hover {
+  background: rgba(255, 203, 5, 0.2);
+  transform: translateY(-1px);
+}
+
+.playoff-table .pot-team img {
+  width: 48px;
+  height: 36px;
+  margin-right: 12px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* 説明文：2行まで表示、それ以上は… */
+.playoff-table .pot-team span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;        /* 最大2行 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  color: #ffeb3b;
+  flex: 1;
+}
+
+/* Pathごとのタイトル */
+.playoff-table h3 {
+  color: #ffd700;
+  font-size: 1.5rem;
+  margin: 20px 0 10px 5px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #ffd700;
+  font-weight: bold;
+}
+
+/* プレイオフチーム：国名1行 + 説明文最大2行（はみ出しは…） */
+.playoff-table .pot-team {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 78px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.playoff-table .pot-team:hover {
+  background: rgba(255, 203, 5, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255, 203, 5, 0.25);
+}
+
+.playoff-table .pot-team img {
+  width: 56px;
+  height: 42px;
+  margin-right: 16px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* テキスト部分 */
+.playoff-table .pot-team .text-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 国名：金色・大きく */
+.playoff-table .pot-team .team-name {
+  color: #ffcb05;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+/* 説明文：白・小さめ・最大2行・はみ出し… */
+.playoff-table .pot-team .team-desc {
+  color: #ffffff;
+  font-size: 0.6rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 欧州も大陸間も共通：プレイオフチームのカードデザイン */
+.playoff-table .pot-team {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 78px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.playoff-table .pot-team:hover {
+  background: rgba(255, 203, 5, 0.22);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 203, 5, 0.3);
+}
+
+.playoff-table .pot-team img {
+  width: 56px;
+  height: 42px;
+  margin-right: 16px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.playoff-table .pot-team .text-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.playoff-table .pot-team .team-name {
+  color: #ffcb05;
+  font-size: 0.8rem;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+
+.playoff-table .pot-team .team-desc {
+  color: #ffffff;
+  font-size: 0.6rem;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Pathタイトルも統一（欧州・大陸間共通） */
+.playoff-table h3 {
+  color: #ffcb05;
+  font-size: 1rem;
+  text-align: center;
+  margin: 30px 0 15px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid #ffcb05;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
 </style>
 
 </head>
@@ -1069,7 +1245,7 @@ button:disabled {
   <!-- タブ2: FIFAランキング（2025年11月19日更新） -->
 <div id="ranking" class="tab-content">
       <h1>FIFA男子ワールドランキング (2025年11月19日更新)</h1>
-      <p style="font-size:1.2rem;margin:10px;color:#ffcb05;">Spainが1位を維持！Argentinaが2位に復帰。トップ50を表示中。</p>
+      <p style="font-size:1.2rem;margin:10px;color:#ffcb05;">Spainが1位を維持！Argentinaが2位。<br>トップ50を表示中。</p>
 <div id="rankingTab">
   <table class="ranking-table">
     <thead>
@@ -1080,58 +1256,58 @@ button:disabled {
         <th>ポイント</th>
       </tr>
     </thead>
-    <tbody>
-      <tr onclick="openTeamModal('スペイン')"><td>1</td><td><img src="https://flagcdn.com/24x18/es.png" alt="Spain"></td><td>スペイン</td><td>1880.76</td></tr>
-      <tr onclick="openTeamModal('アルゼンチン')"><td>2</td><td><img src="https://flagcdn.com/24x18/ar.png" alt="Argentina"></td><td>アルゼンチン</td><td>1872.43</td></tr>
-      <tr onclick="openTeamModal('フランス')"><td>3</td><td><img src="https://flagcdn.com/24x18/fr.png" alt="France"></td><td>フランス</td><td>1852.12</td></tr>
-      <tr onclick="openTeamModal('イングランド')"><td>4</td><td><img src="https://flagcdn.com/24x18/gb-eng.png" alt="England"></td><td>イングランド</td><td>1845.67</td></tr>
-      <tr onclick="openTeamModal('ブラジル')"><td>5</td><td><img src="https://flagcdn.com/24x18/br.png" alt="Brazil"></td><td>ブラジル</td><td>1839.21</td></tr>
-      <tr onclick="openTeamModal('ポルトガル')"><td>6</td><td><img src="https://flagcdn.com/24x18/pt.png" alt="Portugal"></td><td>ポルトガル</td><td>1827.45</td></tr>
-      <tr onclick="openTeamModal('オランダ')"><td>7</td><td><img src="https://flagcdn.com/24x18/nl.png" alt="Netherlands"></td><td>オランダ</td><td>1815.89</td></tr>
-      <tr onclick="openTeamModal('イタリア')"><td>8</td><td><img src="https://flagcdn.com/24x18/it.png" alt="Italy"></td><td>イタリア</td><td>1803.12</td></tr>
-      <tr onclick="openTeamModal('ドイツ')"><td>9</td><td><img src="https://flagcdn.com/24x18/de.png" alt="Germany"></td><td>ドイツ</td><td>1798.76</td></tr>
-      <tr onclick="openTeamModal('クロアチア')"><td>10</td><td><img src="https://flagcdn.com/24x18/hr.png" alt="Croatia"></td><td>クロアチア</td><td>1785.34</td></tr>
-      <tr onclick="openTeamModal('ベルギー')"><td>11</td><td><img src="https://flagcdn.com/24x18/be.png" alt="Belgium"></td><td>ベルギー</td><td>1779.21</td></tr>
-      <tr onclick="openTeamModal('アメリカ')"><td>12</td><td><img src="https://flagcdn.com/24x18/us.png" alt="USA"></td><td>アメリカ</td><td>1765.89</td></tr>
-      <tr onclick="openTeamModal('ウルグアイ')"><td>13</td><td><img src="https://flagcdn.com/24x18/uy.png" alt="Uruguay"></td><td>ウルグアイ</td><td>1758.67</td></tr>
-      <tr onclick="openTeamModal('メキシコ')"><td>14</td><td><img src="https://flagcdn.com/24x18/mx.png" alt="Mexico"></td><td>メキシコ</td><td>1742.34</td></tr>
-      <tr onclick="openTeamModal('カナダ')"><td>15</td><td><img src="https://flagcdn.com/24x18/ca.png" alt="Canada"></td><td>カナダ</td><td>1736.12</td></tr>
-      <tr onclick="openTeamModal('コロンビア')"><td>16</td><td><img src="https://flagcdn.com/24x18/co.png" alt="Colombia"></td><td>コロンビア</td><td>1729.45</td></tr>
-      <tr onclick="openTeamModal('エクアドル')"><td>17</td><td><img src="https://flagcdn.com/24x18/ec.png" alt="Ecuador"></td><td>エクアドル</td><td>1723.78</td></tr>
-      <tr onclick="openTeamModal('日本')"><td>18</td><td><img src="https://flagcdn.com/24x18/jp.png" alt="Japan"></td><td>日本</td><td>1698.45</td></tr>
-      <tr onclick="openTeamModal('モロッコ')"><td>19</td><td><img src="https://flagcdn.com/24x18/ma.png" alt="Morocco"></td><td>モロッコ</td><td>1689.23</td></tr>
-      <tr onclick="openTeamModal('セネガル')"><td>20</td><td><img src="https://flagcdn.com/24x18/sn.png" alt="Senegal"></td><td>セネガル</td><td>1682.67</td></tr>
-      <tr onclick="openTeamModal('デンマーク')"><td>21</td><td><img src="https://flagcdn.com/24x18/dk.png" alt="Denmark"></td><td>デンマーク</td><td>1675.12</td></tr>
-      <tr onclick="openTeamModal('スイス')"><td>22</td><td><img src="https://flagcdn.com/24x18/ch.png" alt="Switzerland"></td><td>スイス</td><td>1668.89</td></tr>
-      <tr onclick="openTeamModal('スウェーデン')"><td>23</td><td><img src="https://flagcdn.com/24x18/se.png" alt="Sweden"></td><td>スウェーデン</td><td>1661.34</td></tr>
-      <tr onclick="openTeamModal('ポーランド')"><td>24</td><td><img src="https://flagcdn.com/24x18/pl.png" alt="Poland"></td><td>ポーランド</td><td>1654.78</td></tr>
-      <tr onclick="openTeamModal('セルビア')"><td>25</td><td><img src="https://flagcdn.com/24x18/rs.png" alt="Serbia"></td><td>セルビア</td><td>1648.23</td></tr>
-      <tr onclick="openTeamModal('ウクライナ')"><td>26</td><td><img src="https://flagcdn.com/24x18/ua.png" alt="Ukraine"></td><td>ウクライナ</td><td>1641.67</td></tr>
-      <tr onclick="openTeamModal('オーストラリア')"><td>27</td><td><img src="https://flagcdn.com/24x18/au.png" alt="Australia"></td><td>オーストラリア</td><td>1635.12</td></tr>
-      <tr onclick="openTeamModal('イラン')"><td>28</td><td><img src="https://flagcdn.com/24x18/ir.png" alt="Iran"></td><td>イラン</td><td>1628.56</td></tr>
-      <tr onclick="openTeamModal('韓国')"><td>29</td><td><img src="https://flagcdn.com/24x18/kr.png" alt="Korea Republic"></td><td>韓国</td><td>1622.01</td></tr>
-      <tr onclick="openTeamModal('エジプト')"><td>30</td><td><img src="https://flagcdn.com/24x18/eg.png" alt="Egypt"></td><td>エジプト</td><td>1615.45</td></tr>
-      <tr onclick="openTeamModal('ナイジェリア')"><td>31</td><td><img src="https://flagcdn.com/24x18/ng.png" alt="Nigeria"></td><td>ナイジェリア</td><td>1608.89</td></tr>
-      <tr onclick="openTeamModal('チュニジア')"><td>32</td><td><img src="https://flagcdn.com/24x18/tn.png" alt="Tunisia"></td><td>チュニジア</td><td>1602.34</td></tr>
-      <tr onclick="openTeamModal('アルジェリア')"><td>33</td><td><img src="https://flagcdn.com/24x18/dz.png" alt="Algeria"></td><td>アルジェリア</td><td>1595.78</td></tr>
-      <tr onclick="openTeamModal('パラグアイ')"><td>34</td><td><img src="https://flagcdn.com/24x18/py.png" alt="Paraguay"></td><td>パラグアイ</td><td>1589.23</td></tr>
-      <tr onclick="openTeamModal('ベネズエラ')"><td>35</td><td><img src="https://flagcdn.com/24x18/ve.png" alt="Venezuela"></td><td>ベネズエラ</td><td>1582.67</td></tr>
-      <tr onclick="openTeamModal('ジャマイカ')"><td>36</td><td><img src="https://flagcdn.com/24x18/jm.png" alt="Jamaica"></td><td>ジャマイカ</td><td>1576.12</td></tr>
-      <tr onclick="openTeamModal('パナマ')"><td>37</td><td><img src="https://flagcdn.com/24x18/pa.png" alt="Panama"></td><td>パナマ</td><td>1569.56</td></tr>
-      <tr onclick="openTeamModal('ホンジュラス')"><td>38</td><td><img src="https://flagcdn.com/24x18/hn.png" alt="Honduras"></td><td>ホンジュラス</td><td>1563.01</td></tr>
-      <tr onclick="openTeamModal('カメルーン')"><td>39</td><td><img src="https://flagcdn.com/24x18/cm.png" alt="Cameroon"></td><td>カメルーン</td><td>1556.45</td></tr>
-      <tr onclick="openTeamModal('ガーナ')"><td>40</td><td><img src="https://flagcdn.com/24x18/gh.png" alt="Ghana"></td><td>ガーナ</td><td>1549.89</td></tr>
-      <tr onclick="openTeamModal('コートジボワール')"><td>41</td><td><img src="https://flagcdn.com/24x18/ci.png" alt="Côte d'Ivoire"></td><td>コートジボワール</td><td>1543.34</td></tr>
-      <tr onclick="openTeamModal('ノルウェー')"><td>42</td><td><img src="https://flagcdn.com/24x18/no.png" alt="Norway"></td><td>ノルウェー</td><td>1536.78</td></tr>
-      <tr onclick="openTeamModal('トルコ')"><td>43</td><td><img src="https://flagcdn.com/24x18/tr.png" alt="Turkey"></td><td>トルコ</td><td>1530.23</td></tr>
-      <tr onclick="openTeamModal('スコットランド')"><td>44</td><td><img src="https://flagcdn.com/24x18/gb-sct.png" alt="Scotland"></td><td>スコットランド</td><td>1523.67</td></tr>
-      <tr onclick="openTeamModal('ハンガリー')"><td>45</td><td><img src="https://flagcdn.com/24x18/hu.png" alt="Hungary"></td><td>ハンガリー</td><td>1517.12</td></tr>
-      <tr onclick="openTeamModal('ペルー')"><td>46</td><td><img src="https://flagcdn.com/24x18/pe.png" alt="Peru"></td><td>ペルー</td><td>1510.56</td></tr>
-      <tr onclick="openTeamModal('コスタリカ')"><td>47</td><td><img src="https://flagcdn.com/24x18/cr.png" alt="Costa Rica"></td><td>コスタリカ</td><td>1504.01</td></tr>
-      <tr onclick="openTeamModal('サウジアラビア')"><td>48</td><td><img src="https://flagcdn.com/24x18/sa.png" alt="Saudi Arabia"></td><td>サウジアラビア</td><td>1497.45</td></tr>
-      <tr onclick="openTeamModal('ニュージーランド')"><td>49</td><td><img src="https://flagcdn.com/24x18/nz.png" alt="New Zealand"></td><td>ニュージーランド</td><td>1490.89</td></tr>
-      <tr onclick="openTeamModal('ウズベキスタン')"><td>50</td><td><img src="https://flagcdn.com/24x18/uz.png" alt="Uzbekistan"></td><td>ウズベキスタン</td><td>1484.34</td></tr>
-    </tbody>
+<tbody>
+  <tr onclick="openTeamModal('スペイン')"><td>1</td><td><img src="https://flagcdn.com/24x18/es.png" alt="Spain"></td><td>スペイン</td><td>1877.18</td></tr>
+  <tr onclick="openTeamModal('アルゼンチン')"><td>2</td><td><img src="https://flagcdn.com/24x18/ar.png" alt="Argentina"></td><td>アルゼンチン</td><td>1873.33</td></tr>
+  <tr onclick="openTeamModal('フランス')"><td>3</td><td><img src="https://flagcdn.com/24x18/fr.png" alt="France"></td><td>フランス</td><td>1870</td></tr>
+  <tr onclick="openTeamModal('イングランド')"><td>4</td><td><img src="https://flagcdn.com/24x18/gb-eng.png" alt="England"></td><td>イングランド</td><td>1834.12</td></tr>
+  <tr onclick="openTeamModal('ブラジル')"><td>5</td><td><img src="https://flagcdn.com/24x18/br.png" alt="Brazil"></td><td>ブラジル</td><td>1760.46</td></tr>
+  <tr onclick="openTeamModal('ポルトガル')"><td>6</td><td><img src="https://flagcdn.com/24x18/pt.png" alt="Portugal"></td><td>ポルトガル</td><td>1760.38</td></tr>
+  <tr onclick="openTeamModal('オランダ')"><td>7</td><td><img src="https://flagcdn.com/24x18/nl.png" alt="Netherlands"></td><td>オランダ</td><td>1756.27</td></tr>
+  <tr onclick="openTeamModal('ベルギー')"><td>8</td><td><img src="https://flagcdn.com/24x18/be.png" alt="Belgium"></td><td>ベルギー</td><td>1730.71</td></tr>
+  <tr onclick="openTeamModal('ドイツ')"><td>9</td><td><img src="https://flagcdn.com/24x18/de.png" alt="Germany"></td><td>ドイツ</td><td>1724.15</td></tr>
+  <tr onclick="openTeamModal('クロアチア')"><td>10</td><td><img src="https://flagcdn.com/24x18/hr.png" alt="Croatia"></td><td>クロアチア</td><td>1716.88</td></tr>
+  <tr onclick="openTeamModal('モロッコ')"><td>11</td><td><img src="https://flagcdn.com/24x18/ma.png" alt="Morocco"></td><td>モロッコ</td><td>1713.12</td></tr>
+  <tr onclick="openTeamModal('イタリア')"><td>12</td><td><img src="https://flagcdn.com/24x18/it.png" alt="Italy"></td><td>イタリア</td><td>1702.06</td></tr>
+  <tr onclick="openTeamModal('コロンビア')"><td>13</td><td><img src="https://flagcdn.com/24x18/co.png" alt="Colombia"></td><td>コロンビア</td><td>1701.3</td></tr>
+  <tr onclick="openTeamModal('アメリカ')"><td>14</td><td><img src="https://flagcdn.com/24x18/us.png" alt="USA"></td><td>アメリカ</td><td>1681.88</td></tr>
+  <tr onclick="openTeamModal('メキシコ')"><td>15</td><td><img src="https://flagcdn.com/24x18/mx.png" alt="Mexico"></td><td>メキシコ</td><td>1675.75</td></tr>
+  <tr onclick="openTeamModal('ウルグアイ')"><td>16</td><td><img src="https://flagcdn.com/24x18/uy.png" alt="Uruguay"></td><td>ウルグアイ</td><td>1672.62</td></tr>
+  <tr onclick="openTeamModal('スイス')"><td>17</td><td><img src="https://flagcdn.com/24x18/ch.png" alt="Switzerland"></td><td>スイス</td><td>1654.69</td></tr>
+  <tr onclick="openTeamModal('日本')"><td>18</td><td><img src="https://flagcdn.com/24x18/jp.png" alt="Japan"></td><td>日本</td><td>1650.12</td></tr>
+  <tr onclick="openTeamModal('セネガル')"><td>19</td><td><img src="https://flagcdn.com/24x18/sn.png" alt="Senegal"></td><td>セネガル</td><td>1648.07</td></tr>
+  <tr onclick="openTeamModal('イラン')"><td>20</td><td><img src="https://flagcdn.com/24x18/ir.png" alt="Iran"></td><td>イラン</td><td>1617.02</td></tr>
+  <tr onclick="openTeamModal('デンマーク')"><td>21</td><td><img src="https://flagcdn.com/24x18/dk.png" alt="Denmark"></td><td>デンマーク</td><td>1616.75</td></tr>
+  <tr onclick="openTeamModal('韓国')"><td>22</td><td><img src="https://flagcdn.com/24x18/kr.png" alt="Korea Republic"></td><td>韓国</td><td>1599.45</td></tr>
+  <tr onclick="openTeamModal('エクアドル')"><td>23</td><td><img src="https://flagcdn.com/24x18/ec.png" alt="Ecuador"></td><td>エクアドル</td><td>1591.73</td></tr>
+  <tr onclick="openTeamModal('オーストリア')"><td>24</td><td><img src="https://flagcdn.com/24x18/at.png" alt="Austria"></td><td>オーストリア</td><td>1585.51</td></tr>
+  <tr onclick="openTeamModal('トルコ')"><td>25</td><td><img src="https://flagcdn.com/24x18/tr.png" alt="Turkey"></td><td>トルコ</td><td>1582.69</td></tr>
+  <tr onclick="openTeamModal('オーストラリア')"><td>26</td><td><img src="https://flagcdn.com/24x18/au.png" alt="Australia"></td><td>オーストラリア</td><td>1574.01</td></tr>
+  <tr onclick="openTeamModal('カナダ')"><td>27</td><td><img src="https://flagcdn.com/24x18/ca.png" alt="Canada"></td><td>カナダ</td><td>1559.15</td></tr>
+  <tr onclick="openTeamModal('ウクライナ')"><td>28</td><td><img src="https://flagcdn.com/24x18/ua.png" alt="Ukraine"></td><td>ウクライナ</td><td>1557.47</td></tr>
+  <tr onclick="openTeamModal('ノルウェー')"><td>29</td><td><img src="https://flagcdn.com/24x18/no.png" alt="Norway"></td><td>ノルウェー</td><td>1553.14</td></tr>
+  <tr onclick="openTeamModal('パナマ')"><td>30</td><td><img src="https://flagcdn.com/24x18/pa.png" alt="Panama"></td><td>パナマ</td><td>1540.43</td></tr>
+  <tr onclick="openTeamModal('ポーランド')"><td>31</td><td><img src="https://flagcdn.com/24x18/pl.png" alt="Poland"></td><td>ポーランド</td><td>1532.04</td></tr>
+  <tr onclick="openTeamModal('ウェールズ')"><td>32</td><td><img src="https://flagcdn.com/24x18/gb.png" alt="Wales"></td><td>ウェールズ</td><td>1529.71</td></tr>
+  <tr onclick="openTeamModal('ロシア')"><td>33</td><td><img src="https://flagcdn.com/24x18/ru.png" alt="Russia"></td><td>ロシア</td><td>1524.52</td></tr>
+  <tr onclick="openTeamModal('エジプト')"><td>34</td><td><img src="https://flagcdn.com/24x18/eg.png" alt="Egypt"></td><td>エジプト</td><td>1520.68</td></tr>
+  <tr onclick="openTeamModal('アルジェリア')"><td>35</td><td><img src="https://flagcdn.com/24x18/dz.png" alt="Algeria"></td><td>アルジェリア</td><td>1516.37</td></tr>
+  <tr onclick="openTeamModal('スコットランド')"><td>36</td><td><img src="https://flagcdn.com/24x18/gb-sct.png" alt="Scotland"></td><td>スコットランド</td><td>1506.77</td></tr>
+  <tr onclick="openTeamModal('セルビア')"><td>37</td><td><img src="https://flagcdn.com/24x18/rs.png" alt="Serbia"></td><td>セルビア</td><td>1506.34</td></tr>
+  <tr onclick="openTeamModal('ナイジェリア')"><td>38</td><td><img src="https://flagcdn.com/24x18/ng.png" alt="Nigeria"></td><td>ナイジェリア</td><td>1502.46</td></tr>
+  <tr onclick="openTeamModal('パラグアイ')"><td>39</td><td><img src="https://flagcdn.com/24x18/py.png" alt="Paraguay"></td><td>パラグアイ</td><td>1501.5</td></tr>
+  <tr onclick="openTeamModal('チュニジア')"><td>40</td><td><img src="https://flagcdn.com/24x18/tn.png" alt="Tunisia"></td><td>チュニジア</td><td>1497.13</td></tr>
+  <tr onclick="openTeamModal('ハンガリー')"><td>41</td><td><img src="https://flagcdn.com/24x18/hu.png" alt="Hungary"></td><td>ハンガリー</td><td>1496.29</td></tr>
+  <tr onclick="openTeamModal('コートジボワール')"><td>42</td><td><img src="https://flagcdn.com/24x18/ci.png" alt="Côte d'Ivoire"></td><td>コートジボワール</td><td>1489.59</td></tr>
+  <tr onclick="openTeamModal('スウェーデン')"><td>43</td><td><img src="https://flagcdn.com/24x18/se.png" alt="Sweden"></td><td>スウェーデン</td><td>1487.13</td></tr>
+  <tr onclick="openTeamModal('チェコ')"><td>44</td><td><img src="https://flagcdn.com/24x18/cz.png" alt="Czechia"></td><td>チェコ</td><td>1487</td></tr>
+  <tr onclick="openTeamModal('スロバキア')"><td>45</td><td><img src="https://flagcdn.com/24x18/sk.png" alt="Slovakia"></td><td>スロバキア</td><td>1485.65</td></tr>
+  <tr onclick="openTeamModal('ギリシャ')"><td>46</td><td><img src="https://flagcdn.com/24x18/gr.png" alt="Greece"></td><td>ギリシャ</td><td>1480.38</td></tr>
+  <tr onclick="openTeamModal('ルーマニア')"><td>47</td><td><img src="https://flagcdn.com/24x18/ro.png" alt="Romania"></td><td>ルーマニア</td><td>1465.78</td></tr>
+  <tr onclick="openTeamModal('ベネズエラ')"><td>48</td><td><img src="https://flagcdn.com/24x18/ve.png" alt="Venezuela"></td><td>ベネズエラ</td><td>1465.22</td></tr>
+  <tr onclick="openTeamModal('コスタリカ')"><td>49</td><td><img src="https://flagcdn.com/24x18/cr.png" alt="Costa Rica"></td><td>コスタリカ</td><td>1464.24</td></tr>
+  <tr onclick="openTeamModal('ウズベキスタン')"><td>50</td><td><img src="https://flagcdn.com/24x18/uz.png" alt="Uzbekistan"></td><td>ウズベキスタン</td><td>1462.03</td></tr>
+</tbody>
   </table>
   <p style="margin-top:20px;font-size:0.9rem;color:#ccc;text-align:center;">
     データ：FIFA公式発表（2025年11月19日更新）<br>
@@ -1251,16 +1427,19 @@ const playoffteams = [
 
 //予選敗退国
 const defeatedTeams = [
-    { name: "セルビア", conf: "UEFA", pot: 10 },
-    { name: "ナイジェリア", conf: "CAF", pot: 10 },
-    { name: "ベネズエラ", conf: "CONMEBOL", pot: 10 },
-    { name: "ペルー", conf: "CONMEBOL", pot: 10 },
-    { name: "コスタリカ", conf: "CONCACAF", pot: 10 },
-    { name: "ホンジュラス", conf: "CONCACAF", pot: 10 },
-    { name: "カメルーン", conf: "CAF", pot: 10 },
-    { name: "ハンガリー", conf: "UEFA", pot: 10 }
+  { name: "セルビア", conf: "UEFA", pot: 10 },
+  { name: "ナイジェリア", conf: "CAF", pot: 10 },
+  { name: "ベネズエラ", conf: "CONMEBOL", pot: 10 },
+  { name: "ハンガリー", conf: "UEFA", pot: 10 },
+  { name: "ペルー", conf: "CONMEBOL", pot: 10 },
+  { name: "コスタリカ", conf: "CONCACAF", pot: 10 },
+  { name: "ホンジュラス", conf: "CONCACAF", pot: 10 },
+  { name: "カメルーン", conf: "CAF", pot: 10 },
+  // トップ50で未登録の予選敗退国追加
+  { name: "ロシア", conf: "UEFA", pot: 10 },
+  { name: "チェコ", conf: "UEFA", pot: 10 },
+  { name: "アイルランド共和国", conf: "UEFA", pot: 10 }  // プレイオフだが50以下として追加
 ];
-
 
 // 統合検索用
 const allTeams = teams.concat(playoffteams).concat(defeatedTeams || []);
@@ -1269,110 +1448,81 @@ const allTeams = teams.concat(playoffteams).concat(defeatedTeams || []);
   // ★ 48チーム全て対応・完全版 国別詳細データ（2025年11月23日更新）★
 const teamDetails = {
   // === ポット1 ===
-  "メキシコ":     { rank: 14,  conf: "北中米", extra: "開催国（グループA・固定）" },
-  "カナダ":       { rank: 15,  conf: "北中米", extra: "開催国（グループB・固定）" },
-  "アメリカ":     { rank: 12,  conf: "北中米", extra: "開催国（グループD・固定）" },
-  "スペイン":     { rank: 1,   conf: "欧州",   extra: "FIFAランキングトップの華麗なる優勝候補 " },
-  "アルゼンチン": { rank: 2,   conf: "南米",   extra: "全大会覇者。メッシの出場なるか。" },
-  "フランス":     { rank: 3,   conf: "欧州",   extra: "2022準優勝・優勝候補筆頭" },
-  "イングランド": { rank: 4,   conf: "欧州",   extra: "ユーロ2024準優勝" },
-  "ブラジル":     { rank: 5,   conf: "南米",   extra: "史上最多5回優勝の伝統強豪" },
-  "ポルトガル":   { rank: 6,   conf: "欧州",   extra: "Cロナウド最後のW杯か" },
-  "オランダ":     { rank: 7,   conf: "欧州",   extra: "攻撃サッカー復活" },
-  "ベルギー":     { rank: 11,  conf: "欧州",   extra: "世代交代進まず。黄金世代の奮起なるか" },
-  "ドイツ":       { rank: 9,   conf: "欧州",   extra: "ランキング10位返り咲き。強豪復活なるか" },
+  "スペイン": { rank: 1, points: 1877.18, conf: "欧州", extra: "FIFAランキング1位・華麗なる優勝候補" },
+  "アルゼンチン": { rank: 2, points: 1873.33, conf: "南米", extra: "全大会覇者。メッシ出場なるか" },
+  "フランス": { rank: 3, points: 1870, conf: "欧州", extra: "2022準優勝・優勝候補筆頭" },
+  "イングランド": { rank: 4, points: 1834.12, conf: "欧州", extra: "ユーロ2024準優勝" },
+  "ブラジル": { rank: 5, points: 1760.46, conf: "南米", extra: "史上最多5回優勝の伝統強豪" },
+  "ポルトガル": { rank: 6, points: 1760.38, conf: "欧州", extra: "Cロナウド最後のW杯か" },
+  "オランダ": { rank: 7, points: 1756.27, conf: "欧州", extra: "攻撃サッカー復活" },
+  "ベルギー": { rank: 8, points: 1730.71, conf: "欧州", extra: "世代交代はいかに。黄金世代ラストチャンス" },
+  "ドイツ": { rank: 9, points: 1724.15, conf: "欧州", extra: "欧州の舞台でブンデスは順調。<br>強豪復活なるか" },
+  "クロアチア": { rank: 10, points: 1716.88, conf: "欧州", extra: "2022年3位・モドリッチの後継者達に期待" },
+  "モロッコ": { rank: 11, points: 1713.12, conf: "アフリカ", extra: "2022年4位・アフリカ史上最高" },
+  "イタリア": { rank: 12, points: 1702.06, conf: "欧州", playoff: "Path A", extra: "4度のW杯王者、復活なるか。<br>PO準決勝: vs 北アイルランド" },
+  "コロンビア": { rank: 13, points: 1701.3, conf: "南米", extra: "南米予選3位・攻撃陣爆発" },
+  "アメリカ": { rank: 14, points: 1681.88, conf: "北中米", extra: "開催国（グループD固定）" },
+  "メキシコ": { rank: 15, points: 1675.75, conf: "北中米", extra: "開催国（グループA固定）" },
+  "ウルグアイ": { rank: 16, points: 1672.62, conf: "南米", extra: "コパ3位・新ビエルサ体制" },
+  "スイス": { rank: 17, points: 1654.69, conf: "欧州", extra: "安定のベスト16候補" },
+  "日本": { rank: 18, points: 1650.12, conf: "アジア", extra: "アジア最高ランキング！ポット2確定" },
+  "セネガル": { rank: 19, points: 1648.07, conf: "アフリカ", extra: "アフリカ王者・マネ復帰" },
+  "イラン": { rank: 20, points: 1617.02, conf: "アジア", extra: "中東の雄・鉄壁守備" },
+  "デンマーク": { rank: 21, points: 1616.75, conf: "欧州", playoff: "Path D", extra: "ユーロ2020準優勝の黄金世代。<br>PO準決勝: vs 北マケドニア" },
+  "韓国": { rank: 22, points: 1599.45, conf: "アジア", extra: "ソンフンミン健在・ベスト16常連" },
+  "エクアドル": { rank: 23, points: 1591.73, conf: "南米", extra: "南米予選4位・高地組" },
+  "オーストリア": { rank: 24, points: 1585.51, conf: "欧州", extra: "予選無敗突破・ダークホース" },
+  "トルコ": { rank: 25, points: 1582.69, conf: "欧州", playoff: "Path C", extra: "ユーロ2024準々決勝の勢い。<br>PO準決勝: vs ルーマニア" },
+  "オーストラリア": { rank: 26, points: 1574.01, conf: "アジア", extra: "アジア最終予選無事突破" },
+  "カナダ": { rank: 27, points: 1559.15, conf: "北中米", extra: "開催国（グループB固定）" },
+  "ウクライナ": { rank: 28, points: 1557.47, conf: "欧州", playoff: "Path B", extra: "健闘する不屈の精神力<br>PO準決勝: vs スウェーデン" },
+  "ノルウェー": { rank: 29, points: 1553.14, conf: "欧州", extra: "ハーランド＆ウーデゴー最強コンビ<br>圧倒的攻撃力でポット3の注目国" },
+  "パナマ": { rank: 30, points: 1540.43, conf: "北中米", extra: "北中米予選大躍進" },
+  "ポーランド": { rank: 31, points: 1532.04, conf: "欧州", playoff: "Path B", extra: "レヴァンドフスキの得点力。<br>PO準決勝: vs アルバニア" },
+  "ウェールズ": { rank: 32, points: 1529.71, conf: "欧州", playoff: "Path A", extra: "ベイル後継者の若いチーム。<br>PO準決勝: vs ボスニア・ヘルツェゴビナ" },
+  "エジプト": { rank: 34, points: 1520.68, conf: "アフリカ", extra: "サラー最後のW杯チャンス" },
+  "アルジェリア": { rank: 35, points: 1516.37, conf: "アフリカ", extra: "アフリカ予選無敗" },
+  "スコットランド": { rank: 36, points: 1506.77, conf: "欧州", extra: "ユーロ連続出場・初のW杯" },
+  "セルビア": { rank: 37, points: 1506.34, conf: "欧州", extra: "ミハイロビッチの攻撃力も予選で惜敗。" },
+  "ナイジェリア": { rank: 38, points: 1502.46, conf: "アフリカ", extra: "オシムヘン率いるスーパーイーグルス、予選でつまずく。" },
+  "パラグアイ": { rank: 39, points: 1501.5, conf: "南米", extra: "南米予選5位で復活" },
+  "チュニジア": { rank: 40, points: 1497.13, conf: "アフリカ", extra: "アフリカ予選首位通過" },
+  "ハンガリー": { rank: 41, points: 1496.29, conf: "欧州", extra: "ソボスライのリーダーシップ。" },
+  "コートジボワール": { rank: 42, points: 1489.59, conf: "アフリカ", extra: "アフリカネーションズ杯王者" },
+  "スウェーデン": { rank: 43, points: 1487.13, conf: "欧州", playoff: "Path B", extra: "イブラ後継の攻撃サッカー。<br>PO準決勝: vs ウクライナ" },
+  "チェコ": { rank: 44, points: 1487, conf: "欧州", playoff: "Path D", extra: "伝統のカウンター攻撃。<br>PO準決勝: vs アイルランド共和国" },
+  "スロバキア": { rank: 45, points: 1485.65, conf: "欧州", playoff: "Path C", extra: "堅守速攻の戦術。<br>PO準決勝: vs コソボ" },
+  "ギリシャ": { rank: 46, points: 1480.38, conf: "欧州", extra: "2004ユーロ優勝の伝統。" },
+  "ルーマニア": { rank: 47, points: 1465.78, conf: "欧州", playoff: "Path C", extra: "予選無敗の堅守。<br>PO準決勝: vs トルコ" },
+  "ベネズエラ": { rank: 48, points: 1465.22, conf: "南米", extra: "南米予選で善戦も惜しくも敗退の新興国。" },
+  "コスタリカ": { rank: 49, points: 1464.24, conf: "北中米", extra: "2014 W杯ベスト8の記憶、予選で再び壁に。" },
+  "ウズベキスタン": { rank: 50, points: 1462.03, conf: "アジア", extra: "中央アジア史上初出場" },
+  "南アフリカ": { rank: 60, points: 1420.15, conf: "アフリカ", extra: "12年ぶりW杯復帰" },
+  "ヨルダン": { rank: 68, points: 1395.78, conf: "アジア", extra: "アジア杯準優勝で初出場" },
+  "カボベルデ": { rank: 65, points: 1402.34, conf: "アフリカ", extra: "アフリカ予選大躍進" },
+  "ガーナ": { rank: 40, points: 1496.29, conf: "アフリカ", extra: "アフリカ予選ギリギリ突破" },
+  "キュラソー": { rank: 85, points: 1350.12, conf: "北中米", extra: "カリブ海の新星" },
+  "ニュージーランド": { rank: 49, points: 1464.24, conf: "オセアニア", extra: "ニューカレドニアを3-0で下しW杯出場権を獲得" },
+  "ハイチ": { rank: 88, points: 1342.67, conf: "北中米", extra: "北中米予選大健闘" },
+  "イタリア": { rank: 12, points: 1702.06, conf: "欧州", playoff: "Path A", extra: "4度のW杯王者、復活なるか。<br>PO準決勝: vs 北アイルランド" },
+  "北アイルランド": { rank: 80, points: 1365.45, conf: "欧州", playoff: "Path A", extra: "北アイルランドのダークホース。<br>PO準決勝: vs イタリア" },
+  "ボスニア・ヘルツェゴビナ": { rank: 75, points: 1378.23, conf: "欧州", playoff: "Path A", extra: "ジェコのようなスター輩出国。<br>PO準決勝: vs ウェールズ" },
+  "スウェーデン": { rank: 43, points: 1487.13, conf: "欧州", playoff: "Path B", extra: "イブラ後継の攻撃サッカー。<br>PO準決勝: vs ウクライナ" },
+  "アルバニア": { rank: 68, points: 1395.78, conf: "欧州", playoff: "Path B", extra: "バルカンの新興勢力。<br>PO準決勝: vs ポーランド" },
+  "ルーマニア": { rank: 47, points: 1465.78, conf: "欧州", playoff: "Path C", extra: "予選無敗の堅守。<br>PO準決勝: vs トルコ" },
+  "コソボ": { rank: 110, points: 1300.45, conf: "欧州", playoff: "Path C", extra: "独立後の成長株。<br>PO準決勝: vs スロバキア" },
+  "北マケドニア": { rank: 67, points: 1398.12, conf: "欧州", playoff: "Path D", extra: "2020ユーロのサプライズ再現か。<br>PO準決勝: vs デンマーク" },
+  "アイルランド共和国": { rank: 55, points: 1435.67, conf: "欧州", playoff: "Path D", extra: "アイリッシュの闘志。<br>PO準決勝: vs チェコ" },
+  "ボリビア": { rank: 82, points: 1360.78, conf: "南米", playoff: "Pathway 2", extra: "高地ホームのアドバンテージ。<br>PO準決勝: vs スリナム" },
+  "コンゴ民主共和国": { rank: 56, points: 1432.34, conf: "アフリカ", playoff: "Pathway 1", extra: "豊富なタレント保有。<br>PO決勝直行" },
+  "イラク": { rank: 58, points: 1428.67, conf: "アジア", playoff: "Pathway 2", extra: "2007アジアカップ優勝国。<br>PO決勝直行" },
+  "ジャマイカ": { rank: 59, points: 1425.12, conf: "北中米", playoff: "Pathway 1", extra: "スプリント速さの攻撃力。<br>PO準決勝: vs ニューカレドニア" },
+  "ニューカレドニア": { rank: 159, points: 1200.45, conf: "オセアニア", playoff: "Pathway 1", extra: "オセアニアの新星。<br>PO準決勝: vs ジャマイカ" },
+  "スリナム": { rank: 139, points: 1250.78, conf: "北中米", playoff: "Pathway 2", extra: "オランダ系選手の活躍。<br>PO準決勝: vs ボリビア" },
+  "カタール":     { rank: 51,  conf: "アジア", extra: "10月14日のUAE戦で2–1の勝利を収め、北米行きの切符をつかんだ" },
+  "ロシア":     { rank: 33,  conf: "アジア", extra: "裏W杯開催か？" },
+  "サウジアラビア":     { rank: 60,  conf: "アジア", extra: "3大会連続出場。2022大会でアルゼンチンを破ったグリーン・ファルコンズ" },
 
-  // === ポット2 ===
-  "日本":         { rank: 18,  conf: "アジア", extra: "アジア最高ランキング！ポット2確定" },
-  "韓国":         { rank: 29,  conf: "アジア", extra: "ソンフンミン健在・ベスト16常連" },
-  "オーストラリア":{ rank: 27, conf: "アジア", extra: "アジア最終予選無敗で圧勝" },
-  "イラン":       { rank: 28,  conf: "アジア", extra: "中東の雄・鉄壁守備" },
-  "ウルグアイ":   { rank: 13,  conf: "南米",   extra: "南米にウルグアイあり。古豪の実力" },
-  "コロンビア":   { rank: 16,  conf: "南米",   extra: "南米予選3位・攻撃陣爆発" },
-  "クロアチア":   { rank: 10,  conf: "欧州",   extra: "2022年3位・モドリッチの意志を継ぐもの達" },
-  "オーストリア": { rank: 25,  conf: "欧州",   extra: "予選無敗突破・ダークホース" },
-  "スイス":       { rank: 22,  conf: "欧州",   extra: "安定のベスト16候補" },
-  "モロッコ":     { rank: 19,  conf: "アフリカ", extra: "2022年4位・アフリカ史上最高" },
-  "セネガル":     { rank: 20,  conf: "アフリカ", extra: "アフリカ王者・マネ復帰" },
-  "エクアドル":   { rank: 17,  conf: "南米",   extra: "南米予選4位・高地組" },
-
-  // === ポット3 ===
-  "ノルウェー":   { rank: 42,  conf: "欧州",   extra: "ハーランド＆ウーデゴー最強コンビ。今大会注目の圧倒的攻撃力でポット3の脅威" },
-  "パナマ":       { rank: 37,  conf: "北中米", extra: "北中米予選大躍進" },
-  "エジプト":     { rank: 30,  conf: "アフリカ", extra: "サラー最後のW杯チャンス" },
-  "アルジェリア": { rank: 33,  conf: "アフリカ", extra: "アフリカ予選無敗" },
-  "スコットランド":{ rank: 44, conf: "欧州",   extra: "ユーロ連続出場・初のW杯" },
-  "パラグアイ":   { rank: 34,  conf: "南米",   extra: "南米予選5位で復活" },
-  "チュニジア":   { rank: 32,  conf: "アフリカ", extra: "アフリカ予選首位通過" },
-  "コートジボワール":{ rank: 41, conf: "アフリカ", extra: "アフリカネーションズ杯王者" },
-  "ウズベキスタン":{ rank: 50, conf: "アジア", extra: "中央アジア史上初出場" },
-  "カタール":     { rank: 55,  conf: "アジア", extra: "開催国枠で2大会連続" },
-  "サウジアラビア":{ rank: 48, conf: "アジア", extra: "アジア予選3位" },
-  "南アフリカ":   { rank: 60,  conf: "アフリカ", extra: "12年ぶりW杯復帰" },
-
-  // === ポット4（確定＋プレーオフ結果）===
-  "ヨルダン":     { rank: 68,  conf: "アジア", extra: "アジア杯準優勝で初出場" },
-  "カボベルデ":   { rank: 65,  conf: "アフリカ", extra: "アフリカ予選大躍進" },
-  "ガーナ":       { rank: 40,  conf: "アフリカ", extra: "アフリカ予選ギリギリ突破" },
-  "キュラソー":   { rank: 85,  conf: "北中米", extra: "カリブ海の新星" },
-  "ニュージーランド":{ rank: 49, conf: "オセアニア", extra: "ニューカレドニアを3-0で下しW杯出場権を獲得" },
-  "ハイチ":       { rank: 88,  conf: "北中米", extra: "北中米予選大健闘" },
-
- // ★ 欧州プレーオフ（未確定）★
-  "欧州PO1": { rank: "未定", conf: "欧州", extra: "欧州プレーオフ Path A 勝者（2026年3月26-31日決定）" },
-  "欧州PO2": { rank: "未定", conf: "欧州", extra: "欧州プレーオフ Path B 勝者（2026年3月26-31日決定）" },
-  "欧州PO3": { rank: "未定", conf: "欧州", extra: "欧州プレーオフ Path C 勝者（2026年3月26-31日決定）" },
-  "欧州PO4": { rank: "未定", conf: "欧州", extra: "欧州プレーオフ Path D 勝者（2026年3月26-31日決定）" },
-
-  // ★ 大陸間プレーオフ（未確定）★
-  "大陸間PO1": { rank: "未定", conf: "複数大陸", extra: "大陸間プレーオフ Pathway 1 勝者（2026年3月26-31日決定）" },
-  "大陸間PO2": { rank: "未定", conf: "複数大陸", extra: "大陸間プレーオフ Pathway 2 勝者（2026年3月26-31日決定）" },
-
-  //欧州予備
- // "ウェールズ":   { rank: 29,  conf: "欧州", playoff: "欧州PO Path A 優勝（vsフィンランド）" },
- // "ポーランド":   { rank: 26,  conf: "欧州", playoff: "欧州PO Path B 優勝（vsエストニア）" },
- // "ウクライナ":   { rank: 26,  conf: "欧州", playoff: "欧州PO Path C 優勝（vsアイスランド）" },
- // "ジョージア":   { rank: 77,  conf: "欧州", playoff: "欧州PO Path D 優勝（vsギリシャ・PK勝ち）← 大波乱！" },
-
-  // 大陸間予備
-  //"コスタリカ":   { rank: 47,  conf: "北中米", playoff: "大陸間PO（CONCACAF vs OFC）勝利" },
- // "ニュージーランド": { rank: 49, conf: "オセアニア", playoff: "大陸間PO出場（コスタリカに惜敗）→ ポット4確定" },
-
-   //プレイオフ
-// プレイオフチーム（欧州）
-"イタリア": { rank: 8, conf: "欧州", playoff: "Path A", extra: "4度のW杯王者、復活なるか。" },
-"北アイルランド": { rank: 80, conf: "欧州", playoff: "Path A", extra: "北アイルランドのダークホース。" },
-"ウェールズ": { rank: 32, conf: "欧州", playoff: "Path A", extra: "ベイル後継者の若いチーム。" },
-"ボスニア・ヘルツェゴビナ": { rank: 75, conf: "欧州", playoff: "Path A", extra: "ジェコのようなスター輩出国。" },
-"ウクライナ": { rank: 26, conf: "欧州", playoff: "Path B", extra: "健闘する精神力。" },
-"スウェーデン": { rank: 23, conf: "欧州", playoff: "Path B", extra: "イブラ後継の攻撃サッカー。" },
-"ポーランド": { rank: 24, conf: "欧州", playoff: "Path B", extra: "レヴァンドフスキの得点力。" },
-"アルバニア": { rank: 68, conf: "欧州", playoff: "Path B", extra: "バルカンの新興勢力。" },
-"トルコ": { rank: 43, conf: "欧州", playoff: "Path C", extra: "ユーロ2024準々決勝。" },
-"ルーマニア": { rank: 45, conf: "欧州", playoff: "Path C", extra: "予選無敗の堅守。" },
-"スロバキア": { rank: 48, conf: "欧州", playoff: "Path C", extra: "堅守速攻の戦術。" },
-"コソボ": { rank: 110, conf: "欧州", playoff: "Path C", extra: "独立後の成長株。" },
-"デンマーク": { rank: 21, conf: "欧州", playoff: "Path D", extra: "ユーロ2020準優勝の黄金世代。" },
-"北マケドニア": { rank: 67, conf: "欧州", playoff: "Path D", extra: "2020ユーロのサプライズ再現か。" },
-"チェコ": { rank: 35, conf: "欧州", playoff: "Path D", extra: "伝統のカウンター攻撃。" },
-"アイルランド共和国": { rank: 55, conf: "欧州", playoff: "Path D", extra: "アイリッシュの闘志。" },
-// 大陸間
-  "ボリビア": { rank: 82, conf: "南米", playoff: "大陸間PO", extra: "高地ホームのアドバンテージ。" },
-  "コンゴ民主共和国": { rank: 56, conf: "アフリカ", playoff: "大陸間PO", extra: "豊富なタレント保有。" },
-  "イラク": { rank: 58, conf: "アジア", playoff: "大陸間PO", extra: "2007アジアカップ優勝国。" },
-  "ジャマイカ": { rank: 36, conf: "北中米", playoff: "大陸間PO", extra: "スプリント速さの攻撃力。" },
-  "ニューカレドニア": { rank: 159, conf: "オセアニア", playoff: "大陸間PO", extra: "オセアニアの新星。" },
-  "スリナム": { rank: 139, conf: "北中米", playoff: "大陸間PO", extra: "オランダ系選手の活躍。" },
-
-// 予選敗退国
-    "セルビア": { rank: 25, conf: "欧州", extra: "ミハイロビッチの攻撃力も予選で惜敗" },
-    "ナイジェリア": { rank: 31, conf: "アフリカ", extra: "オシムヘン率いるスーパーイーグルス、予選でつまずく。" },
-    "ベネズエラ": { rank: 35, conf: "南米", extra: "南米予選で善戦も惜しくも敗退の新興国。" },
-    "ペルー": { rank: 46, conf: "南米", extra: "ガレカのカウンターが魅力も予選突破ならず。" },
-    "コスタリカ": { rank: 47, conf: "北中米", extra: "2014 W杯ベスト8の記憶、予選で再び壁に。" },
-    "ホンジュラス": { rank: 38, conf: "北中米", extra: "中米の堅守も予選敗退。" },
-    "カメルーン": { rank: 39, conf: "アフリカ", extra: "アフリカのライオン、予選でオンジャメの魔法が及ばず。" },
-    "ハンガリー": { rank: 45, conf: "欧州", extra: "惜しくも予選敗退。" },
 };
 
    // 国旗マップ
@@ -1416,6 +1566,16 @@ const flagMap = {
     "コスタリカ": "cr",
     "ホンジュラス": "hn",
     "カメルーン": "cm",
+
+  // 追加分（重複なし）
+  "ロシア": "ru",
+  "チェコ": "cz",
+  "北アイルランド": "gb-nir",
+  "アルバニア": "al",
+  "ルーマニア": "ro",
+  "コソボ": "xk",
+  "北マケドニア": "mk",
+  "アイルランド共和国": "ie",
 
   // POプレースホルダー
   "欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu",
@@ -1475,7 +1635,7 @@ document.getElementById("modalFlagImgSp").style.display = "none";
     document.getElementById("modalD") .style.color = "#0f2b5e";
   } else {
     content.classList.remove("japan-mode");
-    extraEl.textContent = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
+    extraEl.innerHTML = detail.extra || (team.fixed ? "開催国（固定配置）" : "");
     if (confEl) confEl.style.color = "#fff";
     if (potEl) potEl.style.color = "#fff";
     if (rankEl) rankEl.style.color = "#fff";
@@ -1553,7 +1713,7 @@ function renderPlayoffTables() {
   // 欧州PO表（Pathごとに分ける）
   const euroPO = document.createElement("div");
   euroPO.className = "playoff-table";
-  euroPO.innerHTML = `<h2 style="color:#ffcb05; text-align:center; margin-bottom:20px;">欧州プレイオフ <br>(未確定・2026年3月決定)</h2>`;
+  euroPO.innerHTML = `<h2 style="color:#ffcb05; text-align:center; margin-bottom:20px;">欧州プレイオフ <br>(2026年3月決定)</h2>`;
 
   // Path A (pot 5)
   const pathA = document.createElement("div");
@@ -1562,7 +1722,13 @@ function renderPlayoffTables() {
   pathATeams.forEach(t => {
     const item = document.createElement("div");
     item.className = "pot-team";
-    item.innerHTML = `<img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}"><span>${t.name}: ${teamDetails[t.name]?.extra || "詳細未定"}</span>`;
+item.innerHTML = `
+  <img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}">
+  <div class="text-content">
+    <div class="team-name">${t.name}</div>
+    <div class="team-desc">${teamDetails[t.name]?.extra || "詳細未定"}</div>
+  </div>
+`;
     item.style.cursor = "pointer";
     item.onclick = () => openTeamModal(t.name);
     pathA.appendChild(item);
@@ -1576,7 +1742,13 @@ function renderPlayoffTables() {
   pathBTeams.forEach(t => {
     const item = document.createElement("div");
     item.className = "pot-team";
-    item.innerHTML = `<img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}"><span>${t.name}: ${teamDetails[t.name]?.extra || "詳細未定"}</span>`;
+item.innerHTML = `
+  <img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}">
+  <div class="text-content">
+    <div class="team-name">${t.name}</div>
+    <div class="team-desc">${teamDetails[t.name]?.extra || "詳細未定"}</div>
+  </div>
+`;
     item.style.cursor = "pointer";
     item.onclick = () => openTeamModal(t.name);
     pathB.appendChild(item);
@@ -1590,7 +1762,13 @@ function renderPlayoffTables() {
   pathCTeams.forEach(t => {
     const item = document.createElement("div");
     item.className = "pot-team";
-    item.innerHTML = `<img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}"><span>${t.name}: ${teamDetails[t.name]?.extra || "詳細未定"}</span>`;
+item.innerHTML = `
+  <img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}">
+  <div class="text-content">
+    <div class="team-name">${t.name}</div>
+    <div class="team-desc">${teamDetails[t.name]?.extra || "詳細未定"}</div>
+  </div>
+`;
     item.style.cursor = "pointer";
     item.onclick = () => openTeamModal(t.name);
     pathC.appendChild(item);
@@ -1604,7 +1782,13 @@ function renderPlayoffTables() {
   pathDTeams.forEach(t => {
     const item = document.createElement("div");
     item.className = "pot-team";
-    item.innerHTML = `<img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}"><span>${t.name}: ${teamDetails[t.name]?.extra || "詳細未定"}</span>`;
+item.innerHTML = `
+  <img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}">
+  <div class="text-content">
+    <div class="team-name">${t.name}</div>
+    <div class="team-desc">${teamDetails[t.name]?.extra || "詳細未定"}</div>
+  </div>
+`;
     item.style.cursor = "pointer";
     item.onclick = () => openTeamModal(t.name);
     pathD.appendChild(item);
@@ -1616,12 +1800,18 @@ function renderPlayoffTables() {
   // 大陸間PO表（変更なし）
   const interPO = document.createElement("div");
   interPO.className = "playoff-table";
-  interPO.innerHTML = `<h2 style="color:#ffcb05; text-align:center; margin:40px 0 20px;">大陸間プレイオフ <br>(未確定・2026年3月決定)</h2>`;
+  interPO.innerHTML = `<h2 style="color:#ffcb05; text-align:center; margin:40px 0 20px;">大陸間プレイオフ <br>(2026年3月決定)</h2>`;
   const interTeams = playoffteams.filter(t => t.pot === 9);
   interTeams.forEach(t => {
     const item = document.createElement("div");
     item.className = "pot-team";
-    item.innerHTML = `<img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}"><span>${t.name}: ${teamDetails[t.name]?.extra || "詳細未定"}</span>`;
+item.innerHTML = `
+  <img src="${getFlagUrl(t.name, 84, 63)}" alt="${t.name}">
+  <div class="text-content">
+    <div class="team-name">${t.name}</div>
+    <div class="team-desc">${teamDetails[t.name]?.extra || "詳細未定"}</div>
+  </div>
+`;
     item.style.cursor = "pointer";
     item.onclick = () => openTeamModal(t.name);
     interPO.appendChild(item);
@@ -2022,7 +2212,7 @@ document.querySelector(".fixed-btn.xshare").onclick = async () => {
       }
     );
 
-    const tweetText = `@MILKSATOKYO @PureGreenX\n2026ワールドカップ抽選シミュレーション結果！\n日本はどのグループに入った？！サッカー日本代表を応援しよう！\n#W杯2026 #日本代表`;
+    const tweetText = `@MILKSATOKYO @PureGreenX\n\n2026ワールドカップ抽選シミュレーションやってみた！\n日本はどのグループに入った？！サッカー日本代表を応援しよう！\nhttps://puregreen.github.io/WorldCupMockDraw/\n\n#W杯2026 #日本代表`;
 
     // ★直接添付テスト（canShareで厳密チェック）★
     if (navigator.share && navigator.canShare({ files: [file] })) {
@@ -2129,7 +2319,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ テストv0.11
+   <hr>©PureGreen │ v0.12
   </div>
 <!-- 強制初回描画 -->
 <script> 

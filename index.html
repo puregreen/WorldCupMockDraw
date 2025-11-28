@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -1401,12 +1401,12 @@ window.addEventListener('DOMContentLoaded', () => {
       { name: "キュラソー", conf: "CONCACAF", pot: 4 },
       { name: "ニュージーランド", conf: "OFC", pot: 4 },
       { name: "ハイチ", conf: "CONCACAF", pot: 4 },
-      { name: "欧州PO1", conf: "UEFA", pot: 4 },
-      { name: "欧州PO2", conf: "UEFA", pot: 4 },
-      { name: "欧州PO3", conf: "UEFA", pot: 4 },
-      { name: "欧州PO4", conf: "UEFA", pot: 4 },
-      { name: "大陸間PO1", conf: "PO", pot: 4 },
-      { name: "大陸間PO2", conf: "PO", pot: 4 },
+      { name: "欧州PO.A", conf: "UEFA", pot: 4 },
+      { name: "欧州PO.B", conf: "UEFA", pot: 4 },
+      { name: "欧州PO.C", conf: "UEFA", pot: 4 },
+      { name: "欧州PO.D", conf: "UEFA", pot: 4 },
+      { name: "大陸間PO.1", conf: "PO", pot: 4 },
+      { name: "大陸間PO.2", conf: "PO", pot: 4 },
 
     ];
 
@@ -1542,6 +1542,15 @@ const teamDetails = {
   "ロシア":     { rank: 33,  conf: "アジア", extra: "裏W杯開催か？" },
   "サウジアラビア":     { rank: 60,  conf: "アジア", extra: "3大会連続出場。2022大会でアルゼンチンを破ったグリーン・ファルコンズ" },
 
+  "欧州PO.A":     { rank: null,  conf: "欧州", extra: "イタリア、北アイルランド、<br>ウェールズ、ボスニア・ヘルツェゴビナ" },
+  "欧州PO.B":     { rank: null,  conf: "欧州", extra: "ウクライナ、スウェーデン、<br> ポーランド、アルバニア" },
+  "欧州PO.C":     { rank: null ,  conf: "欧州", extra: "トルコ、ルーマニア、<br> スロバキア、コソボ" },
+  "欧州PO.D":     { rank: null ,  conf: "欧州", extra: "デンマーク、北マケドニア、<br> チェコ、アイルランド共和国" },
+
+  "大陸間PO.1":     { rank: null ,  conf: "その他", extra: "コンゴ民主共和国、<br> ニューカレドニア、ジャマイカ" },
+  "大陸間PO.2":     { rank: null ,  conf: "その他", extra: "イラク、<br> ボリビア、スリナム" },
+
+
 };
 
    // 国旗マップ
@@ -1597,8 +1606,8 @@ const flagMap = {
   "アイルランド共和国": "ie",
 
   // POプレースホルダー
-  "欧州PO1":"eu","欧州PO2":"eu","欧州PO3":"eu","欧州PO4":"eu",
-  "大陸間PO1":"un","大陸間PO2":"un"
+  "欧州PO.A":"eu","欧州PO.B":"eu","欧州PO.C":"eu","欧州PO.D":"eu",
+  "大陸間PO.1":"un","大陸間PO.2":"un"
 };
 
   function getFlagUrl(name, w = 120, h = 90) {
@@ -2374,7 +2383,7 @@ document.head.appendChild(style);
 	  │ 
    <a href="./readme.html">README</a>
    <br>
-   <hr>©PureGreen │ v0.17
+   <hr>©PureGreen │ v0.18
   </div>
 <!-- 強制初回描画 -->
 <script> 

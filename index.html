@@ -1176,8 +1176,17 @@ button:disabled {
 	</ul>
    </span>
   </div>
+
+<div style="text-align:center; margin:1px 0;">
+  <label style="color:#fff; font-size:0.8rem; font-weight:bold; cursor:pointer; user-select:none;">
+    <input type="checkbox" id="skipAnimation" style="transform:scale(0.8); margin-right:4px; accent-color:#ffcb05;">
+    演出スキップ
+  </label>
+</div>
 	
   <button id="startBtn">抽選開始</button>
+
+
 
 	<!-- 抽選会タブ内にポット表をコピー表示（コンパクト版） -->
 <div style="margin: 20px auto 40px; max-width: 1300px; padding: 0 10px;" id="potMini">
@@ -1922,104 +1931,137 @@ const init = () => {
       });
     }
 
+
   function showLoading(s=true) { document.getElementById("loadingContainer")?.classList.toggle("show", s); }
 
-      async function startDraw() {
-      const btn = document.getElementById("startBtn");
-      document.getElementById("japanLog").textContent = "";
-	  // ポットテーブル
-	  // document.getElementById("potTable").textContent = "";
-	  // document.getElementById("potMini").classList.remove("show");
-		
-      // スムーズなアニメーションでスクロールする場合
-      btn.scrollIntoView({
-        behavior: 'smooth', // スムーズスクロール
-        block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
-      });
-      btn.disabled = true; btn.textContent = "抽選中…";
-//ここ
-      const cur = document.getElementById("currentDraw");
-      // スムーズなアニメーションでスクロールする場合
-      cur.scrollIntoView({
-        behavior: 'smooth', // スムーズスクロール
-        block: 'center'      // 要素の上端がビューポートの上端に揃うようにスクロール
-      });
-		
-	  // ← ここで固定ボタンを即非表示！
-	  // document.getElementById("shareButtons").classList.add("show");
-	  document.getElementById("fixedButtons").classList.remove("show");
-		
-      showLoading(false);
-      // showTitle(false);
-      document.getElementById("statusText").textContent = "開催国を配置中…";
-      initGroups();
 
-      const groups = Object.fromEntries(GROUPS.map(g => [g, []]));
-      const pots = {1: [], 2: [], 3: [], 4: []};
-      teams.forEach(t => pots[t.pot].push({...t}));
+async function startDraw() {
 
-      // 開催国
-      teams.filter(t => t.fixed).forEach(h => {
-        h.pos = 1; groups[h.fixed] = [h]; addTeam(h.fixed, h); announceDraw(h, h.fixed);
-      });
-      await new Promise(r => setTimeout(r, 2500));
+  // チェックボックスが無くても絶対にfalseになる安全な取得
+  const skipAnimation = (() => {
+    const checkbox = document.getElementById("skipAnimation");
+    return checkbox ? checkbox.checked : false;
+  })();
 
-      document.getElementById("statusText").textContent = "ポット1を配置中…";
-showLoading(true);
-      
-      // ポット1残り
-      const pot1rest = shuffle(pots[1].filter(t => !t.fixed));
-      let empty = GROUPS.filter(g => groups[g].length === 0);
-      pot1rest.forEach((t, i) => {
-        const g = empty[i];
-        t.pos = 1; groups[g].push(t); addTeam(g, t); announceDraw(t, g);
-      });
-      await new Promise(r => setTimeout(r, 3000));
+  const btn = document.getElementById("startBtn");
+  const btn2 = document.getElementById("startBtn2");
 
-showLoading(false);  document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:2rem;">ポット1 完了！</span>`;
-await new Promise(r => setTimeout(r, 1000));
-      
-      // ポット2〜4
-      for (let p = 2; p <= 4; p++) {
-        showLoading(true);
-        document.getElementById("statusText").textContent = "";
-        await new Promise(r => setTimeout(r, 1000));
+  // 共通初期化
+  document.getElementById("japanLog").textContent = "";
+  document.getElementById("currentDraw").innerHTML = "";
+  document.getElementById("statusText").textContent = "抽選準備中…";
+  initGroups();
 
-        document.getElementById("statusText").textContent = `ポット${p}を抽選中…`;
-        
-        const potTeams = shuffle(pots[p]);
-        for (const team of potTeams) {
-          let avail = GROUPS.filter(g => groups[g].length < 4 && canPlaceInGroup(team, groups[g]));
-          if (avail.length === 0) avail = GROUPS.filter(g => groups[g].length < 4); // 最終手段
-          const chosen = avail[Math.floor(Math.random() * avail.length)];
-          team.pos = groups[chosen].length + 1;
-          groups[chosen].push(team);
-          addTeam(chosen, team);
-          announceDraw(team, chosen);
-          await new Promise(r => setTimeout(r, 900));
-        }
-        showLoading(false);
-        document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:2rem;">ポット${p} 完了！</span>`;
-        await new Promise(r => setTimeout(r, 2500));
-      }
+  btn.disabled = true;
+  btn.textContent = skipAnimation ? "即抽選中…" : "抽選中…";
+  if (btn2) btn2.disabled = true;
 
-      document.getElementById("statusText").innerHTML = 
-        `<div style="font-size:2rem;color:#ffcb05;text-shadow:0 0 50px gold;">抽選終了！</div>`;
-      btn.textContent = "もう一度抽選";
-      btn.disabled = false;
+  // 演出スキップ時はアニメーション要素を非表示
+  if (skipAnimation) {
+    document.getElementById("currentDraw").style.display = "none";
+    document.getElementById("loadingContainer")?.classList.remove("show");
+    document.getElementById("statusText").style.fontSize = "1.8rem";
+    document.getElementById("fixedButtons").classList.remove("show");
+  } else {
+    document.getElementById("currentDraw").style.display = "block";
+    showLoading(false);
+    document.body.classList.remove("japan-mode");
+    document.getElementById("japanSpecial").style.display = "none";
+    document.getElementById("fixedButtons").classList.remove("show");
 
-      // ← ここでシェアボタンを表示！
-      // document.getElementById("shareButtons").classList.add("show");
-      document.getElementById("fixedButtons").classList.add("show");
-      
-		
-      const res = document.getElementById("result");
-      // スムーズなアニメーションでスクロールする場合
-      res.scrollIntoView({
-        behavior: 'smooth', // スムーズスクロール
-        block: 'start'      // 要素の上端がビューポートの上端に揃うようにスクロール
-      });
+    // ここに追加！演出ありのときだけcurrentDrawへスクロール！！
+    document.getElementById("currentDraw").scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
+  }
+
+  // 以下はそのまま（完璧！）
+  const groups = Object.fromEntries(GROUPS.map(g => [g, []]));
+  const pots = {1: [], 2: [], 3: [], 4: []};
+  teams.forEach(t => pots[t.pot].push({...t}));
+
+  // === 開催国配置（共通）===
+  teams.filter(t => t.fixed).forEach(h => {
+    h.pos = 1;
+    groups[h.fixed] = [h];
+    addTeam(h.fixed, h);
+    if (!skipAnimation) announceDraw(h, h.fixed);
+  });
+
+  if (skipAnimation) {
+    document.getElementById("statusText").textContent = "即抽選実行中…";
+  } else {
+    document.getElementById("statusText").textContent = "開催国を配置中…";
+    await new Promise(r => setTimeout(r, 2500));
+    document.getElementById("statusText").textContent = "ポット1を配置中…";
+    showLoading(true);
+  }
+
+  // === ポット1残り ===
+  const pot1rest = shuffle(pots[1].filter(t => !t.fixed));
+  let empty = GROUPS.filter(g => groups[g].length === 0);
+  pot1rest.forEach((t, i) => {
+    const g = empty[i];
+    t.pos = 1;
+    groups[g].push(t);
+    addTeam(g, t);
+    if (!skipAnimation) announceDraw(t, g);
+  });
+
+  if (!skipAnimation) await new Promise(r => setTimeout(r, 3000));
+
+  // === ポット2〜4（メイン抽選）===
+  for (let p = 2; p <= 4; p++) {
+    if (!skipAnimation) {
+      showLoading(true);
+      document.getElementById("statusText").textContent = `ポット${p}を抽選中…`;
+      await new Promise(r => setTimeout(r, 1000));
     }
+
+    const potTeams = shuffle(pots[p]);
+    for (const team of potTeams) {
+      let avail = GROUPS.filter(g => 
+        groups[g].length < 4 && canPlaceInGroup(team, groups[g])
+      );
+      if (avail.length === 0) avail = GROUPS.filter(g => groups[g].length < 4);
+      const chosen = avail[Math.floor(Math.random() * avail.length)];
+
+      team.pos = groups[chosen].length + 1;
+      groups[chosen].push(team);
+      addTeam(chosen, team);
+
+      if (!skipAnimation) {
+        announceDraw(team, chosen);
+        await new Promise(r => setTimeout(r, 900));
+      }
+    }
+
+    if (!skipAnimation) {
+      showLoading(false);
+      document.getElementById("statusText").innerHTML = `<span style="color:#ffcb05;font-size:2rem;">ポット${p} 完了！</span>`;
+      await new Promise(r => setTimeout(r, 2500));
+    }
+  }
+
+  // === 終了処理（共通）===
+  if (skipAnimation) {
+    document.getElementById("statusText").innerHTML = 
+      `<div style="font-size:2.5rem;color:#ffcb05;text-shadow:0 0 50px gold;">即抽選完了！</div>`;
+  } else {
+    document.getElementById("statusText").innerHTML = 
+      `<div style="font-size:2rem;color:#ffcb05;text-shadow:0 0 50px gold;">抽選終了！</div>`;
+  }
+
+  btn.textContent = "もう一度抽選";
+  btn.disabled = false;
+  if (btn2) btn2.disabled = false;
+
+  document.getElementById("fixedButtons").classList.add("show");
+
+  const res = document.getElementById("result");
+  res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 
     function canPlaceInGroup(team, groupTeams) {
@@ -2039,11 +2081,12 @@ await new Promise(r => setTimeout(r, 1000));
 
   // ==================== 8. ボタン登録（最後に！） ====================
   document.getElementById("startBtn")?.addEventListener("click", startDraw);
-  document.getElementById("startBtn2")?.addEventListener("click", startDraw);
+document.getElementById("startBtn2")?.addEventListener("click", startDraw);
 
-  // トップへ戻るボタン
+// トップへ戻るボタン
 document.getElementById("topBtn")?.addEventListener("click", () => {
-    document.getElementById("pTitle").scrollIntoView({behavior: 'smooth'});
+  document.getElementById("pTitle").scrollIntoView({behavior: 'smooth'});
+
   });
 
   // ==================== スクショボタン（4.の修正強化） ====================
@@ -2320,7 +2363,7 @@ document.head.appendChild(style);
   <div id="bTitle">
    <a href="#tab-container">トップに戻る</a>
    <br>
-   <hr>©PureGreen │ v0.15
+   <hr>©PureGreen │ v0.16
   </div>
 <!-- 強制初回描画 -->
 <script> 

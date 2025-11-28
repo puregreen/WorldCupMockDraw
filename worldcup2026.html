@@ -1178,7 +1178,7 @@ button:disabled {
 	<ul> 説明書
 		<li> ・「抽選開始」を押すと抽選会シミュレーションがスタートします</li>
 		<li> ・演出スキップに︎︎︎︎チェック︎︎︎︎☑︎を入れて「抽選開始」を押すと<br>アニメーションが省略され瞬時に結果を表示します</li>
-		<li> ・ポット表、欧州プレイオフ、大陸間プレイオフ、<br>FIFAランキングの国名を押すとモーダルで情報表示します</li>
+		<li> ・国名を押すとモーダルで情報表示します</li>
 		<li> ・抽選終了後に「スクショ」ボタンと「シェア」ボタンが表示されます</li>
 		<li> ・「スクショ」はお使いの端末の表示されている抽選結果を保存します</li>
 		<li> ・「シェア」はシェア用に最適化した抽選結果を共有します<br>（XやLINEなどSNSへの共有や端末への保存も可能です）</li>
@@ -1896,8 +1896,11 @@ const init = () => {
       const div = document.createElement("div");
       div.className = "team";
       div.innerHTML = `
+ <div onclick="openTeamModal('${team.name}')">
 	  <img src="${getFlagUrl(team.name,16,12)}" alt="${team.name}">
-	  ${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>`;
+	  ${team.pos}. ${team.name} <small>(${team.conf})</small> <span class="pot-label">Pot ${team.pot}</span>
+</div>
+`;
       if (team.fixed) div.classList.add("host");
       document.querySelector(`#group-${letter}`).appendChild(div);
       setTimeout(() => div.classList.add("show"), 100);

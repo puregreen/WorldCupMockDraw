@@ -63,17 +63,23 @@
     <li>2025.11.28 演出スキップ機能追加</li>
   </ol>
   
-  <h2>LINK</h2>
-  <ul style="list-style-type: none; margin-left: 0;">
-    <li><strong>YouTubeチャンネル</strong></li>
-    <li style="margin-left: 20px;">- <a href="https://youtube.com/@milksoccer_academy" class="modal-link" data-type="youtube" data-id="milksoccer_academy">ミルアカ</a></li>
-    <li style="margin-left: 20px;">- <a href="https://youtube.com/@sekai-3" class="modal-link" data-type="youtube" data-id="sekai-3">SEKAI</a></li>
-    <li><strong>X（旧Twitter）</strong></li>
-    <li style="margin-left: 20px;">- <a href="https://x.com/milksatokyo" class="modal-link" data-type="x" data-id="milksatokyo">ミルアカ</a></li>
-    <li style="margin-left: 20px;">- <a href="https://x.com/yuichisato_exp" class="modal-link" data-type="x" data-id="yuichisato_exp">ノーミルク佐藤</a></li>
-    <li style="margin-left: 20px;">- <a href="https://x.com/inouemah" class="modal-link" data-type="x" data-id="inouemah">井上マー</a></li>
-    <li style="margin-left: 20px;">- <a href="https://x.com/puregreenx" class="modal-link" data-type="x" data-id="puregreenx">PureGreen</a></li>
-  </ul>
+<h2>LINK</h2>
+<ul style="list-style-type: none; margin-left: 0;">
+  <li><strong>YouTubeチャンネル</strong></li>
+  <li style="margin-left: 20px;">- <a href="https://youtube.com/@milksoccer_academy" class="modal-link" data-type="youtube" data-id="milksoccer_academy">ミルアカ</a></li>
+  <li style="margin-left: 20px;">- <a href="https://youtube.com/@sekai-3" class="modal-link" data-type="youtube" data-id="sekai-3">SEKAI</a></li>
+
+  <li><strong>X（旧Twitter）</strong></li>
+  <li style="margin-left: 20px;">- <a href="https://x.com/milksatokyo" class="modal-link" data-type="x" data-id="milksatokyo">ミルアカ</a></li>
+  <li style="margin-left: 20px;">- <a href="https://x.com/yuichisato_exp" class="modal-link" data-type="x" data-id="yuichisato_exp">ノーミルク佐藤</a></li>
+  <li style="margin-left: 20px;">- <a href="https://x.com/inouemah" class="modal-link" data-type="x" data-id="inouemah">井上マー</a></li>
+  <li style="margin-left: 20px;">- <a href="https://x.com/puregreenx" class="modal-link" data-type="x" data-id="puregreenx">PureGreen</a></li>
+
+  <!-- ここから新しく追加 -->
+  <li><strong>Wikipedia</strong></li>
+  <li style="margin-left: 20px;">- <a href="https://ja.wikipedia.org/wiki/井上マー" class="modal-link" data-type="wiki" data-id="inouemah">井上マー</a></li>
+  <li style="margin-left: 20px;">- <a href="https://ja.wikipedia.org/wiki/Pure_Green" class="modal-link" data-type="wiki" data-id="puregreen">ピュアグリーン（Pure Green）</a></li>
+</ul>
   <hr>
   <a href="#" onclick="window.history.back(); return false;">戻る</a>
 </div>
@@ -137,6 +143,20 @@ const linkData = {
     followers: 59413,
     url: "https://x.com/puregreenx"
   }
+  // ← wiki追加
+  "inouemah": {
+    type: "wiki",
+    name: "井上マー",
+    description: "日本のタレント、お笑い芸人（吉本興業所属）、唎酒師、実家は新潟の酒蔵。YouTube「ミルアカ」メンバーとしても活動中。",
+    url: "https://ja.wikipedia.org/wiki/%E4%BA%95%E4%B8%8A%E3%83%9E%E3%83%BC"
+  },
+  "puregreen": {
+    type: "wiki",
+    name: "Pure Green（ピュアグリーン）",
+    description: "日本の投資家、タレント、ラジオDJ、YouTuber、FXトレーダー。サッカーや音楽、アウトドアなど幅広いジャンルで活動。",
+    url: "https://ja.wikipedia.org/wiki/Pure_Green"
+  }
+};
 };
 
 document.querySelectorAll('.modal-link').forEach(link => {
@@ -160,6 +180,8 @@ document.querySelectorAll('.modal-link').forEach(link => {
         Bio: ${data.bio}<br>
         フォロワー数: ${data.followers}
       `;
+    } else if (data.type === 'wiki') {
+      infoHtml = `<strong style="color:#f59e0b;">Wikipediaより</strong><br>${data.description}`;
     }
     document.getElementById('modal-info').innerHTML = infoHtml;
     document.getElementById('modal-visit').href = data.url;

@@ -1871,34 +1871,49 @@ item.innerHTML = `
 
 // ==================== ニュースタブ機能（追加） ====================
 
-// ==================== ニュースタブ機能（最終修正版：RSS直接フェッチ） ====================
+// ==================== ニュースタブ機能（最終版：クリック強化 + リンク<a>化） ====================
 
 let newsCache = null;
 let newsCacheTime = 0;
-const CACHE_DURATION = 10 * 60 * 1000; // 10分キャッシュ
+const CACHE_DURATION = 15 * 60 * 1000; // 15分キャッシュ
 
-// RSS直接フェッチ関数（CORS回避のためプロキシ使用）
+// RSS2JSONプロキシ関数（CORS回避）
 async function fetchRSS(rssUrl) {
   try {
-    // 直接fetch（ブラウザCORS対応RSSのみ）
-    const response = await fetch(rssUrl);
+    const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+    const response = await fetch(proxyUrl);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const text = await response.text();
-    
-    // 簡易XMLパーサー（DOMParser使用）
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text, "text/xml");
-    const items = Array.from(doc.querySelectorAll('item')).map(item => ({
-      title: item.querySelector('title')?.textContent || '',
-      description: item.querySelector('description')?.textContent?.replace(/<[^>]+>/g, '').substring(0, 150) || '',
-      pubDate: item.querySelector('pubDate')?.textContent || '',
-      link: item.querySelector('link')?.textContent || ''
-    })).filter(item => item.title); // 空タイトル除外
-    
-    if (items.length > 0) return items;
-    throw new Error('No items');
+    const data = await response.json();
+    if (data.status !== 'ok' || !data.items) throw new Error('Invalid RSS data');
+    return data.items.map(item => ({
+      title: item.title,
+      description: item.description?.replace(/<[^>]+>/g, '').substring(0, 150) || '',
+      pubDate: item.pubDate,
+      link: item.link
+    })).filter(item => item.title);
   } catch (err) {
     console.warn(`RSS fetch failed for ${rssUrl}:`, err);
+    return null;
+  }
+}
+
+// Web検索RSS（Google Newsからサッカー関連）
+async function fetchGoogleNews() {
+  try {
+    const searchUrl = "https://news.google.com/rss/search?q=日本+サッカー+OR+ワールドカップ+2026+when:1d&hl=ja&gl=JP&ceid=JP:ja";
+    const response = await fetch(searchUrl);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const text = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, "text/xml");
+    return Array.from(doc.querySelectorAll('item')).slice(0, 10).map(item => ({
+      title: item.querySelector('title')?.textContent?.replace(/日本 \+ サッカー - Google ニュース/, '') || '',
+      description: item.querySelector('description')?.textContent?.replace(/<[^>]+>/g, '').substring(0, 120) || '',
+      pubDate: item.querySelector('pubDate')?.textContent || '',
+      link: item.querySelector('link')?.textContent || ''
+    })).filter(item => item.title && (item.title.includes('サッカー') || item.title.includes('soccer') || item.title.includes('World Cup')));
+  } catch (err) {
+    console.warn('Google News fetch failed:', err);
     return null;
   }
 }
@@ -1919,36 +1934,29 @@ async function loadNews() {
   error.style.display = "none";
 
   try {
-    // 優先1: J.League公式RSS（日本サッカー特化、2025年有効）
-    let articles = await fetchRSS("https://www.jleague.jp/rss/news_jp.xml");
+    let articles = null;
+
+    // 優先1: JFA公式RSS（日本代表・Jリーグ特化、2025年11/29有効）
+    articles = await fetchRSS("https://www.jfa.jp/feed.rss");
     
-    // 優先2: MainichiスポーツRSS（サッカー含む）
+    // 優先2: Gekisaka RSS（総合サッカーニュース）
     if (!articles || articles.length === 0) {
-      articles = await fetchRSS("https://mainichi.jp/rss/etc/mainichi-sports.rss");
+      articles = await fetchRSS("https://web.gekisaka.jp/rss/allnews.xml");
     }
     
-    // バックアップ: Japan TimesスポーツRSS（英語/サッカー/WC）
+    // 優先3: Japan TimesスポーツRSS（WC関連多め）
     if (!articles || articles.length === 0) {
       articles = await fetchRSS("https://www.japantimes.co.jp/sports/feed/");
     }
     
-    // 最終バックアップ: Google Newsサッカー日本（RSS形式）
+    // バックアップ: Google Newsサッカー日本（リアルタイム）
     if (!articles || articles.length === 0) {
-      const gResponse = await fetch("https://news.google.com/rss/search?q=日本+サッカー+OR+ワールドカップ+2026+when:1d&hl=ja&gl=JP&ceid=JP:ja");
-      const gText = await gResponse.text();
-      const gParser = new DOMParser();
-      const gDoc = gParser.parseFromString(gText, "text/xml");
-      articles = Array.from(gDoc.querySelectorAll('item')).slice(0, 10).map(item => ({
-        title: item.querySelector('title')?.textContent?.replace('日本 + サッカー - Google ニュース', '') || '',
-        description: item.querySelector('description')?.textContent?.replace(/<[^>]+>/g, '').substring(0, 120) || '',
-        pubDate: item.querySelector('pubDate')?.textContent || '',
-        link: item.querySelector('link')?.textContent || ''
-      })).filter(item => item.title && (item.title.includes('サッカー') || item.title.includes('soccer')));
+      articles = await fetchGoogleNews();
     }
 
     if (articles && articles.length > 0) {
       // 日本代表・WC関連優先フィルタ
-      const priorityKeywords = ["日本代表", "森保", "ワールドカップ", "2026", "抽選会", "ポット", "三笘", "久保", "伊東", "Jリーグ", "キリン・チャレンジ", "FIFA"];
+      const priorityKeywords = ["日本代表", "森保", "ワールドカップ", "2026", "抽選会", "ポット", "三笘", "久保", "伊東", "Jリーグ", "キリン・チャレンジ", "FIFA", "AFC"];
       const filtered = articles
         .filter(item => {
           const title = (item.title || "").toLowerCase();
@@ -2019,6 +2027,11 @@ function renderNews(articles) {
     const isPriority = priorityKeywords.some(kw => (item.title || "").toLowerCase().includes(kw.toLowerCase()));
     const priorityStar = isPriority ? '<span style="position:absolute; top:8px; right:8px; color:#ffcb05; font-size:1.2rem; font-weight:bold;">★</span>' : '';
 
+    // リンクテキストを<a>タグ化（クリック強化）
+    const readLink = item.link ? 
+      `<a href="${item.link}" target="_blank" style="margin-left:12px; color:#ffcb05; font-weight:bold; text-decoration:none;">→ 記事を読む</a>` : 
+      '<span style="margin-left:12px; color:#94a3b8;">→ 詳細なし</span>';
+
     newsItem.innerHTML = `
       ${priorityStar}
       <h3 style="margin:0 0 8px; color:#60a5fa; font-size:1.1rem;">${item.title}</h3>
@@ -2027,15 +2040,26 @@ function renderNews(articles) {
       </p>
       <div style="font-size:0.85rem; color:#94a3b8;">
         ${item.pubDate || '日付不明'}
-        <span style="margin-left:12px; color:#ffcb05; font-weight:bold;">→ 記事を読む</span>
+        ${readLink}
       </div>
     `;
 
-    newsItem.onclick = (e) => {
-      if (e.target.tagName !== 'A') {
+    // 全体クリックで開く（内部リンクのイベントを優先）
+    newsItem.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') return;  // <a>タグ内ならデフォルト動作（開く）
+      if (item.link) {
         window.open(item.link, "_blank");
+      } else {
+        console.warn('リンクなし:', item.title);
       }
-    };
+    });
+
+    // 内部リンクのイベント強化（念のため）
+    newsItem.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        e.stopPropagation();  // 全体クリックを止めて<a>動作優先
+      }
+    }, true);  // キャプチャリングフェーズで適用
 
     container.appendChild(newsItem);
   });
@@ -2070,12 +2094,10 @@ existingTabListeners.forEach(btn => {
 });
 
 // 初回ロード時
-document.addEventListener('DOMContentLoaded', () => {
-  const newsBtn = document.querySelector('[data-tab="news"]');
-  if (newsBtn && newsBtn.classList.contains('active')) {
+
+
     loadNews();
-  }
-});
+
 
   // ==================== 初期化 ====================
 
@@ -2616,7 +2638,7 @@ document.head.appendChild(style);
 	  │ 
    <a href="./readme.html">README</a>
    <br>
-   <hr>©PureGreen │ テストv0.19_1
+   <hr>©PureGreen │ テストv0.18_2
   </div>
 <!-- 強制初回描画 -->
 <script> 

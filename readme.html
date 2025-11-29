@@ -2,27 +2,27 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>WorldCupMockDraw About Section </title>
+<title>WorldCupMockDraw - About</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   body { font-family: system-ui, sans-serif; margin: 0; padding: 20px; background: #0f172a; color: #e2e8f0; }
-  h1 { text-align: center; color: #60a5fa; }
-  #about-section { max-width: 800px; margin: 40px auto; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); color: #fff; font-size: 1rem; line-height: 1.6; }
-  #about-section h1 { color: #ffcb05; text-align: center; margin-bottom: 30px; }
-  #about-section h2 { color: #ffd700; border-bottom: 2px solid #ffcb05; padding-bottom: 10px; }
+  #about-section { max-width: 800px; margin: 40px auto; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); color: #fff; line-height: 1.7; }
+  #about-section h1 { color: #ffcb05; text-align: center; margin-bottom: 30px; font-size: 2.2rem; }
+  #about-section h2 { color: #ffd700; border-bottom: 2px solid #ffcb05; padding-bottom: 10px; margin-top: 40px; }
   #about-section a { color: #ffcb05; text-decoration: underline; cursor: pointer; }
+  #about-section mark { background: #78350f; padding: 2px 6px; border-radius: 4px; }
 
   /* モーダル */
-  .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); }
+  .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); }
   .modal.show { display: flex; align-items: center; justify-content: center; }
   .modal-content {
-    background: #1e293b; padding: 30px; border-radius: 16px; max-width: 90%; width: 450px;
-    text-align: center; border: 1px solid #475569;
+    background: #1e293b; padding: 32px; border-radius: 20px; max-width: 90%; width: 480px;
+    text-align: center; border: 1px solid #475569; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
   }
-  .modal-name { font-size: 1.8rem; margin: 12px 0; color: #60a5fa; }
-  .modal-info { line-height: 1.8; font-size: 1.1rem; }
-  .modal-close { margin-top: 24px; padding: 10px 24px; background: #dc2626; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; }
-  .modal-visit { margin-top: 16px; padding: 10px 24px; background: #1d4ed8; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; text-decoration: none; display: inline-block; }
+  .modal-name { font-size: 1.9rem; margin: 12px 0; color: #60a5fa; }
+  .modal-info { line-height: 1.8; font-size: 1.1rem; margin: 20px 0; }
+  .modal-visit { margin: 20px 10px 0; padding: 12px 28px; background: #1d4ed8; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1.1rem; text-decoration: none; display: inline-block; }
+  .modal-close { margin-top: 20px; padding: 12px 28px; background: #dc2626; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1.1rem; }
 </style>
 </head>
 <body>
@@ -57,31 +57,28 @@
   
   <h2>更新メモ</h2>
   <ol>
-    <li>2025.11.20 FIFAランキング更新<br>（11/19更新、11/20発表）</li>
+    <li>2025.11.20 FIFAランキング更新（11/19更新、11/20発表）</li>
     <li>2025.11.23 スクショ機能・シェア機能追加</li>
     <li>2025.11.25 モーダル機能・プレイオフ情報追加</li>
     <li>2025.11.28 演出スキップ機能追加</li>
   </ol>
   
-<h2>LINK</h2>
-<ul style="list-style-type: none; margin-left: 0;">
-  <li><strong>YouTubeチャンネル</strong></li>
-  <li style="margin-left: 20px;">- <a href="https://youtube.com/@milksoccer_academy" class="modal-link" data-type="youtube" data-id="milksoccer_academy">ミルアカ</a></li>
-  <li style="margin-left: 20px;">- <a href="https://youtube.com/@sekai-3" class="modal-link" data-type="youtube" data-id="sekai-3">SEKAI</a></li>
+  <h2>LINK</h2>
+  <ul style="list-style-type: none; margin-left: 0;">
+    <li><strong>YouTubeチャンネル</strong></li>
+    <li>- <a href="https://youtube.com/@milksoccer_academy" class="modal-link" data-type="youtube" data-id="milksoccer_academy">ミルアカ</a></li>
+    <li>- <a href="https://youtube.com/@sekai-3" class="modal-link" data-type="youtube" data-id="sekai-3">SEKAI</a></li>
 
-  <li><strong>X（旧Twitter）</strong></li>
-  <li style="margin-left: 20px;">- <a href="https://x.com/milksatokyo" class="modal-link" data-type="x" data-id="milksatokyo">ミルアカ</a></li>
-  <li style="margin-left: 20px;">- <a href="https://x.com/yuichisato_exp" class="modal-link" data-type="x" data-id="yuichisato_exp">ノーミルク佐藤</a></li>
-  <li style="margin-left: 20px;">- <a href="https://x.com/inouemah" class="modal-link" data-type="x" data-id="inouemah">井上マー</a></li>
-  <li style="margin-left: 20px;">- <a href="https://x.com/puregreenx" class="modal-link" data-type="x" data-id="puregreenx">PureGreen</a></li>
+    <li><strong>X（旧Twitter）</strong></li>
+    <li>- <a href="https://x.com/milksatokyo" class="modal-link" data-type="x" data-id="milksatokyo">ミルアカ</a></li>
+    <li>- <a href="https://x.com/yuichisato_exp" class="modal-link" data-type="x" data-id="yuichisato_exp">ノーミルク佐藤</a></li>
+    <li>- <a href="https://x.com/inouemah" class="modal-link" data-type="x" data-id="inouemah">井上マー</a></li>
+    <li>- <a href="https://x.com/puregreenx" class="modal-link" data-type="x" data-id="puregreenx">PureGreen</a></li>
 
-  <!-- ここから新しく追加 -->
-  <li><strong>Wikipedia</strong></li>
-  <li style="margin-left: 20px;">- <a href="https://ja.wikipedia.org/wiki/井上マー" class="modal-link" data-type="wiki" data-id="inouemah">井上マー</a></li>
-  <li style="margin-left: 20px;">- <a href="https://ja.wikipedia.org/wiki/Pure_Green" class="modal-link" data-type="wiki" data-id="puregreen">ピュアグリーン（Pure Green）</a></li>
-</ul>
-  <hr>
-  <a href="#" onclick="window.history.back(); return false;">戻る</a>
+    <li><strong>Wikipedia</strong></li>
+    <li>- <a href="https://ja.wikipedia.org/wiki/井上マー" class="modal-link" data-type="wiki" data-id="inouemah_wiki">井上マー</a></li>
+    <li>- <a href="https://ja.wikipedia.org/wiki/Pure_Green" class="modal-link" data-type="wiki" data-id="puregreen_wiki">ピュアグリーン（Pure Green）</a></li>
+  </ul>
 </div>
 
 <!-- モーダル -->
@@ -95,95 +92,36 @@
 </div>
 
 <script>
-// リンク詳細データ（2025年11月28日時点の最新情報に基づく）
+// 最新データ（2025年11月29日時点）
 const linkData = {
-  "milksoccer_academy": {
-    type: "youtube",
-    name: "【ミルアカ】MILKサッカーアカデミー【毎朝配達中!!】",
-    description: "Soccer-focused content, including match previews, reviews, and analysis, with membership for exclusive insights. Features books, goods, and related channels.",
-    subscribers: "不明 (2025年11月時点)",
-    joined: "約7年前 (2018年頃)",
-    location: "日本",
-    url: "https://youtube.com/@milksoccer_academy"
-  },
-  "sekai-3": {
-    type: "youtube",
-    name: "【SEKAI】 SEKAIウィークエンド | セカTUBE | チビタチーズ",
-    description: "ウィークエンド関連のコンテンツ（クイズ、ビーチチル、ダンスなど）。",
-    subscribers: "不明 ",
-    joined: "不明",
-    location: "不明 (おそらく日本)",
-    url: "https://youtube.com/channel/UCN65ijG4ZE-xpt_j2AVvzoQ"  // 検索に基づく正しいURLに修正
-  },
-  "milksatokyo": {
-    type: "x",
-    name: "ミルアカ｜MILKサッカーアカデミー 毎朝配達中！",
-    bio: "◆お耳で楽しみ、あなたのサッカー脳をポジティブアップデート！ ◆Jリーグ中心に毎朝毎晩YouTubeで動画公開！ ◆2020年～Jリーグ推進委員会 🏫講師:ノーミルク佐藤 @yuichisato_exp 🖊️受講:井上マー @inouemah コラボ等のお誘い、DMにて！ ▶サブ：F1・箱根駅伝・ゲーム・大喜利",
-    followers: 33154,
-    url: "https://x.com/milksatokyo"
-  },
-  "yuichisato_exp": {
-    type: "x",
-    name: "佐藤祐一/ノーミルク佐藤",
-    bio: "◆書籍「サッカーIQを高めるサッカー観戦力養成講座」発売中！ ◆Lifepicture Founder ＆CEO/10期目 ◆YouTube「ミルアカ」登録者10万人+ 　Ｌデータ│戦術│分析│トークライブ│執筆│MCなど ◆ダーツ│麻雀│コーヒー│資産運用│ゲーム",
-    followers: 6058,
-    url: "https://x.com/yuichisato_exp"
-  },
-  "inouemah": {
-    type: "x",
-    name: "井上マー⚡️☀️",
-    bio: "東京吉本 唎酒師 MC ミルアカ 実家酒蔵。",
-    followers: 13820,
-    url: "https://x.com/inouemah"
-  },
-  "puregreenx": {
-    type: "x",
-    name: "PureGreen",
-    bio: "◾︎/タレント/ラジオDJ/癒し：@karashi61/番組でゆるくお気に入り店紹介します/FX/Trader/投資家/EA/インジ/DJ/Creator/Engineer/AI/cat/dog/ferret/football/アウトドア/ﾌｪﾚｯﾄ/酒場詩人/ お仕事のご依頼や諸々お誘い等はXのDMかLINEへ/◾︎",
-    followers: 59413,
-    url: "https://x.com/puregreenx"
-  }
-  // ← wiki追加
-  "inouemah": {
-    type: "wiki",
-    name: "井上マー",
-    description: "日本のタレント、お笑い芸人（吉本興業所属）、唎酒師、実家は新潟の酒蔵。YouTube「ミルアカ」メンバーとしても活動中。",
-    url: "https://ja.wikipedia.org/wiki/%E4%BA%95%E4%B8%8A%E3%83%9E%E3%83%BC"
-  },
-  "puregreen": {
-    type: "wiki",
-    name: "Pure Green（ピュアグリーン）",
-    description: "日本の投資家、タレント、ラジオDJ、YouTuber、FXトレーダー。サッカーや音楽、アウトドアなど幅広いジャンルで活動。",
-    url: "https://ja.wikipedia.org/wiki/Pure_Green"
-  }
-};
+  "milksoccer_academy": { type: "youtube", name: "ミルアカ｜MILKサッカーアカデミー", description: "毎朝サッカー解説動画を配達中！ノーミルク佐藤＆井上マーの人気チャンネル", url: "https://youtube.com/@milksoccer_academy" },
+  "sekai-3": { type: "youtube", name: "SEKAI", description: "関連コンテンツチャンネル", url: "https://youtube.com/@sekai-3" },
+  "milksatokyo": { type: "x", name: "ミルアカ", bio: "毎朝毎晩YouTube配信中！Jリーグ中心のサッカー解説", followers: "33.2K", url: "https://x.com/milksatokyo" },
+  "yuichisato_exp": { type: "x", name: "ノーミルク佐藤", bio: "書籍「サッカーIQを高める」著者／ミルアカ講師", followers: "6K+", url: "https://x.com/yuichisato_exp" },
+  "inouemah": { type: "x", name: "井上マー", bio: "東京吉本／唎酒師／実家は新潟の酒蔵／ミルアカMC", followers: "13.8K", url: "https://x.com/inouemah" },
+  "puregreenx": { type: "x", name: "PureGreen", bio: "投資家／ラジオDJ／FXトレーダー／サッカー好き", followers: "59.4K", url: "https://x.com/puregreenx" },
+  "inouemah_wiki": { type: "wiki", name: "井上マー - Wikipedia", description: "日本のタレント、お笑い芸人（吉本興業）、唎酒師。YouTube「ミルアカ」のMCとしても活躍。", url: "https://ja.wikipedia.org/wiki/%E4%BA%95%E4%B8%8A%E3%83%9E%E3%83%BC" },
+  "puregreen_wiki": { type: "wiki", name: "Pure Green - Wikipedia", description: "日本の投資家、タレント、ラジオDJ、YouTuber。FXや資産運用、サッカーなど幅広い分野で活動。", url: "https://ja.wikipedia.org/wiki/Pure_Green" }
 };
 
 document.querySelectorAll('.modal-link').forEach(link => {
   link.addEventListener('click', (e) => {
-    e.preventDefault();  // デフォルトのリンク動作を止める
+    e.preventDefault();
     const id = link.dataset.id;
     const data = linkData[id];
     if (!data) return;
 
     document.getElementById('modal-name').textContent = data.name;
-    let infoHtml = '';
+
+    let info = '';
     if (data.type === 'youtube') {
-      infoHtml = `
-        説明: ${data.description}<br>
-        登録者数: ${data.subscribers}<br>
-        開設日: ${data.joined}<br>
-        場所: ${data.location}
-      `;
+      info = `<strong>説明：</strong>${data.description}`;
     } else if (data.type === 'x') {
-      infoHtml = `
-        Bio: ${data.bio}<br>
-        フォロワー数: ${data.followers}
-      `;
+      info = `<strong>Bio：</strong>${data.bio}<br><strong>フォロワー：</strong>${data.followers}`;
     } else if (data.type === 'wiki') {
-      infoHtml = `<strong style="color:#f59e0b;">Wikipediaより</strong><br>${data.description}`;
+      info = `<strong style="color:#f59e0b;">Wikipediaより</strong><br>${data.description}`;
     }
-    document.getElementById('modal-info').innerHTML = infoHtml;
+    document.getElementById('modal-info').innerHTML = info;
     document.getElementById('modal-visit').href = data.url;
     document.getElementById('link-modal').classList.add('show');
   });
@@ -199,8 +137,6 @@ window.addEventListener('click', (e) => {
   }
 });
 </script>
-
-
 
 </body>
 </html>

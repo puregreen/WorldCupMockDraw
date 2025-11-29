@@ -212,6 +212,42 @@ button:disabled {
   display: block;
   opacity: 1
 }
+
+.tab-buttons {
+  display: flex;
+  gap: 0;
+  flex-wrap: nowrap !important;
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 12px;
+  overflow: hidden;
+  /* ここを追加！ */
+  background: rgba(255,255,255,.08); /* ボタン間の隙間を埋める */
+}
+
+/* 重要：すべての角を一旦リセット */
+.tab-btn {
+  border-radius: 0 !important; /* 強制的に四角に */
+}
+
+/* 最初のタブだけ左側を丸く */
+.tab-btn:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+/* 最後のタブだけ右側を丸く ← これで4つでも5つでも6つでも常に最後が丸くなる！ */
+.tab-btn:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+/* アクティブなタブが端にあるときもキレイに保つ（見た目強化） */
+.tab-btn.active:first-child {
+  border-radius: 12px 0 0 12px;
+}
+.tab-btn.active:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
 @media (max-width:480px) {
   .tab-btn {
     font-size: .95rem;
@@ -1148,6 +1184,82 @@ button:disabled {
   font-weight: bold;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
+
+/* ─────── タブの角丸を完璧に修正（これだけ一番下に追加！） ─────── */
+
+/* 1. 重複定義を潰す（これが最重要！） */
+.tab-buttons {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: rgba(255,255,255,.08) !important;
+}
+
+/* 2. すべてのタブの角を一旦ゼロにする */
+.tab-btn {
+  border-radius: 0 !important;
+}
+
+/* 3. 最初のタブだけ左側を丸く */
+.tab-btn:first-child,
+.tab-btn:first-child.active {
+  border-radius: 12px 0 0 12px !important;
+}
+
+/* 4. 最後のタブだけ右側を丸く ← これで何個あっても最後のタブが丸くなる！ */
+.tab-btn:last-child,
+.tab-btn:last-child.active {
+  border-radius: 0 12px 12px 0 !important;
+}
+
+/* 5. 念のため古いnth-childルールがあれば全部殺す */
+.tab-btn:nth-child(1),
+.tab-btn:nth-child(2),
+.tab-btn:nth-child(3),
+.tab-btn:nth-child(4),
+.tab-btn:nth-child(5) {
+  { border-radius: 0 !important; }
+.tab-btn:nth-child(3) { border-radius: 0 !important; } /* 特にこれが悪さしてた！ */
+
+
+/* ★★★★★ タブ角丸 最終奥義版（これだけ一番最後に貼ってください） ★★★★★ */
+.tab-buttons-wrapper {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  padding: 7px 10px !important;
+}
+
+.tab-buttons {
+  display: flex !important;
+  gap: 0 !important;
+  border-radius: 0 !important;   /* ここを0にしないと:last-childが効かない */
+  overflow: hidden !important;
+  background: rgba(255,255,255,.08) !important;
+}
+
+/* すべてのタブの角を強制リセット */
+.tab-buttons .tab-btn {
+  border-radius: 0 !important;
+  flex: 1;
+}
+
+/* 最初だけ左丸 */
+.tab-buttons .tab-btn:first-of-type {
+  border-radius: 12px 0 0 12px !important;
+}
+
+/* 最後だけ右丸（これがニュースタブになる） */
+.tab-buttons .tab-btn:last-of-type {
+  border-radius: 0 12px 12px 0 !important;
+}
+
+/* アクティブでも崩れないように */
+.tab-buttons .tab-btn.active:first-of-type {
+  border-radius: 12px 0 0  0 12px !important;
+}
+.tab-buttons .tab-btn.active:last-of-type {
+  border-radius: 0 12px 12px 0 !important;
+}
+
 </style>
 
 </head>
@@ -1159,9 +1271,10 @@ button:disabled {
     <button class="tab-btn active" data-tab="draw">抽選会</button>
 	<button class="tab-btn" data-tab="pots">ポット表</button>
     <button class="tab-btn" data-tab="ranking">FIFAランキング</button>
-   </div>
 <button class="tab-btn" data-tab="news">ニュース</button>
    </div>
+   </div>
+
 
   <!-- タブ1: シミュレーション抽選会 -->
 <div id="draw" class="tab-content active"> 
@@ -2068,30 +2181,7 @@ function renderNews(articles) {
   loading.style.display = "none";
 }
 
-// タブ切り替え（既存拡張、onclickクリアで競合回避）
-const existingTabListeners = document.querySelectorAll('.tab-btn');
-existingTabListeners.forEach(btn => {
-  const originalClick = btn.onclick;
-  btn.onclick = null;
-  btn.addEventListener('click', (e) => {
-    if (originalClick) originalClick(e);
-    
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    const content = document.getElementById(btn.dataset.tab);
-    if (content) content.classList.add('active');
 
-    setTimeout(() => {
-      if (btn.dataset.tab === "pots") {
-        renderPotTable("potTable", 84, 63, "pot-team");
-        renderPlayoffTables();
-      }
-      if (btn.dataset.tab === "draw") window.renderPotTableInDraw();
-      if (btn.dataset.tab === "news") loadNews();
-    }, 100);
-  });
-});
 
 // 初回ロード時
 
@@ -2117,20 +2207,30 @@ const init = () => {
   };
 
   // ==================== タブ切り替え ====================
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      btn.classList.add('active');
-      const content = document.getElementById(btn.dataset.tab);
-      if (content) content.classList.add('active');
-      setTimeout(() => {
-        if (btn.dataset.tab === "pots") renderPotTable("potTable", 84, 63, "pot-team");
-          renderPlayoffTables();  // ← 追加: potsタブ時PO表再描画
-        if (btn.dataset.tab === "draw") window.renderPotTableInDraw();
-      }, 100);
-    });
+// タブ切り替え（既存拡張、onclickクリアで競合回避）
+const existingTabListeners = document.querySelectorAll('.tab-btn');
+existingTabListeners.forEach(btn => {
+  const originalClick = btn.onclick;
+  btn.onclick = null;
+  btn.addEventListener('click', (e) => {
+    if (originalClick) originalClick(e);
+    
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const content = document.getElementById(btn.dataset.tab);
+    if (content) content.classList.add('active');
+
+    setTimeout(() => {
+      if (btn.dataset.tab === "pots") {
+        renderPotTable("potTable", 84, 63, "pot-team");
+        renderPlayoffTables();
+      }
+      if (btn.dataset.tab === "draw") window.renderPotTableInDraw();
+      if (btn.dataset.tab === "news") loadNews();
+    }, 100);
   });
+});
 
   init();
   setTimeout(init, 600);
@@ -2638,7 +2738,7 @@ document.head.appendChild(style);
 	  │ 
    <a href="./readme.html">README</a>
    <br>
-   <hr>©PureGreen │ v0.19
+   <hr>©PureGreen │ v0.20
   </div>
 <!-- 強制初回描画 -->
 <script> 
